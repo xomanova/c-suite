@@ -17,7 +17,7 @@ resource "aws_cognito_user_pool_client" "webauth-client" {
   generate_secret      = true
   explicit_auth_flows  = ["ADMIN_NO_SRP_AUTH"]
   allowed_oauth_flows  = ["implicit"]
-  allowed_oauth_scopes = ["phone","email","openid","profile","aws.cognito.signin.user.admin"]
+  allowed_oauth_scopes = ["phone", "email", "openid", "profile", "aws.cognito.signin.user.admin"]
   callback_urls        = ["www.github.com"]
 
   supported_identity_providers = [aws_cognito_identity_provider.users-identity-provider.provider_name]
