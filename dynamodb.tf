@@ -1,8 +1,8 @@
 resource "aws_dynamodb_table" "users-ddb" {
-  name             = "potential-guacamole-users"
-  billing_mode     = "PAY_PER_REQUEST"
-  hash_key         = "FirstName"
-  range_key        = "LastName"
+  name         = "potential-guacamole-users"
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "FirstName"
+  range_key    = "LastName"
 
   attribute {
     name = "FirstName"
@@ -43,7 +43,7 @@ resource "aws_iam_role" "users-ddb-iam-role" {
       Version = "2012-10-17"
       Statement = [
         {
-          Action   = ["dynamodb:GetItem","dynamodb:PutItem","dynamodb:Query"]
+          Action   = ["dynamodb:GetItem", "dynamodb:PutItem", "dynamodb:Query"]
           Effect   = "Allow"
           Resource = aws_dynamodb_table.users-ddb.id
         },
