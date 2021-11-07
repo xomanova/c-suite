@@ -27,7 +27,7 @@ resource "aws_cognito_user_pool_ui_customization" "webauth-client-customization"
   client_id    = aws_cognito_user_pool_client.webauth-client.id
   css          = ".label-customizable {font-weight: 400;}"
   image_file   = filebase64("potential-guacamole.png")
-  user_pool_id = aws_cognito_user_pool_domain.main.id
+  user_pool_id = aws_cognito_user_pool.users.id
 }
 
 resource "aws_cognito_identity_provider" "users-identity-provider" {
@@ -83,7 +83,7 @@ resource "aws_cognito_identity_pool_roles_attachment" "identity-role" {
   role_mapping {
     identity_provider         = aws_cognito_identity_provider.users-identity-provider.id
     ambiguous_role_resolution = "AuthenticatedRole"
-    type                      = "Rules"
+    type                      = "Token"
   }
 
   roles = {
