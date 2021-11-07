@@ -37,7 +37,7 @@ resource "aws_iam_role" "users-ddb-iam-role" {
   })
 
   inline_policy {
-    name = "my_inline_policy"
+    name = "potential-guacamole-users-ddb-access-policy"
 
     policy = jsonencode({
       Version = "2012-10-17"
