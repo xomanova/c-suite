@@ -17,7 +17,7 @@ resource "aws_cognito_user_pool_client" "webauth-client" {
   generate_secret                      = true
   explicit_auth_flows                  = ["ADMIN_NO_SRP_AUTH"]
   allowed_oauth_flows_user_pool_client = true
-  allowed_oauth_flows                  = ["implicit"]
+  allowed_oauth_flows                  = ["code","implicit"]
   allowed_oauth_scopes                 = ["phone", "email", "openid", "profile", "aws.cognito.signin.user.admin"]
   callback_urls                        = ["https://www.github.com"]
 
@@ -67,4 +67,27 @@ resource "aws_route53_record" "auth-cognito-A" {
     # This zone_id is fixed
     zone_id = "Z2FDTNDATAQYW2"
   }
+}
+
+# User pool and group roles
+resource "aws_cognito_identity_pool_roles_attachment" "identity-role" {
+  identity_pool_id = aws_cognito_identity_pool.users-identity.id
+
+  role_mapping {
+    identity_provider         = aws_cognito_identity_provider.users-identity-provider.id
+    ambiguous_role_resolution = "AuthenticatedRole"
+    type                      = "Rules"
+  }
+
+  roles = {
+    "authenticated" = aws_iam_role.users-ddb-iam-role.arn
+  }
+}
+
+resource "aws_cognito_user_group" "webusers" {
+  name         = "webusers"
+  user_pool_id = aws_cognito_user_pool.users.id
+  description  = "Managed by Terraform"
+  precedence   = 42
+  role_arn     = aws_iam_role.users-ddb-iam-role.arn
 }
