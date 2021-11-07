@@ -40,10 +40,8 @@ resource "aws_cognito_identity_pool" "users-identity" {
   allow_unauthenticated_identities = false
   allow_classic_flow               = false
 
-  cognito_identity_providers {
-    client_id               = aws_cognito_user_pool_client.webauth-client.id
-    provider_name           = aws_cognito_identity_provider.users-identity-provider.provider_name
-    server_side_token_check = false
+  supported_login_providers = {
+    "accounts.google.com" = var.google_app_id
   }
 }
 
