@@ -41,7 +41,7 @@ resource "aws_iam_role" "users-ddb-iam-role" {
         {
           Action   = ["dynamodb:GetItem", "dynamodb:PutItem", "dynamodb:Query"]
           Effect   = "Allow"
-          Resource = aws_dynamodb_table.users-ddb.id
+          Resource = aws_dynamodb_table.users-ddb.arn
         },
       ]
     })
