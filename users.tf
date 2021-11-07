@@ -18,7 +18,7 @@ resource "aws_cognito_user_pool_client" "webauth-client" {
   explicit_auth_flows = ["ADMIN_NO_SRP_AUTH"]
 }
 
-resource "aws_cognito_identity_provider" "example_provider" {
+resource "aws_cognito_identity_provider" "users-identity-provider" {
   user_pool_id  = aws_cognito_user_pool.users.id
   provider_name = "Google"
   provider_type = "Google"
@@ -42,7 +42,7 @@ resource "aws_cognito_identity_pool" "users-identity" {
 
   cognito_identity_providers {
     client_id               = aws_cognito_user_pool_client.webauth-client.id
-    provider_name           = aws_cognito_user_pool_client.webauth-client.name
+    provider_name           = aws_cognito_identity_provider.users-identity-provider.provider_name
     server_side_token_check = false
   }
 }

@@ -25,7 +25,7 @@ data "aws_route53_zone" "zone" {
 }
 
 data "aws_acm_certificate" "acm_cert" {
-  domain      = "megrehn.com"
+  domain      = "*.megrehn.com"
   types       = ["AMAZON_ISSUED"]
   most_recent = true
 }
