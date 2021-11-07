@@ -20,15 +20,13 @@ resource "aws_cognito_user_pool_client" "webauth-client" {
   allowed_oauth_flows                  = ["code", "implicit"]
   allowed_oauth_scopes                 = ["phone", "email", "openid", "profile", "aws.cognito.signin.user.admin"]
   callback_urls                        = ["https://www.github.com"]
-
-  supported_identity_providers = [aws_cognito_identity_provider.users-identity-provider.provider_name]
+  supported_identity_providers         = [aws_cognito_identity_provider.users-identity-provider.provider_name]
 }
 
 resource "aws_cognito_user_pool_ui_customization" "webauth-client-customization" {
-  client_id = aws_cognito_user_pool_client.webauth-client.id
-
-  css        = ".label-customizable {font-weight: 400;}"
-  image_file = filebase64("potential-guacamole.png")
+  client_id    = aws_cognito_user_pool_client.webauth-client.id
+  css          = ".label-customizable {font-weight: 400;}"
+  image_file   = filebase64("potential-guacamole.png")
   user_pool_id = aws_cognito_user_pool_domain.main.id
 }
 
@@ -69,6 +67,7 @@ resource "aws_route53_record" "auth-cognito-A" {
   name    = aws_cognito_user_pool_domain.main.domain
   type    = "A"
   zone_id = data.aws_route53_zone.zone.zone_id
+
   alias {
     evaluate_target_health = false
     name                   = aws_cognito_user_pool_domain.main.cloudfront_distribution_arn
