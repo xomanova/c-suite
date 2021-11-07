@@ -13,10 +13,6 @@ resource "aws_dynamodb_table" "users-ddb" {
     name = "LastName"
     type = "S"
   }
-
-  replica {
-    region_name = "us-east-2"
-  }
 }
 
 resource "aws_iam_role" "users-ddb-iam-role" {
