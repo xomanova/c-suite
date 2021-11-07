@@ -24,6 +24,14 @@ resource "aws_cognito_user_pool_client" "webauth-client" {
   supported_identity_providers = [aws_cognito_identity_provider.users-identity-provider.provider_name]
 }
 
+resource "aws_cognito_user_pool_ui_customization" "webauth-client-customization" {
+  client_id = aws_cognito_user_pool_client.webauth-client.id
+
+  css        = ".label-customizable {font-weight: 400;}"
+  image_file = filebase64("potential-guacamole.png")
+  user_pool_id = aws_cognito_user_pool_domain.main.id
+}
+
 resource "aws_cognito_identity_provider" "users-identity-provider" {
   user_pool_id  = aws_cognito_user_pool.users.id
   provider_name = "Google"
