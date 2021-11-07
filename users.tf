@@ -18,14 +18,49 @@ resource "aws_cognito_user_pool_client" "webauth-client" {
   explicit_auth_flows = ["ADMIN_NO_SRP_AUTH"]
 }
 
+resource "aws_cognito_identity_provider" "example_provider" {
+  user_pool_id  = aws_cognito_user_pool.users.id
+  provider_name = "Google"
+  provider_type = "Google"
+
+  provider_details = {
+    authorize_scopes = "email"
+    client_id        = var.google_app_id
+    client_secret    = var.google_app_secret
+  }
+
+  attribute_mapping = {
+    email    = "email"
+    username = "sub"
+  }
+}
+
 resource "aws_cognito_identity_pool" "users-identity" {
   identity_pool_name               = "potential-guacamole-users-identity"
   allow_unauthenticated_identities = false
   allow_classic_flow               = false
 
   cognito_identity_providers {
-    client_id = aws_cognito_user_pool_client.webauth-client.id
-    #provider_name           = aws_cognito_user_pool_client.webauth-client.name
+    client_id               = aws_cognito_user_pool_client.webauth-client.id
+    provider_name           = aws_cognito_user_pool_client.webauth-client.name
     server_side_token_check = false
+  }
+}
+
+resource "aws_cognito_user_pool_domain" "main" {
+  domain          = "login.megrehn.com"
+  certificate_arn = data.aws_acm_certificate.acm_cert.arn
+  user_pool_id    = aws_cognito_user_pool.users.id
+}
+
+resource "aws_route53_record" "auth-cognito-A" {
+  name    = aws_cognito_user_pool_domain.main.domain
+  type    = "A"
+  zone_id = data.aws_route53_zone.zone.zone_id
+  alias {
+    evaluate_target_health = false
+    name                   = aws_cognito_user_pool_domain.main.cloudfront_distribution_arn
+    # This zone_id is fixed
+    zone_id = "Z2FDTNDATAQYW2"
   }
 }
