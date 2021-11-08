@@ -22,8 +22,10 @@ function checkLogin() {
             dict[pair[0].trim()] = pair[1].trim();
         }
         idToken = dict['id_token']
-        document.getElementById("welcomeMsg").innerHTML = "signed in";
+        document.getElementById("welcomeMsg").innerHTML = `entered first elseif - Debug fragment idToken: ${idToken}`;
         auth();
+    } else {
+        document.getElementById("welcomeMsg").innerHTML = `entered first last else - Debug fragment idToken: ${idToken}`;
     }
 
 }
