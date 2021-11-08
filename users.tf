@@ -1,6 +1,6 @@
 # A resource that does nothing.
 resource "aws_cognito_user_pool" "users" {
-  name                     = "potential-guacamole-users"
+  name                     = "${var.project}-users"
   username_attributes      = ["email"]
   auto_verified_attributes = ["email"]
   account_recovery_setting {
@@ -26,7 +26,7 @@ resource "aws_cognito_user_pool_client" "webauth-client" {
 resource "aws_cognito_user_pool_ui_customization" "webauth-client-customization" {
   client_id    = aws_cognito_user_pool_client.webauth-client.id
   css          = ".label-customizable {font-weight: 400;}"
-  image_file   = filebase64("potential-guacamole.png")
+  image_file   = filebase64("${var.project}.png")
   user_pool_id = aws_cognito_user_pool.users.id
 }
 
@@ -48,7 +48,7 @@ resource "aws_cognito_identity_provider" "users-identity-provider" {
 }
 
 resource "aws_cognito_identity_pool" "users-identity" {
-  identity_pool_name               = "potential-guacamole-users-identity"
+  identity_pool_name               = "${var.project}-users-identity"
   allow_unauthenticated_identities = false
   allow_classic_flow               = false
 

@@ -54,3 +54,9 @@ variable "aws_hosted_zone" {
   description = "The Route53 hosted zone to use for data and ACM references"
   type        = string
 }
+
+variable "project" {
+  description = "Project name"
+  type        = string
+  default     = "potential-guacamole"
+}

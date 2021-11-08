@@ -1,5 +1,5 @@
 resource "aws_dynamodb_table" "users-ddb" {
-  name         = "potential-guacamole-users"
+  name         = "${var.project}-users"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "FirstName"
   range_key    = "LastName"
@@ -16,7 +16,7 @@ resource "aws_dynamodb_table" "users-ddb" {
 }
 
 resource "aws_iam_role" "users-ddb-iam-role" {
-  name = "potential-guacamole-users-ddb-access"
+  name = "${var.project}-users-ddb-access"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -32,7 +32,7 @@ resource "aws_iam_role" "users-ddb-iam-role" {
   })
 
   inline_policy {
-    name = "potential-guacamole-users-ddb-access-policy"
+    name = "${var.project}-users-ddb-access-policy"
 
     policy = jsonencode({
       Version = "2012-10-17"

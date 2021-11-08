@@ -1,6 +1,6 @@
-# S3 bucket for website.
+# S3 bucket for static content
 resource "aws_s3_bucket" "www_bucket" {
-  bucket = "potential-guacamole"
+  bucket = var.project
   acl    = "private"
 }
 
@@ -27,7 +27,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   is_ipv6_enabled     = true
   default_root_object = "index.html"
 
-  aliases = ["potential-guacamole.${var.aws_hosted_zone}"]
+  aliases = ["${var.project}.${var.aws_hosted_zone}"]
 
   restrictions {
     geo_restriction {
@@ -59,4 +59,13 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     minimum_protocol_version = "TLSv1"
     ssl_support_method       = "sni-only"
   }
+}
+
+# Route53 CNAME record
+resource "aws_route53_record" "www" {
+  zone_id = data.aws_route53_zone.zone_id
+  name    = "${var.project}.${var.aws_hosted_zone}"
+  type    = "CNAME"
+  ttl     = "300"
+  records = [aws_cloudfront_distribution.s3_distribution.domain_name]
 }
