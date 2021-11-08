@@ -11,7 +11,7 @@ resource "aws_s3_bucket_object" "html_objects" {
   source   = "src/${each.value}"
   etag     = filemd5("src/${each.value}")
   metadata = {
-    Content-Type = "text/html"
+    content-type = "text/html"
   }
 }
 
