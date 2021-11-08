@@ -83,6 +83,7 @@ resource "aws_cognito_identity_pool_roles_attachment" "identity-role" {
   role_mapping {
     identity_provider         = "accounts.google.com"
     ambiguous_role_resolution = "AuthenticatedRole"
+    type                      = "Rules"
   }
 
   roles = {

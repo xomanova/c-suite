@@ -26,7 +26,7 @@ resource "aws_iam_role" "users-ddb-iam-role" {
         Effect = "Allow"
         Sid    = ""
         Principal = {
-          Service = ["ec2.amazonaws.com"]
+          Service = ["cognito.amazonaws.com"]
         }
       },
     ]
