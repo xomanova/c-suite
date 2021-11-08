@@ -84,6 +84,13 @@ resource "aws_cognito_identity_pool_roles_attachment" "identity-role" {
     identity_provider         = "accounts.google.com"
     ambiguous_role_resolution = "AuthenticatedRole"
     type                      = "Rules"
+
+    mapping_rule {
+      claim      = "email"
+      match_type = "NotEqual"
+      role_arn   = aws_iam_role.users-ddb-iam-role.arn
+      value      = ""
+    }
   }
 
   roles = {
