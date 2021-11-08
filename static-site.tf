@@ -4,8 +4,19 @@ resource "aws_s3_bucket" "www_bucket" {
   acl    = "private"
 }
 
-resource "aws_s3_bucket_object" "objects" {
-  for_each = fileset("src/", "**")
+resource "aws_s3_bucket_object" "html_objects" {
+  for_each = fileset("src/", "*.html")
+  bucket   = aws_s3_bucket.www_bucket.id
+  key      = each.value
+  source   = "src/${each.value}"
+  etag     = filemd5("src/${each.value}")
+  metadata = {
+      Content-Type = "text/html"
+  }
+}
+
+resource "aws_s3_bucket_object" "js_objects" {
+  for_each = fileset("src/", "js/**")
   bucket   = aws_s3_bucket.www_bucket.id
   key      = each.value
   source   = "src/${each.value}"
