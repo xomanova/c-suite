@@ -55,7 +55,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   }
 
   viewer_certificate {
-    acm_certificate_arn      = data.aws_acm_certificate.acm_cert
+    acm_certificate_arn      = data.aws_acm_certificate.acm_cert.arn
     minimum_protocol_version = "TLSv1"
   }
 }
