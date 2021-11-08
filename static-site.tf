@@ -63,7 +63,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
 
 # Route53 CNAME record
 resource "aws_route53_record" "www" {
-  zone_id = data.aws_route53_zone.zone_id
+  zone_id = data.aws_route53_zone.zone.zone_id
   name    = "${var.project}.${var.aws_hosted_zone}"
   type    = "CNAME"
   ttl     = "300"
