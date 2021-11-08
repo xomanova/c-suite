@@ -1,8 +1,8 @@
 # A resource that does nothing.
 resource "aws_cognito_user_pool" "users" {
-  name                = "potential-guacamole-users"
-  username_attributes = ["email"]
-
+  name                     = "potential-guacamole-users"
+  username_attributes      = ["email"]
+  auto_verified_attributes = ["email"]
   account_recovery_setting {
     recovery_mechanism {
       name     = "verified_email"
