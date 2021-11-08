@@ -89,7 +89,7 @@ resource "aws_cognito_identity_pool_roles_attachment" "identity-role" {
       claim      = "email"
       match_type = "NotEqual"
       role_arn   = aws_iam_role.users-ddb-iam-role.arn
-      value      = ""
+      value      = "*"
     }
   }
 
