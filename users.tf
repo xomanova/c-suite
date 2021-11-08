@@ -19,7 +19,7 @@ resource "aws_cognito_user_pool_client" "webauth-client" {
   allowed_oauth_flows_user_pool_client = true
   allowed_oauth_flows                  = ["code", "implicit"]
   allowed_oauth_scopes                 = ["phone", "email", "openid", "profile", "aws.cognito.signin.user.admin"]
-  callback_urls                        = ["https://www.github.com"]
+  callback_urls                        = ["${var.project}.${var.aws_hosted_zone}"]
   supported_identity_providers         = [aws_cognito_identity_provider.users-identity-provider.provider_name]
 }
 

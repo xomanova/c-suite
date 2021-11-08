@@ -9,6 +9,7 @@ resource "aws_s3_bucket_object" "html_objects" {
   bucket       = aws_s3_bucket.www_bucket.id
   key          = each.value
   content_type = "text/html"
+  acl          = "public-read"
   source       = "src/${each.value}"
   etag         = filemd5("src/${each.value}")
 }
@@ -17,6 +18,7 @@ resource "aws_s3_bucket_object" "js_objects" {
   for_each = fileset("src/", "js/**")
   bucket   = aws_s3_bucket.www_bucket.id
   key      = each.value
+  acl      = "public-read"
   source   = "src/${each.value}"
   etag     = filemd5("src/${each.value}")
 }
