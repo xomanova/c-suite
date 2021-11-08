@@ -5,7 +5,7 @@ resource "aws_s3_bucket" "www_bucket" {
 }
 
 resource "aws_s3_bucket_object" "objects" {
-  for_each = fileset("src/", "*")
+  for_each = fileset("src/", "**")
   bucket   = aws_s3_bucket.www_bucket.id
   key      = each.value
   source   = "src/${each.value}"
