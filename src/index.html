@@ -14,7 +14,18 @@ function checkLogin() {
     if (idToken != null) {
         document.getElementById("welcomeMsg").innerHTML = "signed in";
         auth();
+    } else if (url.hash.contains('id_token')) {
+        var fragment = url.hash.split('&');
+        var dict = {};
+        for (var e in fragment) {
+            var pair = fragment[i].split('=');
+            dict[pair[0].trim()] = pair[1].trim();
+        }
+        idToken = dict['id_token']
+        document.getElementById("welcomeMsg").innerHTML = "signed in";
+        auth();
     }
+
 }
 
 function auth() {
@@ -34,7 +45,7 @@ function insertItem() {
     var docClient = new AWS.DynamoDB.DocumentClient();
 
     var params = {
-        TableName :"Person",
+        TableName :"potential-guacamole-users",
         Item:{
             "FirstName": "John", // Partition Key
             "LastName": "Smith", // Sort Key
@@ -58,7 +69,7 @@ function readItem() {
     var docClient = new AWS.DynamoDB.DocumentClient();
 
     var params = {
-        TableName: "Person",
+        TableName: "potential-guacamole-users",
         Key:{
             "FirstName": "John",// Partition Key
             "LastName": "Smith" // Sort/Range Key
