@@ -22,11 +22,11 @@ resource "aws_iam_role" "users-ddb-iam-role" {
     Version = "2012-10-17"
     Statement = [
       {
-        Action = "sts:AssumeRoleWithWebIdentity"
-        Effect = "Allow"
-        Sid    = ""
-        Principal = {"Federated": "cognito-identity.amazonaws.com"}
-        "Condition" = {"StringEquals": {"cognito-identity.amazonaws.com:aud": aws_cognito_user_pool.users.id}}
+        Action      = "sts:AssumeRoleWithWebIdentity"
+        Effect      = "Allow"
+        Sid         = ""
+        Principal   = { "Federated" : "cognito-identity.amazonaws.com" }
+        "Condition" = { "StringEquals" : { "cognito-identity.amazonaws.com:aud" : aws_cognito_user_pool.users.id } }
       },
     ]
   })
