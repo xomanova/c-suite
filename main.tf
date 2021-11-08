@@ -25,7 +25,7 @@ data "aws_route53_zone" "zone" {
 }
 
 data "aws_acm_certificate" "acm_cert" {
-  domain      = var.aws_hosted_zone
+  domain      = "*.${var.aws_hosted_zone}"
   types       = ["AMAZON_ISSUED"]
   most_recent = true
 }
