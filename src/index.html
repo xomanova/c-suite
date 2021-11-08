@@ -4,4 +4,31 @@
     <script src="js/aws-cognito-sdk.min.js"></script>
     <script src="js/amazon-cognito-identity.min.js"></script>
 </head>
+
+var idToken = null;
+
+function checkLogin() {
+    var url_string = window.location.href;
+    var url = new URL(url_string);
+    idToken = url.searchParams.get("id_token");
+    if (idToken != null) {
+        document.getElementById("welcomeMsg").innerHTML = "signed in";
+        auth();
+    }
+}
+
+function auth() {
+    AWS.config.update({
+      region: "us-east-1",
+    });
+
+    AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+            IdentityPoolId : '(IDENTITY POOL ID)',
+            Logins : {
+              "cognito-idp.(AWS_REGION).amazonaws.com/(POOL_ID)": idToken
+            }
+          });
+}
+
+
 </html>

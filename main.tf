@@ -21,11 +21,11 @@ provider "aws" {
 }
 
 data "aws_route53_zone" "zone" {
-  name = "megrehn.com"
+  name = var.aws_hosted_zone
 }
 
 data "aws_acm_certificate" "acm_cert" {
-  domain      = "*.megrehn.com"
+  domain      = var.aws_hosted_zone
   types       = ["AMAZON_ISSUED"]
   most_recent = true
 }
@@ -47,5 +47,10 @@ variable "google_app_id" {
 
 variable "google_app_secret" {
   description = "Secret key for Google API calls from AWS Cognito"
+  type        = string
+}
+
+variable "aws_hosted_zone" {
+  description = "The Route53 hosted zone to use for data and ACM references"
   type        = string
 }
