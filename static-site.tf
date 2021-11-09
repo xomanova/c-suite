@@ -15,7 +15,7 @@ locals {
 
 
 resource "aws_s3_bucket_object" "html_objects" {
-  for_each     = fileset("src/", "*.html")
+  for_each     = fileset("src/", "**.html")
   bucket       = aws_s3_bucket.www_bucket.id
   key          = each.value
   content_type = "text/html"
