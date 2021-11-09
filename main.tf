@@ -2,7 +2,7 @@ terraform {
   backend "remote" {
     organization = "xomanova"
     workspaces {
-      name = var.project
+      name = "${workspace}"
     }
   }
 
