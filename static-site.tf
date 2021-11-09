@@ -11,11 +11,15 @@ locals {
     for file in local.src_files_raw :
     file if !(element(split(".", file), length(split(".", file)) - 1) == "html")
   ])
+  html_files = toset([
+    for file in local.src_files_raw :
+    file if (element(split(".", file), length(split(".", file)) - 1) == "html")
+  ])
 }
 
 
 resource "aws_s3_bucket_object" "html_objects" {
-  for_each     = fileset("src/", "**.html")
+  for_each     = local.html_files
   bucket       = aws_s3_bucket.www_bucket.id
   key          = each.value
   content_type = "text/html"
