@@ -4,6 +4,16 @@ resource "aws_s3_bucket" "www_bucket" {
   acl    = "private"
 }
 
+locals {
+  s3_origin_id = "S3Origin"
+  src_files_raw = fileset("src/", "**")
+  no_html_files = toset([
+    for file in local.src_files_raw:
+      file if !(split(".", file)[-1] == "html")
+  ])
+}
+
+
 resource "aws_s3_bucket_object" "html_objects" {
   for_each     = fileset("src/", "*.html")
   bucket       = aws_s3_bucket.www_bucket.id
@@ -15,7 +25,7 @@ resource "aws_s3_bucket_object" "html_objects" {
 }
 
 resource "aws_s3_bucket_object" "js_objects" {
-  for_each = fileset("src/", "js/**")
+  for_each = local.no_html_files
   bucket   = aws_s3_bucket.www_bucket.id
   key      = each.value
   acl      = "public-read"
@@ -23,9 +33,7 @@ resource "aws_s3_bucket_object" "js_objects" {
   etag     = filemd5("src/${each.value}")
 }
 
-locals {
-  s3_origin_id = "S3Origin"
-}
+
 
 resource "aws_cloudfront_distribution" "s3_distribution" {
   origin {
