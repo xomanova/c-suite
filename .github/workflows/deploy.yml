@@ -10,11 +10,10 @@ on:
   push:
     branches:
     - main
-  pull_request:
 
 jobs:
   terraform:
-    name: 'Terraform'
+    name: 'Main'
     runs-on: ubuntu-latest
     environment: production
 
@@ -72,4 +71,4 @@ jobs:
         DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
       uses: Ilshidur/action-discord@master
       with:
-        args: "🚀 The project {{ EVENT_PAYLOAD.repository.full_name }} has been deployed.\n ✔️ ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+        args: "🚀 The project {{ EVENT_PAYLOAD.repository.full_name }} has been deployed off ${{ github.branch }}.\n ✔️ ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
