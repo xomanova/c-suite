@@ -1,0 +1,73 @@
+input {
+  margin: 20px 0;
+  text-transform: uppercase;
+  font-size: 4em;
+}
+
+.join-error {
+  margin: 20px 0;
+  color: #e74c3c;
+}
+
+#suggestions {
+  display: none;
+}
+
+.games {
+  display: flex;
+  flex-direction: column;
+  margin: 0 0 20px 0;
+}
+.games .game {
+  display: flex;
+  overflow: hidden;
+  margin: 10px;
+  color: white;
+  background-color: #333;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+  text-align: left;
+  transition: background-color 300ms;
+}
+.games .game:hover, .games .game:focus, .games .game:active {
+  text-decoration: none;
+  background-color: #444;
+}
+.games .game .details {
+  padding: 10px;
+  flex-basis: 0;
+  flex-shrink: 0;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+.games .game h2 {
+  font-weight: bold;
+  font-size: 1.2em;
+  margin: 3px;
+}
+.games .game p {
+  font-size: 0.8em;
+  line-height: 1em;
+  margin: 5px 3px;
+}
+.games .game .details {
+  flex-direction: row;
+}
+.games .game .info {
+  flex-grow: 1;
+}
+.games .game .code {
+  font-size: 3em;
+  margin: 0 10px;
+  display: flex;
+  align-items: center;
+}
+
+.join-discord img {
+  width: 300px;
+  height: auto;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+  border-radius: 20px;
+}
+
+/*# sourceMappingURL=join.css.map */

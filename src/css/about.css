@@ -1,0 +1,31 @@
+body {
+  max-width: 980px;
+}
+
+#content {
+  text-align: left;
+}
+
+h5 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-top: 30px;
+}
+
+h6 {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.heading-anchor {
+  display: block;
+  position: relative;
+  top: -148px;
+}
+.heading-anchor:target + h5,
+.heading-anchor:target + a,
+.heading-anchor:target + p {
+  background-color: #05614a;
+}
+
+/*# sourceMappingURL=about.css.map */

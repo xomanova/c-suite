@@ -1,0 +1,36 @@
+@media (hover: hover) {
+  .screenshots {
+    scrollbar-width: thin;
+    scrollbar-width: 9px;
+  }
+  .screenshots::-webkit-scrollbar {
+    width: 9px;
+    height: 9px;
+    padding: 1px;
+  }
+  .screenshots::-webkit-scrollbar-thumb {
+    background-color: #444;
+    border: 3px solid transparent;
+    border-radius: 9px;
+    background-clip: content-box;
+  }
+}
+
+.screenshots {
+  display: flex;
+  overflow-x: auto;
+  width: 480px;
+  margin: -10px;
+  padding-left: 10px;
+  user-select: none;
+}
+.screenshots a {
+  margin-right: 10px;
+}
+
+.pswp__caption__center {
+  font-size: unset;
+  line-height: unset;
+}
+
+/*# sourceMappingURL=home.css.map */

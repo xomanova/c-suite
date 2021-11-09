@@ -1,0 +1,75 @@
+.intro,
+.coffee {
+  margin: 40px 0;
+}
+
+.games {
+  display: flex;
+  flex-direction: column;
+}
+.games .game {
+  display: flex;
+  overflow: hidden;
+  margin: 10px;
+  color: white;
+  background-color: #333;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+  text-align: left;
+  transition: background-color 300ms;
+}
+.games .game:hover, .games .game:focus, .games .game:active {
+  text-decoration: none;
+  background-color: #444;
+}
+.games .game .details {
+  padding: 10px;
+  flex-basis: 0;
+  flex-shrink: 0;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+.games .game h2 {
+  font-weight: bold;
+  font-size: 1.2em;
+  margin: 3px;
+}
+.games .game p {
+  font-size: 0.8em;
+  line-height: 1em;
+  margin: 5px 3px;
+}
+
+.bmc-button {
+  background-color: #375a7f;
+  border-radius: 5px;
+  border: 1px solid transparent;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+  box-sizing: border-box;
+  color: #ffffff;
+  display: inline-flex;
+  font-family: "Cookie", cursive;
+  font-size: 28px;
+  height: 51px;
+  letter-spacing: 0.6px;
+  line-height: 35px;
+  margin: 0 auto;
+  min-width: 217px;
+  padding: 7px 10px 7px 10px;
+  text-decoration: none;
+  transition: 0.3s all linear;
+}
+.bmc-button img {
+  height: 34px;
+  width: 35px;
+  margin-bottom: 1px;
+  box-shadow: none;
+  border: none;
+  vertical-align: middle;
+}
+.bmc-button:hover, .bmc-button:active, .bmc-button:focus {
+  text-decoration: none;
+  opacity: 0.85;
+}
+
+/*# sourceMappingURL=index.css.map */
