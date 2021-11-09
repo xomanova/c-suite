@@ -9,7 +9,7 @@ locals {
   src_files_raw = fileset("src/", "**")
   no_html_files = toset([
     for file in local.src_files_raw :
-    file if !(split(".", file)[-1] == "html")
+    file if !(element(split(".", file), length(element(split(".", file))) - 1) == "html")
   ])
 }
 
