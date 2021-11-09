@@ -44,7 +44,7 @@ jobs:
 
     # Select workspace for this branch
     - name: Branch Workspace
-      run: terraform workspace select {{ github.branch }} || terraform workspace new {{ github.branch }}
+      run: terraform workspace select ${{ github.branch }} || terraform workspace new ${{ github.branch }}
 
     # Generates an execution plan for Terraform
     - name: Terraform Plan
