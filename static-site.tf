@@ -5,11 +5,11 @@ resource "aws_s3_bucket" "www_bucket" {
 }
 
 locals {
-  s3_origin_id = "S3Origin"
+  s3_origin_id  = "S3Origin"
   src_files_raw = fileset("src/", "**")
   no_html_files = toset([
-    for file in local.src_files_raw:
-      file if !(split(".", file)[-1] == "html")
+    for file in local.src_files_raw :
+    file if !(split(".", file)[-1] == "html")
   ])
 }
 
