@@ -13,7 +13,7 @@ locals {
   ])
   html_files = toset([
     for file in local.src_files_raw :
-    file if (element(split(".", file), length(split(".", file)) - 1) == "html")
+    file if(element(split(".", file), length(split(".", file)) - 1) == "html")
   ])
 }
 
