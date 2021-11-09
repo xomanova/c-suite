@@ -14,7 +14,7 @@ on:
 
 jobs:
   terraform:
-    name: 'Terraform'
+    name: 'Branch'
     runs-on: ubuntu-latest
     environment: production
 
