@@ -76,4 +76,4 @@ jobs:
         DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
       uses: Ilshidur/action-discord@master
       with:
-        args: "🚀 The project {{ EVENT_PAYLOAD.repository.full_name }} has been deployed off ${{ github_branch }}.\n ✔️ ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+        args: "🚀 The project {{ EVENT_PAYLOAD.repository.full_name }} has been deployed off ${{ github.branch }}.\n ✔️ ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
