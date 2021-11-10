@@ -28,6 +28,9 @@ resource "aws_cognito_user_pool_ui_customization" "webauth-client-customization"
   css          = ".label-customizable {font-weight: 400;}"
   image_file   = filebase64("${var.project}.png")
   user_pool_id = aws_cognito_user_pool.users.id
+  depends_on = [
+    aws_cognito_user_pool_domain.main
+  ]
 }
 
 resource "aws_cognito_identity_provider" "users-identity-provider" {
