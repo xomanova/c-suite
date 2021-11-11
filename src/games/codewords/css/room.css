@@ -1,0 +1,34 @@
+#content:not(.spy) .only-spy {
+  display: none;
+}
+#content.spy .not-spy {
+  display: none;
+}
+
+.good-colour {
+  color: #337ab7;
+}
+
+.bad-colour {
+  color: #e74c3c;
+}
+
+#content.spy .role-colour {
+  color: #e74c3c;
+}
+#content:not(.spy) .role-colour {
+  color: #337ab7;
+}
+
+#question ul {
+  padding: 0;
+  margin: 1em 0;
+  list-style-type: none;
+}
+#question li {
+  display: inline-block;
+  width: 50%;
+  padding: 0.25em 1em;
+}
+
+/*# sourceMappingURL=room.css.map */

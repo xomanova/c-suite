@@ -1,0 +1,378 @@
+@charset "UTF-8";
+@font-face {
+  font-family: "Glyphicons Regular";
+  src: url("../fonts/glyphicons-regular.woff2") format("woff2"), url("../fonts/glyphicons-regular.woff") format("woff");
+}
+.glyphicon, .info-menu-button, .utility-menu-button {
+  font-family: "Glyphicons Halflings";
+  position: initial;
+}
+
+.glyphicon-large {
+  font-family: "Glyphicons Regular";
+}
+
+.glyphicon-skull:before {
+  content: "";
+}
+
+.glyphicon-bank:before {
+  content: "";
+}
+
+.glyphicon-more-items:before {
+  content: "";
+}
+
+#utility-menu .sliding-panel .actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+#utility-menu .sliding-panel .actions > .input-wrapper, #utility-menu .sliding-panel .actions > input {
+  margin: 0 10px 10px 0;
+}
+
+@media (hover: hover) {
+  #utility-menu .sliding-panel .player-section, #info .content, #utility-menu .content {
+    scrollbar-width: thin;
+    scrollbar-width: 9px;
+  }
+  #utility-menu .sliding-panel .player-section::-webkit-scrollbar, #info .content::-webkit-scrollbar, #utility-menu .content::-webkit-scrollbar {
+    width: 9px;
+    height: 9px;
+    padding: 1px;
+  }
+  #utility-menu .sliding-panel .player-section::-webkit-scrollbar-thumb, #info .content::-webkit-scrollbar-thumb, #utility-menu .content::-webkit-scrollbar-thumb {
+    background-color: #444;
+    border: 3px solid transparent;
+    border-radius: 9px;
+    background-clip: content-box;
+  }
+}
+
+body {
+  user-select: none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -o-user-select: none;
+}
+
+#content:not(.host) .only-host {
+  display: none;
+}
+#content.host .not-host {
+  display: none;
+}
+
+#content:not(.spectator) .only-spectator {
+  display: none;
+}
+#content.spectator .not-spectator {
+  display: none;
+}
+
+#content:not(.has-spectators) .only-has-spectators {
+  display: none;
+}
+#content.has-spectators .not-has-spectators {
+  display: none;
+}
+
+.utility-menu-button::before, .utility-menu-button, .base .utility-menu-button::after, .utility-menu-button::after {
+  border-top-right-radius: 10px;
+}
+
+.info-menu-button::before, .info-menu-button, .base .info-menu-button::after, .info-menu-button::after {
+  border-top-left-radius: 10px;
+}
+
+.base .info-menu-button::after, .base .utility-menu-button::after, .info-menu-button::after, .utility-menu-button::after, .info-menu-button::before, .utility-menu-button::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+
+.info-menu-button, .utility-menu-button {
+  display: initial;
+  position: fixed;
+  bottom: 0;
+  width: 48px;
+  height: 32px;
+  line-height: 35.2px;
+  background-color: #222;
+  cursor: pointer;
+}
+.info-menu-button::before, .utility-menu-button::before {
+  top: initial;
+  width: 72px;
+  height: 72px;
+}
+.base .info-menu-button::before, .base .utility-menu-button::before {
+  bottom: 50%;
+  margin-bottom: -36px;
+}
+.info-menu-button::after, .utility-menu-button::after {
+  z-index: -1;
+  bottom: -26.6666666667px;
+  box-shadow: 0 0 26.6666666667px 13.3333333333px rgba(0, 0, 0, 0.5);
+}
+.base .info-menu-button, .base .utility-menu-button {
+  position: absolute;
+  top: -32px;
+}
+.base .info-menu-button::after, .base .utility-menu-button::after {
+  z-index: -1;
+  bottom: 13.3333333333px;
+  box-shadow: 0 -13.3333333333px 26.6666666667px -1px rgba(0, 0, 0, 0.75);
+}
+#disconnected .info-menu-button, #disconnected .utility-menu-button, #booted .info-menu-button, #booted .utility-menu-button {
+  display: none;
+}
+
+.utility-menu-button {
+  left: 0;
+  font-size: 24px;
+}
+.utility-menu-button::before {
+  right: initial;
+}
+.utility-menu-button::after {
+  left: -26.6666666667px;
+}
+.base .utility-menu-button::after {
+  left: -26.6666666667px;
+}
+
+.info-menu-button {
+  right: 0;
+  font-size: 19.2px;
+}
+.info-menu-button::before {
+  left: initial;
+}
+.info-menu-button::after {
+  right: -26.6666666667px;
+}
+.base .info-menu-button::after {
+  right: -26.6666666667px;
+}
+
+#info hr, #utility-menu hr {
+  width: 100%;
+  flex-shrink: 0;
+}
+#info .shade, #utility-menu .shade {
+  z-index: 1000;
+  transition: opacity 300ms;
+  pointer-events: none;
+  opacity: 0;
+}
+#info .sliding-panel, #utility-menu .sliding-panel {
+  display: flex;
+  flex-direction: column;
+  z-index: 10000;
+  position: fixed;
+  width: 489px;
+  max-width: 100vw;
+  bottom: -100%;
+  max-height: 90%;
+  overflow-y: auto;
+  transition: bottom 300ms;
+  box-shadow: 0 0 10px black;
+  background-color: #222;
+}
+#info .content, #utility-menu .content {
+  padding: 10px;
+  overflow-y: auto;
+}
+.open#info .shade, .open#utility-menu .shade {
+  pointer-events: inherit;
+  opacity: 1;
+}
+.open#info .sliding-panel, .open#utility-menu .sliding-panel {
+  bottom: 0;
+}
+#info .close-button, #utility-menu .close-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 48px;
+  height: 48px;
+  line-height: 48px;
+  cursor: pointer;
+  z-index: 100000;
+}
+
+#utility-menu:not(.huddle) .only-huddle {
+  display: none;
+}
+#utility-menu.huddle .not-huddle {
+  display: none;
+}
+#utility-menu:not(.can-leave) .only-can-leave {
+  display: none;
+}
+#utility-menu.can-leave .not-can-leave {
+  display: none;
+}
+#utility-menu:not(.can-spectate) .only-can-spectate {
+  display: none;
+}
+#utility-menu.can-spectate .not-can-spectate {
+  display: none;
+}
+#utility-menu:not(.can-boot) .only-can-boot {
+  display: none;
+}
+#utility-menu.can-boot .not-can-boot {
+  display: none;
+}
+#utility-menu:not(.booting) .only-booting {
+  display: none;
+}
+#utility-menu.booting .not-booting {
+  display: none;
+}
+#utility-menu .sliding-panel {
+  left: 0;
+}
+#utility-menu .sliding-panel form {
+  margin: 0;
+}
+#utility-menu .sliding-panel .room-id {
+  margin-bottom: 0;
+}
+#utility-menu .sliding-panel .actions {
+  margin: -10px;
+  padding: 10px 0 0 10px;
+}
+#utility-menu .sliding-panel .room-id,
+#utility-menu .sliding-panel .actions {
+  flex-shrink: 0;
+}
+#utility-menu .sliding-panel .content {
+  display: flex;
+  flex-direction: column;
+}
+#utility-menu .sliding-panel .player-section {
+  flex-shrink: 1;
+  min-height: 70px;
+  overflow-y: auto;
+  margin-bottom: 10px;
+}
+#utility-menu .sliding-panel .player-section .players,
+#utility-menu .sliding-panel .player-section .spectators {
+  padding-inline-end: 10px;
+}
+#utility-menu .sliding-panel .player-section li {
+  position: relative;
+}
+#utility-menu .sliding-panel .player-section li.current-player {
+  font-weight: bold;
+}
+#utility-menu .sliding-panel .player-section li::before {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  margin-top: -10px;
+  line-height: 20px;
+  height: 20px;
+  width: 20px;
+  font-weight: normal;
+  font-size: 20px;
+}
+#utility-menu .sliding-panel .change-name:not(.open) form {
+  display: none;
+}
+#utility-menu .sliding-panel .change-name.open > a {
+  display: none;
+}
+#utility-menu.booting li {
+  position: relative;
+}
+#utility-menu.booting li.boot-enabled {
+  cursor: pointer;
+}
+#utility-menu.booting li.boot-enabled::after {
+  position: absolute;
+  right: 28px;
+  top: 0;
+  bottom: 0;
+  width: 28px;
+  font-size: 28px;
+  line-height: 28px;
+  content: "✖";
+  color: white;
+}
+#utility-menu.booting li.boot-enabled.to-boot {
+  text-decoration: line-through;
+}
+#utility-menu.booting li.boot-enabled.to-boot::after {
+  color: #e74c3c;
+}
+
+#game-content {
+  min-height: 50vh;
+}
+
+#spectator-base:not(.can-join) .only-can-join {
+  display: none;
+}
+#spectator-base.can-join .not-can-join {
+  display: none;
+}
+
+#info .sliding-panel {
+  right: 0;
+}
+
+#hide-flat {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 100px 0;
+  z-index: 30000;
+  background-color: #222;
+  display: none;
+}
+
+#huddle .spectators,
+#utility-menu .spectators {
+  padding-inline-start: 40px;
+  margin-bottom: 10.5px;
+  list-style-type: disc;
+  text-align: left;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 15px 0;
+}
+
+.template {
+  display: none !important;
+}
+
+.ad-room-footer {
+  width: 1024px;
+  margin-left: -282px;
+  margin-top: 20px;
+}
+#content.hide-content-ads .ad-room-footer {
+  display: none;
+}
+
+/*# sourceMappingURL=room.css.map */
