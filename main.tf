@@ -20,6 +20,8 @@ provider "aws" {
   region     = "us-east-1"
 }
 
+data "aws_caller_identity" "caller" {}
+
 data "aws_route53_zone" "zone" {
   name = var.aws_hosted_zone
 }

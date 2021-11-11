@@ -1,6 +1,6 @@
 # S3 bucket for static content
 resource "aws_s3_bucket" "www_bucket" {
-  bucket = var.project
+  bucket = "${var.project}-site"
   acl    = "private"
 }
 
