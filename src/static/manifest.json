@@ -2,7 +2,7 @@
   "orientation": "portrait",
   "theme_color": "#4f2461",
   "background_color": "#222222",
-  "name": "netgames.io",
+  "name": "netgames.io remixed",
   "short_name": "netgames",
   "display": "standalone",
   "start_url": "/games/",
