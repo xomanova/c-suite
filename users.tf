@@ -61,7 +61,7 @@ resource "aws_cognito_identity_pool" "users-identity" {
 }
 
 resource "aws_cognito_user_pool_domain" "main" {
-  domain          = "login.megrehn.com"
+  domain          = "login.xomanova.io"
   certificate_arn = data.aws_acm_certificate.acm_cert.arn
   user_pool_id    = aws_cognito_user_pool.users.id
 }
