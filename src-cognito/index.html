@@ -47,7 +47,7 @@ function insertItem() {
     var docClient = new AWS.DynamoDB.DocumentClient();
 
     var params = {
-        TableName :"potential-guacamole-users",
+        TableName :"c-suite-users",
         Item:{
             "FirstName": "John", // Partition Key
             "LastName": "Smith", // Sort Key
@@ -71,7 +71,7 @@ function readItem() {
     var docClient = new AWS.DynamoDB.DocumentClient();
 
     var params = {
-        TableName: "potential-guacamole-users",
+        TableName: "c-suite-users",
         Key:{
             "FirstName": "John",// Partition Key
             "LastName": "Smith" // Sort/Range Key
@@ -91,7 +91,7 @@ function readItem() {
 <body onload="checkLogin()">
 <div id="welcomeMsg"></div> <br>
 
-<a href="https://login.megrehn.com/login?client_id=7aluf3oo5bq9bradlnrurppusq&response_type=token&scope=aws.cognito.signin.user.admin+email+openid+phone+profile&redirect_uri=https://potential-guacamole.megrehn.com">Login</a>
+<a href="https://login.megrehn.com/login?client_id=7aluf3oo5bq9bradlnrurppusq&response_type=token&scope=aws.cognito.signin.user.admin+email+openid+phone+profile&redirect_uri=https://c-suite.megrehn.com">Login</a>
 
 <br><br>
 

@@ -1,0 +1,287 @@
+ul,
+ol.policies {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  text-align: inherit;
+}
+
+#content.executed .base .btn {
+  display: none;
+}
+#content.executed .base .btn.only-executee {
+  display: inherit;
+}
+#content.fascist, #content.liberal {
+  color: inherit;
+}
+
+#content:not(.president) .only-president {
+  display: none;
+}
+#content.president .not-president {
+  display: none;
+}
+
+#content:not(.chancellor) .only-chancellor {
+  display: none;
+}
+#content.chancellor .not-chancellor {
+  display: none;
+}
+
+#content:not(.executee) .only-executee {
+  display: none;
+}
+#content.executee .not-executee {
+  display: none;
+}
+
+#content:not(.executed) .only-executed {
+  display: none;
+}
+#content.executed .not-executed {
+  display: none;
+}
+
+#content:not(.hitler) .only-hitler {
+  display: none;
+}
+#content.hitler .not-hitler {
+  display: none;
+}
+
+#content:not(.fascist) .only-fascist {
+  display: none;
+}
+#content.fascist .not-fascist {
+  display: none;
+}
+
+#content:not(.liberal) .only-liberal {
+  display: none;
+}
+#content.liberal .not-liberal {
+  display: none;
+}
+
+.liberal {
+  color: #337ab7;
+}
+
+.fascist {
+  color: #e74c3c;
+}
+
+.policies {
+  perspective: 400px;
+}
+.policies .policy {
+  animation-name: drop;
+  animation-duration: 0.5s;
+  animation-fill-mode: backwards;
+}
+.policies .policy:nth-child(2) {
+  animation-delay: 0.15s;
+}
+.policies .policy:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.policy {
+  display: inline-block;
+}
+.policy.fascist {
+  background-color: #f3a69e;
+  border-color: #e74c3c;
+}
+.policy.liberal {
+  background-color: #99bddb;
+  border-color: #337ab7;
+}
+.policy.w250 {
+  width: 250px;
+  height: 404.5px;
+  margin: 20px;
+  border: 20px solid;
+}
+.policy.w250 h1 {
+  font-size: 42px;
+  line-height: 42px;
+  margin: 10px 0;
+}
+#content[data-theme=sith] .policy.w250 h1 {
+  font-size: 30px;
+}
+.policy.w250 .glyphicon-large {
+  display: block;
+  font-size: 140px;
+  line-height: 140px;
+  margin: 20px 0;
+}
+.policy.w250 .text {
+  height: 100px;
+  margin: 20px;
+  background: repeating-linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) 10px, rgba(0, 0, 0, 0) 10px, rgba(0, 0, 0, 0) 20px);
+}
+.policy.w175 {
+  width: 175px;
+  height: 283.15px;
+  margin: 14px;
+  border: 14px solid;
+}
+.policy.w175 h1 {
+  font-size: 29.4px;
+  line-height: 29.4px;
+  margin: 7px 0;
+}
+#content[data-theme=sith] .policy.w175 h1 {
+  font-size: 21px;
+}
+.policy.w175 .glyphicon-large {
+  display: block;
+  font-size: 98px;
+  line-height: 98px;
+  margin: 14px 0;
+}
+.policy.w175 .text {
+  height: 70px;
+  margin: 14px;
+  background: repeating-linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) 7px, rgba(0, 0, 0, 0) 7px, rgba(0, 0, 0, 0) 14px);
+}
+.policy.w125 {
+  width: 125px;
+  height: 202.25px;
+  margin: 10px;
+  border: 10px solid;
+}
+.policy.w125 h1 {
+  font-size: 21px;
+  line-height: 21px;
+  margin: 5px 0;
+}
+#content[data-theme=sith] .policy.w125 h1 {
+  font-size: 15px;
+}
+.policy.w125 .glyphicon-large {
+  display: block;
+  font-size: 70px;
+  line-height: 70px;
+  margin: 10px 0;
+}
+.policy.w125 .text {
+  height: 50px;
+  margin: 10px;
+  background: repeating-linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) 5px, rgba(0, 0, 0, 0) 5px, rgba(0, 0, 0, 0) 10px);
+}
+
+#policy-board .fascist,
+#policy-board .liberal,
+#policy-board .deck,
+#policy-board .deck-num,
+#policy-board .refusals {
+  display: inline-block;
+  vertical-align: middle;
+}
+#policy-board span {
+  display: inline-block;
+  border-radius: 30px;
+  width: 30px;
+  height: 30px;
+  margin: 4px;
+  line-height: 30px;
+  font-size: 18px;
+  vertical-align: top;
+}
+#policy-board .fascist span {
+  color: #e74c3c;
+  background-color: #5d2f2a;
+}
+#policy-board .fascist span.active {
+  color: white;
+  background-color: #e74c3c;
+}
+#policy-board .fascist span.danger {
+  border: 1px solid #e74c3c;
+}
+#policy-board .liberal span {
+  background-color: #273c4f;
+}
+#policy-board .liberal span.active {
+  background-color: #337ab7;
+}
+#policy-board .deck {
+  position: relative;
+  font-size: 30px;
+  width: 30px;
+  line-height: 30px;
+}
+#policy-board .deck .deck-num {
+  position: absolute;
+  color: black;
+  font-size: 0.5em;
+  line-height: 25px;
+  top: 16.6666666667%;
+  right: 25%;
+  left: 0;
+  bottom: 0;
+  text-align: center;
+}
+#policy-board .deck {
+  margin: 4px;
+}
+#policy-board .refusals span {
+  background-color: #444;
+  width: 7.5px;
+  height: 7.5px;
+}
+#policy-board .refusals span.active {
+  background-color: #e74c3c;
+}
+
+#previous-vote li {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow-x: hidden;
+}
+
+#intro .vs .num {
+  font-size: 2em;
+  padding: 0 30px;
+}
+
+#identify .fascists li {
+  font-size: 1.2em;
+}
+
+#president .policy,
+#chancellor .policy {
+  transition: transform 300ms, opacity 300ms, filter 300ms;
+  opacity: 1;
+  transform: scale(1);
+}
+#president .policy.discard,
+#chancellor .policy.discard {
+  opacity: 0.3;
+  transform: scale(0.9);
+}
+#president .policy.enact,
+#chancellor .policy.enact {
+  transform: scale(1.1);
+}
+#president .policy:hover,
+#chancellor .policy:hover {
+  cursor: pointer;
+  filter: brightness(120%);
+}
+
+#fascist_victory .glyphicon-large,
+#liberal_victory .glyphicon-large {
+  font-size: 200px;
+}
+
+#execution_result .glyphicon-skull {
+  font-size: 150px;
+}
+
+/*# sourceMappingURL=room.css.map */

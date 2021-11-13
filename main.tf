@@ -60,5 +60,5 @@ variable "aws_hosted_zone" {
 variable "project" {
   description = "Project name"
   type        = string
-  default     = "potential-guacamole"
+  default     = "c-suite"
 }
