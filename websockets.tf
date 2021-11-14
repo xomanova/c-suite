@@ -40,7 +40,7 @@ data "aws_iam_policy_document" "AWSLambdaTrustPolicy" {
 }
 
 resource "aws_iam_role" "websockets_function_role" {
-  name               = "${var-project}-websockets-lambda"
+  name               = "${var.project}-websockets-lambda"
   assume_role_policy = data.aws_iam_policy_document.AWSLambdaTrustPolicy.json
 
   inline_policy {
