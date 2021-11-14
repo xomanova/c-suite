@@ -97,7 +97,7 @@ resource "aws_lambda_permission" "gw_onconnect_lambda_permissions" {
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.onconnect_lambda.function_name
   principal     = "apigateway.amazonaws.com"
-  source_arn    = "${aws_apigatewayv2_api.websocket_api_gw.arn}/*"
+  source_arn    = "${aws_apigatewayv2_api.websocket_api_gw.arn}/*/$connect"
 }
 
 # Websocket ondisconnect Lambda
@@ -127,7 +127,7 @@ resource "aws_lambda_permission" "gw_ondisconnect_lambda_permissions" {
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.ondisconnect_lambda.function_name
   principal     = "apigateway.amazonaws.com"
-  source_arn    = "${aws_apigatewayv2_api.websocket_api_gw.arn}/*"
+  source_arn    = "${aws_apigatewayv2_api.websocket_api_gw.arn}/*/$disconnect"
 }
 
 # Websocket sendmessage Lambda
@@ -157,5 +157,5 @@ resource "aws_lambda_permission" "gw_sendmessage_lambda_permissions" {
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.sendmessage_lambda.function_name
   principal     = "apigateway.amazonaws.com"
-  source_arn    = "${aws_apigatewayv2_api.websocket_api_gw.arn}/*"
+  source_arn    = "${aws_apigatewayv2_api.websocket_api_gw.arn}/*/$default"
 }

@@ -16,6 +16,11 @@ resource "aws_apigatewayv2_authorizer" "websocket_api_gw_auth" {
 resource "aws_apigatewayv2_stage" "live" {
   api_id = aws_apigatewayv2_api.websocket_api_gw.id
   name   = "live"
+
+  default_route_settings {
+    throttling_burst_limit = 5000
+    throttling_rate_limit  = 10000 
+  }
 }
 
 resource "aws_apigatewayv2_integration" "websocket_onconnect_lambda_integration" {
