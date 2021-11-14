@@ -36,6 +36,14 @@ resource "aws_lambda_function" "authorizer_lambda" {
   runtime          = "python3.8"
 }
 
+resource "aws_lambda_permission" "gw_authorizer_lambda_permissions" {
+  statement_id  = "AllowExecutionFromGW"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.authorizer_lambda.function_name
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = aws_apigatewayv2_api.websocket_api_gw.arn
+}
+
 # Create IAM role to read and write to dynamodb to be assumed by Lambda
 resource "aws_iam_role" "websockets_function_role" {
   name               = "${var.project}-websockets-lambda"
@@ -84,6 +92,14 @@ resource "aws_lambda_function" "onconnect_lambda" {
   }
 }
 
+resource "aws_lambda_permission" "gw_onconnect_lambda_permissions" {
+  statement_id  = "AllowExecutionFromGWonconnect"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.onconnect_lambda.function_name
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = aws_apigatewayv2_api.websocket_api_gw.arn
+}
+
 # Websocket ondisconnect Lambda
 data "archive_file" "ondisconnect_lambda_zip" {
   type        = "zip"
@@ -106,6 +122,14 @@ resource "aws_lambda_function" "ondisconnect_lambda" {
   }
 }
 
+resource "aws_lambda_permission" "gw_ondisconnect_lambda_permissions" {
+  statement_id  = "AllowExecutionFromGWondisconnect"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.ondisconnect_lambda.function_name
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = aws_apigatewayv2_api.websocket_api_gw.arn
+}
+
 # Websocket sendmessage Lambda
 data "archive_file" "sendmessage_lambda_zip" {
   type        = "zip"
@@ -126,4 +150,12 @@ resource "aws_lambda_function" "sendmessage_lambda" {
       TABLE_NAME = aws_dynamodb_table.websockets_ddb.name
     }
   }
+}
+
+resource "aws_lambda_permission" "gw_sendmessage_lambda_permissions" {
+  statement_id  = "AllowExecutionFromGWsendmessage"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.sendmessage_lambda.function_name
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = aws_apigatewayv2_api.websocket_api_gw.arn
 }
