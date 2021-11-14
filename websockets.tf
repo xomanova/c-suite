@@ -30,8 +30,8 @@ resource "aws_dynamodb_table" "websockets_ddb" {
 # Create IAM role to read and write to that dynamodb to be assumed by Lambda
 data "aws_iam_policy_document" "AWSLambdaTrustPolicy" {
   statement {
-    actions    = ["sts:AssumeRole"]
-    effect     = "Allow"
+    actions = ["sts:AssumeRole"]
+    effect  = "Allow"
     principals {
       type        = "Service"
       identifiers = ["lambda.amazonaws.com"]
@@ -41,8 +41,8 @@ data "aws_iam_policy_document" "AWSLambdaTrustPolicy" {
 
 resource "aws_iam_role" "websockets_function_role" {
   name               = "${var-project}-websockets-lambda"
-  assume_role_policy = "${data.aws_iam_policy_document.AWSLambdaTrustPolicy.json}"
-  
+  assume_role_policy = data.aws_iam_policy_document.AWSLambdaTrustPolicy.json
+
   inline_policy {
     name = "websockets-dynamodb-readwrite"
 
@@ -60,57 +60,57 @@ resource "aws_iam_role" "websockets_function_role" {
 }
 
 resource "aws_iam_role_policy_attachment" "terraform_lambda_policy" {
-  role       = "${aws_iam_role.websockets_function_role.name}"
+  role       = aws_iam_role.websockets_function_role.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
 
 # Websocket onconnect Lambda
 data "archive_file" "onconnect_lambda_zip" {
-    type        = "zip"
-    source_dir  = "src-websockets/onconnect"
-    output_path = "onconnect.zip"
+  type        = "zip"
+  source_dir  = "src-websockets/onconnect"
+  output_path = "onconnect.zip"
 }
 
 resource "aws_lambda_function" "onconnect_lambda" {
-  filename = "onconnect.zip"
-  source_code_hash = "${data.archive_file.onconnect_lambda_zip.output_base64sha256}"
-  function_name = "${var.project}-onconnect-lambda"
-  role = "${aws_iam_role.websockets_function_role.arn}"
-  description = "Handle websocket onconnect traffic"
-  handler = "index.handler"
-  runtime = "nodejs4.3"
+  filename         = "onconnect.zip"
+  source_code_hash = data.archive_file.onconnect_lambda_zip.output_base64sha256
+  function_name    = "${var.project}-onconnect-lambda"
+  role             = aws_iam_role.websockets_function_role.arn
+  description      = "Handle websocket onconnect traffic"
+  handler          = "index.handler"
+  runtime          = "nodejs4.3"
 }
 
 # Websocket ondisconnect Lambda
 data "archive_file" "ondisconnect_lambda_zip" {
-    type        = "zip"
-    source_dir  = "src-websockets/ondisconnect"
-    output_path = "ondisconnect.zip"
+  type        = "zip"
+  source_dir  = "src-websockets/ondisconnect"
+  output_path = "ondisconnect.zip"
 }
 
 resource "aws_lambda_function" "ondisconnect_lambda" {
-  filename = "ondisconnect.zip"
-  source_code_hash = "${data.archive_file.ondisconnect_lambda_zip.output_base64sha256}"
-  function_name = "${var.project}-ondisconnect-lambda"
-  role = "${aws_iam_role.websockets_function_role.arn}"
-  description = "Handle websocket ondisconnect traffic"
-  handler = "index.handler"
-  runtime = "nodejs4.3"
+  filename         = "ondisconnect.zip"
+  source_code_hash = data.archive_file.ondisconnect_lambda_zip.output_base64sha256
+  function_name    = "${var.project}-ondisconnect-lambda"
+  role             = aws_iam_role.websockets_function_role.arn
+  description      = "Handle websocket ondisconnect traffic"
+  handler          = "index.handler"
+  runtime          = "nodejs4.3"
 }
 
 # Websocket sendmessage Lambda
 data "archive_file" "sendmessage_lambda_zip" {
-    type        = "zip"
-    source_dir  = "src-websockets/sendmessage"
-    output_path = "sendmessage.zip"
+  type        = "zip"
+  source_dir  = "src-websockets/sendmessage"
+  output_path = "sendmessage.zip"
 }
 
 resource "aws_lambda_function" "sendmessage_lambda" {
-  filename = "sendmessage.zip"
-  source_code_hash = "${data.archive_file.sendmessage_lambda_zip.output_base64sha256}"
-  function_name = "${var.project}-sendmessage-lambda"
-  role = "${aws_iam_role.websockets_function_role.arn}"
-  description = "Handle websocket sendmessage traffic"
-  handler = "index.handler"
-  runtime = "nodejs4.3"
+  filename         = "sendmessage.zip"
+  source_code_hash = data.archive_file.sendmessage_lambda_zip.output_base64sha256
+  function_name    = "${var.project}-sendmessage-lambda"
+  role             = aws_iam_role.websockets_function_role.arn
+  description      = "Handle websocket sendmessage traffic"
+  handler          = "index.handler"
+  runtime          = "nodejs4.3"
 }
