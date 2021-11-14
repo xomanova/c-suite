@@ -1,10 +1,57 @@
+# API Gateway resources
 resource "aws_apigatewayv2_api" "websocket_api_gw" {
   name                       = "${var.project}-websocket-gw"
   protocol_type              = "WEBSOCKET"
   route_selection_expression = "$request.body.action"
 }
 
-# Route53 CNAME record
+# Create IAM role for authorizor Lambda
+data "aws_iam_policy_document" "AWSLambdaTrustPolicy" {
+  statement {
+    actions = ["sts:AssumeRole"]
+    effect  = "Allow"
+    principals {
+      type        = "Service"
+      identifiers = ["lambda.amazonaws.com"]
+    }
+  }
+}
+
+resource "aws_iam_role" "websockets_api_authorizor_role" {
+  name               = "${var.project}-websockets-authorizor-lambda"
+  assume_role_policy = data.aws_iam_policy_document.AWSLambdaTrustPolicy.json
+}
+
+resource "aws_iam_role_policy_attachment" "authorizor_lambda_policy" {
+  role       = aws_iam_role.websockets_api_authorizor_role.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+}
+
+data "archive_file" "authorizor_lambda_zip" {
+  type        = "zip"
+  source_dir  = "src-websockets/authorizor"
+  output_path = "authorizor.zip"
+}
+
+resource "aws_lambda_function" "authorizor_lambda" {
+  filename         = "authorizor.zip"
+  source_code_hash = data.archive_file.authorizor_lambda_zip.output_base64sha256
+  function_name    = "${var.project}-authorizor-lambda"
+  role             = aws_iam_role.websockets_function_role.arn
+  description      = "Handle websocket authorizor requests"
+  handler          = "index.handler"
+  runtime          = "python3.8"
+}
+
+resource "aws_apigatewayv2_authorizer" "websocket_api_gw_auth" {
+  api_id           = aws_apigatewayv2_api.websocket_api_gw.id
+  authorizer_type  = "REQUEST"
+  authorizer_uri   = aws_lambda_function.authorizor_lambda.invoke_arn
+  identity_sources = ["route.request.header.Auth"]
+  name             = "${var.project}-websocket-gw-authorizer"
+}
+
+# Route53 CNAME record for websocket connections
 resource "aws_route53_record" "socket" {
   zone_id = data.aws_route53_zone.zone.zone_id
   name    = "websockets-${var.project}.${var.aws_hosted_zone}"
@@ -27,18 +74,7 @@ resource "aws_dynamodb_table" "websockets_ddb" {
   }
 }
 
-# Create IAM role to read and write to that dynamodb to be assumed by Lambda
-data "aws_iam_policy_document" "AWSLambdaTrustPolicy" {
-  statement {
-    actions = ["sts:AssumeRole"]
-    effect  = "Allow"
-    principals {
-      type        = "Service"
-      identifiers = ["lambda.amazonaws.com"]
-    }
-  }
-}
-
+# Create IAM role to read and write to dynamodb to be assumed by Lambda
 resource "aws_iam_role" "websockets_function_role" {
   name               = "${var.project}-websockets-lambda"
   assume_role_policy = data.aws_iam_policy_document.AWSLambdaTrustPolicy.json
