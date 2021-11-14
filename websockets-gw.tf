@@ -101,6 +101,12 @@ resource "aws_apigatewayv2_domain_name" "sockets_domain" {
   }
 }
 
+resource "aws_apigatewayv2_api_mapping" "sockets_domain_mapping" {
+  api_id      = aws_apigatewayv2_api.websocket_api_gw.id
+  domain_name = aws_apigatewayv2_domain_name.sockets_domain.id
+  stage       = aws_apigatewayv2_stage.live.id
+}
+
 resource "aws_route53_record" "sockets_r53_record" {
   name    = aws_apigatewayv2_domain_name.sockets_domain.domain_name
   type    = "A"
