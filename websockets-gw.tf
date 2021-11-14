@@ -17,10 +17,6 @@ resource "aws_apigatewayv2_authorizer" "websocket_api_gw_auth" {
 resource "aws_apigatewayv2_stage" "live" {
   api_id = aws_apigatewayv2_api.websocket_api_gw.id
   name   = "live"
-
-  depends_on = [
-    aws_apigatewayv2_api.websocket_api_gw
-  ]
 }
 
 resource "aws_apigatewayv2_integration" "websocket_onconnect_lambda_integration" {
