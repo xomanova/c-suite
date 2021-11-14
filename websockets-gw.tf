@@ -7,11 +7,10 @@ resource "aws_apigatewayv2_api" "websocket_api_gw" {
 }
 
 resource "aws_apigatewayv2_authorizer" "websocket_api_gw_auth" {
-  api_id           = aws_apigatewayv2_api.websocket_api_gw.id
-  authorizer_type  = "REQUEST"
-  authorizer_uri   = aws_lambda_function.authorizer_lambda.invoke_arn
-  identity_sources = ["route.request.header.Auth"]
-  name             = "${var.project}-websocket-gw-authorizer"
+  api_id          = aws_apigatewayv2_api.websocket_api_gw.id
+  authorizer_type = "REQUEST"
+  authorizer_uri  = aws_lambda_function.authorizer_lambda.invoke_arn
+  name            = "${var.project}-websocket-gw-authorizer"
 }
 
 resource "aws_apigatewayv2_stage" "live" {
@@ -92,14 +91,26 @@ resource "aws_apigatewayv2_route" "websocket_default_route" {
   target = "integrations/${aws_apigatewayv2_integration.websocket_sendmessage_lambda_integration.id}"
 }
 
+resource "aws_apigatewayv2_domain_name" "sockets_domain" {
+  domain_name = "websockets-${var.project}.${var.aws_hosted_zone}"
 
-# Route53 CNAME record for websocket connections
-resource "aws_route53_record" "socket" {
+  domain_name_configuration {
+    certificate_arn = aws_acm_certificate.example.arn
+    endpoint_type   = "REGIONAL"
+    security_policy = "TLS_1_2"
+  }
+}
+
+resource "aws_route53_record" "sockets_r53_record" {
+  name    = aws_apigatewayv2_domain_name.sockets_domain.domain_name
+  type    = "A"
   zone_id = data.aws_route53_zone.zone.zone_id
-  name    = "websockets-${var.project}.${var.aws_hosted_zone}"
-  type    = "CNAME"
-  ttl     = "300"
-  records = [element(split("//", aws_apigatewayv2_api.websocket_api_gw.api_endpoint), 1)]
+
+  alias {
+    name                   = aws_apigatewayv2_domain_name.sockets_domain.domain_name_configuration[0].target_domain_name
+    zone_id                = aws_apigatewayv2_domain_name.sockets_domain.domain_name_configuration[0].hosted_zone_id
+    evaluate_target_health = false
+  }
 }
 
 # Create websockets dynamodb
