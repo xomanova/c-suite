@@ -78,7 +78,12 @@ resource "aws_lambda_function" "onconnect_lambda" {
   role             = aws_iam_role.websockets_function_role.arn
   description      = "Handle websocket onconnect traffic"
   handler          = "index.handler"
-  runtime          = "nodejs4.3"
+  runtime          = "nodejs14.x"
+  environment {
+    variables = {
+      TABLE_NAME = aws_dynamodb_table.websockets_ddb.name
+    }
+  }
 }
 
 # Websocket ondisconnect Lambda
@@ -95,7 +100,12 @@ resource "aws_lambda_function" "ondisconnect_lambda" {
   role             = aws_iam_role.websockets_function_role.arn
   description      = "Handle websocket ondisconnect traffic"
   handler          = "index.handler"
-  runtime          = "nodejs4.3"
+  runtime          = "nodejs14.x"
+  environment {
+    variables = {
+      TABLE_NAME = aws_dynamodb_table.websockets_ddb.name
+    }
+  }
 }
 
 # Websocket sendmessage Lambda
@@ -112,5 +122,10 @@ resource "aws_lambda_function" "sendmessage_lambda" {
   role             = aws_iam_role.websockets_function_role.arn
   description      = "Handle websocket sendmessage traffic"
   handler          = "index.handler"
-  runtime          = "nodejs4.3"
+  runtime          = "nodejs14.x"
+  environment {
+    variables = {
+      TABLE_NAME = aws_dynamodb_table.websockets_ddb.name
+    }
+  }
 }
