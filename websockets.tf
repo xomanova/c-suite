@@ -5,7 +5,7 @@ resource "aws_apigatewayv2_api" "websocket_api_gw" {
   route_selection_expression = "$request.body.action"
 }
 
-# Create IAM role for authorizor Lambda
+# Create IAM role for authorizer Lambda
 data "aws_iam_policy_document" "AWSLambdaTrustPolicy" {
   statement {
     actions = ["sts:AssumeRole"]
@@ -17,28 +17,28 @@ data "aws_iam_policy_document" "AWSLambdaTrustPolicy" {
   }
 }
 
-resource "aws_iam_role" "websockets_api_authorizor_role" {
-  name               = "${var.project}-websockets-authorizor-lambda"
+resource "aws_iam_role" "websockets_api_authorizer_role" {
+  name               = "${var.project}-websockets-authorizer-lambda"
   assume_role_policy = data.aws_iam_policy_document.AWSLambdaTrustPolicy.json
 }
 
-resource "aws_iam_role_policy_attachment" "authorizor_lambda_policy" {
-  role       = aws_iam_role.websockets_api_authorizor_role.name
+resource "aws_iam_role_policy_attachment" "authorizer_lambda_policy" {
+  role       = aws_iam_role.websockets_api_authorizer_role.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
 
-data "archive_file" "authorizor_lambda_zip" {
+data "archive_file" "authorizer_lambda_zip" {
   type        = "zip"
-  source_dir  = "src-websockets/authorizor"
-  output_path = "authorizor.zip"
+  source_dir  = "src-websockets/authorizer"
+  output_path = "authorizer.zip"
 }
 
-resource "aws_lambda_function" "authorizor_lambda" {
-  filename         = "authorizor.zip"
-  source_code_hash = data.archive_file.authorizor_lambda_zip.output_base64sha256
-  function_name    = "${var.project}-authorizor-lambda"
+resource "aws_lambda_function" "authorizer_lambda" {
+  filename         = "authorizer.zip"
+  source_code_hash = data.archive_file.authorizer_lambda_zip.output_base64sha256
+  function_name    = "${var.project}-authorizer-lambda"
   role             = aws_iam_role.websockets_function_role.arn
-  description      = "Handle websocket authorizor requests"
+  description      = "Handle websocket authorizer requests"
   handler          = "index.handler"
   runtime          = "python3.8"
 }
@@ -46,7 +46,7 @@ resource "aws_lambda_function" "authorizor_lambda" {
 resource "aws_apigatewayv2_authorizer" "websocket_api_gw_auth" {
   api_id           = aws_apigatewayv2_api.websocket_api_gw.id
   authorizer_type  = "REQUEST"
-  authorizer_uri   = aws_lambda_function.authorizor_lambda.invoke_arn
+  authorizer_uri   = aws_lambda_function.authorizer_lambda.invoke_arn
   identity_sources = ["route.request.header.Auth"]
   name             = "${var.project}-websocket-gw-authorizer"
 }
