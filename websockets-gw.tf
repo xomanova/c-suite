@@ -33,7 +33,6 @@ resource "aws_apigatewayv2_deployment" "deploy_gw" {
 }
 
 
-
 resource "aws_apigatewayv2_integration" "websocket_onconnect_lambda_integration" {
   api_id           = aws_apigatewayv2_api.websocket_api_gw.id
   integration_type = "AWS_PROXY"
