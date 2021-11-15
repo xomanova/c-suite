@@ -26,17 +26,7 @@ resource "aws_apigatewayv2_stage" "live" {
 resource "aws_apigatewayv2_deployment" "deploy_gw" {
   api_id      = aws_apigatewayv2_api.websocket_api_gw.id
   description = "Deployment of AWS websocket gateway to stage"
-
-  triggers = {
-    redeployment = sha1(join(",", tolist(
-      jsonencode(aws_apigatewayv2_integration.websocket_onconnect_lambda_integration),
-      jsonencode(aws_apigatewayv2_route.websocket_onconnect_route),
-      jsonencode(aws_apigatewayv2_integration.websocket_ondisconnect_lambda_integration),
-      jsonencode(aws_apigatewayv2_route.websocket_ondisconnect_route),
-      jsonencode(aws_apigatewayv2_integration.websocket_sendmessage_lambda_integration),
-      jsonencode(aws_apigatewayv2_route.websocket_default_route),
-    )))
-  }
+  stage_description = "${md5(file("websockets-gw.tf"))}"
 
   lifecycle {
     create_before_destroy = true
