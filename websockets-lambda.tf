@@ -40,8 +40,9 @@ resource "aws_lambda_permission" "gw_authorizer_lambda_permissions" {
   statement_id  = "AllowExecutionFromGW"
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.authorizer_lambda.function_name
-  principal     = "apigateway.amazonaws.com"
-  source_arn    = aws_iam_role.websockets_gw_role.arn
+  principal     = aws_iam_role.websockets_gw_role.arn
+  #principal     = "apigateway.amazonaws.com"
+  #source_arn    = aws_iam_role.websockets_gw_role.arn
   #source_arn    = "arn:aws:execute-api::${data.aws_caller_identity.caller.account_id}:*/authorizers/*"
 }
 
