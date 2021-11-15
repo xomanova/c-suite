@@ -46,7 +46,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   }
 
   origin {
-    domain_name = replace(aws_apigatewayv2_stage.live.invoke_url, "/^https?://([^/]*).*/", "$1")
+    domain_name = "${aws_apigatewayv2_api.websocket_api_gw.id}.execute-api.${data.aws_region.current_region.name}.amazonaws.com"
     origin_id   = "apigw"
   }
 
