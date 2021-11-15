@@ -45,6 +45,10 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     origin_id   = local.s3_origin_id
   }
 
+  origin {
+    domain_name = replace(aws_apigatewayv2_deployment.deploy_gw.invoke_url, "/^https?://([^/]*).*/", "$1")
+    origin_id   = "apigw"
+  }
   enabled             = true
   price_class         = "PriceClass_200"
   is_ipv6_enabled     = true
