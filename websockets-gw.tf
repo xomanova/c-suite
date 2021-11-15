@@ -4,13 +4,52 @@ resource "aws_apigatewayv2_api" "websocket_api_gw" {
   protocol_type                = "WEBSOCKET"
   route_selection_expression   = "$request.body.action"
   api_key_selection_expression = "$context.authorizer.usageIdentifierKey"
+  credentials_arn              = aws_iam_role.websockets_gw_role.arn
 }
 
 resource "aws_apigatewayv2_authorizer" "websocket_api_gw_auth" {
-  api_id          = aws_apigatewayv2_api.websocket_api_gw.id
-  authorizer_type = "REQUEST"
-  authorizer_uri  = aws_lambda_function.authorizer_lambda.invoke_arn
-  name            = "${var.project}-websocket-gw-authorizer"
+  api_id                     = aws_apigatewayv2_api.websocket_api_gw.id
+  authorizer_type            = "REQUEST"
+  authorizer_uri             = aws_lambda_function.authorizer_lambda.invoke_arn
+  authorizer_credentials_arn = aws_iam_role.websockets_gw_role.arn
+  name                       = "${var.project}-websocket-gw-authorizer"
+}
+
+# Create IAM role for websockets gateway
+data "aws_iam_policy_document" "AWSApiGatewayTrustPolicy" {
+  statement {
+    actions = ["sts:AssumeRole"]
+    effect  = "Allow"
+    principals {
+      type        = "Service"
+      identifiers = ["apigateway.amazonaws.com"]
+    }
+  }
+}
+
+resource "aws_iam_role" "websockets_gw_role" {
+  name               = "${var.project}-websockets-gw-role"
+  assume_role_policy = data.aws_iam_policy_document.AWSApiGatewayTrustPolicy.json
+
+  inline_policy {
+    name = "websockets-lambda-invoke"
+
+    policy = jsonencode({
+      Version = "2012-10-17"
+      Statement = [
+        {
+          Action = ["lambda:InvokeFunction"]
+          Effect = "Allow"
+          Resource = [
+            "${aws_lambda_function.authorizer_lambda.arn}",
+            "${aws_lambda_function.onconnect_lambda.arn}",
+            "${aws_lambda_function.ondisconnect_lambda.arn}",
+            "${aws_lambda_function.sendmessage_lambda.arn}"
+          ]
+        },
+      ]
+    })
+  }
 }
 
 resource "aws_apigatewayv2_stage" "live" {
