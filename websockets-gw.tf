@@ -30,6 +30,13 @@ resource "aws_apigatewayv2_deployment" "deploy_gw" {
   lifecycle {
     create_before_destroy = true
   }
+  depends_on = [
+    aws_apigatewayv2_api.websocket_api_gw,
+    aws_apigatewayv2_stage.live,
+    aws_apigatewayv2_route.websocket_ondisconnect_route,
+    aws_apigatewayv2_route.websocket_ondisconnect_route,
+    aws_apigatewayv2_route.websocket_default_route
+  ]
 }
 
 
