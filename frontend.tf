@@ -50,10 +50,10 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     origin_id   = "apigw"
 
     custom_origin_config {
-      http_port                = 80
-      https_port               = 443
+      http_port              = 80
+      https_port             = 443
       origin_protocol_policy = "allow-all"
-      origin_ssl_protocols     = ["TLSV1.2"]
+      origin_ssl_protocols   = ["TLSV1.2"]
     }
   }
 
