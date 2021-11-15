@@ -43,7 +43,7 @@ resource "aws_lambda_permission" "gw_authorizer_lambda_permissions" {
   principal     = aws_iam_role.websockets_gw_role.arn
   #principal     = "apigateway.amazonaws.com"
   #source_arn    = aws_iam_role.websockets_gw_role.arn
-  #source_arn    = "arn:aws:execute-api::${data.aws_caller_identity.caller.account_id}:*/authorizers/*"
+  source_arn    = "arn:aws:execute-api::${data.aws_caller_identity.caller.account_id}:*/authorizers/*"
 }
 
 # Create IAM role to read and write to dynamodb to be assumed by Lambda
