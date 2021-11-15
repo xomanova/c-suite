@@ -48,6 +48,13 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   origin {
     domain_name = "${aws_apigatewayv2_api.websocket_api_gw.id}.execute-api.${data.aws_region.current_region.name}.amazonaws.com"
     origin_id   = "apigw"
+
+    custom_origin_config {
+      http_port                = 80
+      https_port               = 443
+      original_protocol_policy = "allow-all"
+      origin_ssl_protocols     = ["TLSV1.2"]
+    }
   }
 
   enabled             = true
