@@ -1,4 +1,3 @@
-# A resource that does nothing.
 resource "aws_cognito_user_pool" "users" {
   name                     = "${var.project}-users"
   username_attributes      = ["email"]
