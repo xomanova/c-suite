@@ -41,7 +41,7 @@ resource "aws_lambda_permission" "gw_authorizer_lambda_permissions" {
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.authorizer_lambda.function_name
   principal     = "apigateway.amazonaws.com"
-  source_arn    = "arn:aws:execute-api:*:${data.aws_caller_identity.caller.account_id}:*/authorizers/*"
+  source_arn    = "arn:aws:execute-api::${data.aws_caller_identity.caller.account_id}:*/authorizers/*"
 }
 
 # Create IAM role to read and write to dynamodb to be assumed by Lambda
@@ -97,7 +97,7 @@ resource "aws_lambda_permission" "gw_onconnect_lambda_permissions" {
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.onconnect_lambda.function_name
   principal     = "apigateway.amazonaws.com"
-  source_arn    = "arn:aws:execute-api:*:${data.aws_caller_identity.caller.account_id}:*/*/$connect"
+  source_arn    = "arn:aws:execute-api::${data.aws_caller_identity.caller.account_id}:*/*/$connect"
 }
 
 # Websocket ondisconnect Lambda
@@ -127,7 +127,7 @@ resource "aws_lambda_permission" "gw_ondisconnect_lambda_permissions" {
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.ondisconnect_lambda.function_name
   principal     = "apigateway.amazonaws.com"
-  source_arn    = "arn:aws:execute-api:*:${data.aws_caller_identity.caller.account_id}:*/*/$disconnect"
+  source_arn    = "arn:aws:execute-api::${data.aws_caller_identity.caller.account_id}:*/*/$disconnect"
 }
 
 # Websocket sendmessage Lambda
@@ -157,5 +157,5 @@ resource "aws_lambda_permission" "gw_sendmessage_lambda_permissions" {
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.sendmessage_lambda.function_name
   principal     = "apigateway.amazonaws.com"
-  source_arn    = "arn:aws:execute-api:*:${data.aws_caller_identity.caller.account_id}:*/*/$default"
+  source_arn    = "arn:aws:execute-api::${data.aws_caller_identity.caller.account_id}:*/*/$default"
 }
