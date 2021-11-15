@@ -22,6 +22,8 @@ provider "aws" {
 
 data "aws_caller_identity" "caller" {}
 
+data "aws_region" "current_region" {}
+
 data "aws_route53_zone" "zone" {
   name = var.aws_hosted_zone
 }
