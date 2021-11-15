@@ -65,6 +65,9 @@ resource "aws_apigatewayv2_stage" "live" {
 resource "aws_apigatewayv2_deployment" "deploy_gw" {
   api_id      = aws_apigatewayv2_api.websocket_api_gw.id
   description = md5(file("websockets-gw.tf"))
+  triggers    = {
+    redeployment = md5(file("websockets-gw.tf"))
+  }
 
   lifecycle {
     create_before_destroy = true
