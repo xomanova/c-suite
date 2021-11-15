@@ -28,7 +28,7 @@ resource "aws_apigatewayv2_deployment" "deploy_gw" {
   description = "Deployment of AWS websocket gateway to stage"
 
   triggers = {
-    redeployment = sha1(join(",", list(
+    redeployment = sha1(join(",", tolist(
       jsonencode(aws_apigatewayv2_integration.websocket_onconnect_lambda_integration),
       jsonencode(aws_apigatewayv2_route.websocket_onconnect_route),
       jsonencode(aws_apigatewayv2_integration.websocket_ondisconnect_lambda_integration),
