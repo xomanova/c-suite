@@ -148,7 +148,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
 
     lambda_function_association {
       event_type   = "viewer-request"
-      lambda_arn   = "${aws_lambda_function.websockets_edge_lambda.arn}:1"
+      lambda_arn   = "${aws_lambda_function.websockets_edge_lambda.qulified_arn}"
       include_body = false
     }
 
@@ -160,10 +160,6 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     minimum_protocol_version = "TLSv1"
     ssl_support_method       = "sni-only"
   }
-
-  depends_on = [
-    aws_lambda_permission.cf_edge_lambda
-  ]
 }
 
 # lambda@edge for websockets path
@@ -181,14 +177,7 @@ resource "aws_lambda_function" "websockets_edge_lambda" {
   description      = "Update websocket path traffic"
   handler          = "index.handler"
   runtime          = "nodejs14.x"
-}
-
-resource "aws_lambda_permission" "cf_edge_lambda" {
-  statement_id  = "GetLambda"
-  action        = "lambda:GetFunction"
-  function_name = aws_lambda_function.websockets_edge_lambda.function_name
-  principal     = "cloudfront.amazonaws.com"
-  source_arn    = aws_cloudfront_distribution.s3_distribution.arn
+  publish          = true
 }
 
 # Route53 CNAME record
