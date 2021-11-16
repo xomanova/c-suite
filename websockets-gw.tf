@@ -59,7 +59,10 @@ resource "aws_apigatewayv2_stage" "live" {
   default_route_settings {
     throttling_burst_limit = 5000
     throttling_rate_limit  = 10000
+    logging_level = "INFO"
+    data_trace_enabled = true
   }
+
 }
 
 resource "aws_apigatewayv2_deployment" "deploy_gw" {
