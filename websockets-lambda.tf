@@ -4,7 +4,7 @@ data "aws_iam_policy_document" "AWSLambdaTrustPolicy" {
     actions = ["sts:AssumeRole"]
     effect  = "Allow"
     principals {
-      type        = "Service"
+      type = "Service"
       identifiers = [
         "lambda.amazonaws.com",
         "edgelambda.amazonaws.com"
