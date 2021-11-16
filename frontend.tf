@@ -156,6 +156,22 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   }
 }
 
+# lambda@edge for websockets path
+data "archive_file" "websockets_path_lambda_zip" {
+  type        = "zip"
+  source_dir  = "src-websockets/cf-edge"
+  output_path = "cf-edge.zip"
+}
+
+resource "aws_lambda_function" "websockets_edge_lambda" {
+  filename         = "cf-edge.zip"
+  source_code_hash = data.archive_file.ondisconnect_lambda_zip.output_base64sha256
+  function_name    = "${var.project}-edge-lambda"
+  description      = "Update websocket path traffic"
+  handler          = "index.handler"
+  runtime          = "nodejs14.x"
+}
+
 # Route53 CNAME record
 resource "aws_route53_record" "www" {
   zone_id = data.aws_route53_zone.zone.zone_id
