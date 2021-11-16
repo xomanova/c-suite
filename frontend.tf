@@ -148,7 +148,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
 
     lambda_function_association {
       event_type   = "viewer-request"
-      lambda_arn   = "${aws_lambda_function.websockets_edge_lambda.qulified_arn}"
+      lambda_arn   = aws_lambda_function.websockets_edge_lambda.qualified_arn
       include_body = false
     }
 
