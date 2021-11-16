@@ -90,7 +90,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   }
 
   ordered_cache_behavior {
-    path_pattern     = "/socket.io/socket.io.js.map"
+    path_pattern     = "/socket/socket.io.js.map"
     allowed_methods  = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
     cached_methods   = ["GET", "HEAD"]
     target_origin_id = local.s3_origin_id
@@ -110,7 +110,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   }
 
   ordered_cache_behavior {
-    path_pattern     = "/socket.io/socket.io.js"
+    path_pattern     = "/socket/socket.io.js"
     allowed_methods  = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
     cached_methods   = ["GET", "HEAD"]
     target_origin_id = local.s3_origin_id
@@ -130,7 +130,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   }
 
   ordered_cache_behavior {
-    path_pattern     = "/socket.io/*"
+    path_pattern     = "/socket/*"
     allowed_methods  = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
     cached_methods   = ["GET", "HEAD"]
     target_origin_id = "apigw"
@@ -146,11 +146,11 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
       }
     }
 
-    lambda_function_association {
-      event_type   = "viewer-request"
-      lambda_arn   = aws_lambda_function.websockets_edge_lambda.qualified_arn
-      include_body = false
-    }
+    # lambda_function_association {
+    #   event_type   = "viewer-request"
+    #   lambda_arn   = aws_lambda_function.websockets_edge_lambda.qualified_arn
+    #   include_body = false
+    # }
 
     viewer_protocol_policy = "allow-all"
   }
@@ -163,22 +163,22 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
 }
 
 # lambda@edge for websockets path
-data "archive_file" "websockets_path_lambda_zip" {
-  type        = "zip"
-  source_dir  = "src-websockets/cf-edge"
-  output_path = "cf-edge.zip"
-}
+# data "archive_file" "websockets_path_lambda_zip" {
+#   type        = "zip"
+#   source_dir  = "src-websockets/cf-edge"
+#   output_path = "cf-edge.zip"
+# }
 
-resource "aws_lambda_function" "websockets_edge_lambda" {
-  filename         = "cf-edge.zip"
-  source_code_hash = data.archive_file.ondisconnect_lambda_zip.output_base64sha256
-  function_name    = "${var.project}-edge-lambda"
-  role             = aws_iam_role.websockets_function_role.arn
-  description      = "Update websocket path traffic"
-  handler          = "index.handler"
-  runtime          = "nodejs14.x"
-  publish          = true
-}
+# resource "aws_lambda_function" "websockets_edge_lambda" {
+#   filename         = "cf-edge.zip"
+#   source_code_hash = data.archive_file.ondisconnect_lambda_zip.output_base64sha256
+#   function_name    = "${var.project}-edge-lambda"
+#   role             = aws_iam_role.websockets_function_role.arn
+#   description      = "Update websocket path traffic"
+#   handler          = "index.handler"
+#   runtime          = "nodejs14.x"
+#   publish          = true
+# }
 
 # Route53 CNAME record
 resource "aws_route53_record" "www" {

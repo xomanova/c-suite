@@ -54,7 +54,7 @@ resource "aws_iam_role" "websockets_gw_role" {
 
 resource "aws_apigatewayv2_stage" "live" {
   api_id = aws_apigatewayv2_api.websocket_api_gw.id
-  name   = "live"
+  name   = "socket"
 
   default_route_settings {
     throttling_burst_limit = 5000
@@ -159,33 +159,33 @@ resource "aws_apigatewayv2_route" "websocket_default_route" {
   target = "integrations/${aws_apigatewayv2_integration.websocket_sendmessage_lambda_integration.id}"
 }
 
-resource "aws_apigatewayv2_domain_name" "sockets_domain" {
-  domain_name = "websockets-${var.project}.${var.aws_hosted_zone}"
+# resource "aws_apigatewayv2_domain_name" "sockets_domain" {
+#   domain_name = "websockets-${var.project}.${var.aws_hosted_zone}"
 
-  domain_name_configuration {
-    certificate_arn = data.aws_acm_certificate.acm_cert.arn
-    endpoint_type   = "REGIONAL"
-    security_policy = "TLS_1_2"
-  }
-}
+#   domain_name_configuration {
+#     certificate_arn = data.aws_acm_certificate.acm_cert.arn
+#     endpoint_type   = "REGIONAL"
+#     security_policy = "TLS_1_2"
+#   }
+# }
 
-resource "aws_apigatewayv2_api_mapping" "sockets_domain_mapping" {
-  api_id      = aws_apigatewayv2_api.websocket_api_gw.id
-  domain_name = aws_apigatewayv2_domain_name.sockets_domain.id
-  stage       = aws_apigatewayv2_stage.live.id
-}
+# resource "aws_apigatewayv2_api_mapping" "sockets_domain_mapping" {
+#   api_id      = aws_apigatewayv2_api.websocket_api_gw.id
+#   domain_name = aws_apigatewayv2_domain_name.sockets_domain.id
+#   stage       = aws_apigatewayv2_stage.live.id
+# }
 
-resource "aws_route53_record" "sockets_r53_record" {
-  name    = aws_apigatewayv2_domain_name.sockets_domain.domain_name
-  type    = "A"
-  zone_id = data.aws_route53_zone.zone.zone_id
+# resource "aws_route53_record" "sockets_r53_record" {
+#   name    = aws_apigatewayv2_domain_name.sockets_domain.domain_name
+#   type    = "A"
+#   zone_id = data.aws_route53_zone.zone.zone_id
 
-  alias {
-    name                   = aws_apigatewayv2_domain_name.sockets_domain.domain_name_configuration[0].target_domain_name
-    zone_id                = aws_apigatewayv2_domain_name.sockets_domain.domain_name_configuration[0].hosted_zone_id
-    evaluate_target_health = false
-  }
-}
+#   alias {
+#     name                   = aws_apigatewayv2_domain_name.sockets_domain.domain_name_configuration[0].target_domain_name
+#     zone_id                = aws_apigatewayv2_domain_name.sockets_domain.domain_name_configuration[0].hosted_zone_id
+#     evaluate_target_health = false
+#   }
+# }
 
 # Create websockets dynamodb
 resource "aws_dynamodb_table" "websockets_ddb" {
