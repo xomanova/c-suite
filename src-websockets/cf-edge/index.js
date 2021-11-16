@@ -4,7 +4,7 @@
 exports.handler = (event, context, callback) => {
     const request = event.Records[0].cf.request;
     let wssUri;
-    wssUri = ''
+    wssUri = '/'
 
     // clear request URI for websocket api gateway
     request.uri = wssUri;
