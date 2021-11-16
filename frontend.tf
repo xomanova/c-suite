@@ -160,6 +160,10 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     minimum_protocol_version = "TLSv1"
     ssl_support_method       = "sni-only"
   }
+
+  depends_on = [
+    aws_lambda_permission.cf_edge_lambda
+  ]
 }
 
 # lambda@edge for websockets path
