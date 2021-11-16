@@ -90,7 +90,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   }
 
   ordered_cache_behavior {
-    path_pattern     = "/socket.io/socket.io.js"
+    path_pattern     = "/socket.io/socket.io.js.map"
     allowed_methods  = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
     cached_methods   = ["GET", "HEAD"]
     target_origin_id = local.s3_origin_id
@@ -110,7 +110,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   }
 
   ordered_cache_behavior {
-    path_pattern     = "/socket.io/socket.io.js.map"
+    path_pattern     = "/socket.io/socket.io.js"
     allowed_methods  = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
     cached_methods   = ["GET", "HEAD"]
     target_origin_id = local.s3_origin_id
