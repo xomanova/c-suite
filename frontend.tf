@@ -179,6 +179,14 @@ resource "aws_lambda_function" "websockets_edge_lambda" {
   runtime          = "nodejs14.x"
 }
 
+resource "aws_lambda_permission" "cf_edge_lambda" {
+  statement_id  = "GetLambda"
+  action        = "lambda:GetFunction"
+  function_name = aws_lambda_function.websockets_edge_lambda.function_name
+  principal     = "cloudfront.amazonaws.com"
+  source_arn    = aws_cloudfront_distribution.s3_distribution.arn
+}
+
 # Route53 CNAME record
 resource "aws_route53_record" "www" {
   zone_id = data.aws_route53_zone.zone.zone_id
