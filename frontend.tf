@@ -167,6 +167,7 @@ resource "aws_lambda_function" "websockets_edge_lambda" {
   filename         = "cf-edge.zip"
   source_code_hash = data.archive_file.ondisconnect_lambda_zip.output_base64sha256
   function_name    = "${var.project}-edge-lambda"
+  role             = aws_iam_role.websockets_function_role.arn
   description      = "Update websocket path traffic"
   handler          = "index.handler"
   runtime          = "nodejs14.x"
