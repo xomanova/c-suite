@@ -1236,7 +1236,7 @@
       host = host.match(/(.*).translate.goog/)[1].replace(/-/g, '.');
     }
     socket = netgames.socket = io(window.location.protocol + '//' + window.netgames_host + '/' + game_id, {
-      path: '/socket.io',
+      path: '/socket',
       transports: ['websocket']
     });
     socket.on('connect', function() {
