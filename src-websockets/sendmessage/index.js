@@ -5,7 +5,7 @@ const AWS = require('aws-sdk');
 
 const ddb = new AWS.DynamoDB.DocumentClient({ apiVersion: '2012-08-10', region: process.env.AWS_REGION });
 
-const { TABLE_NAME } = process.env;
+const { TABLE_NAME } = process.env.TABLE_NAME;
 
 exports.handler = async event => {
   let connectionData;
