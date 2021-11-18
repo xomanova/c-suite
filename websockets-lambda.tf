@@ -66,6 +66,21 @@ resource "aws_iam_role" "websockets_function_role" {
       ]
     })
   }
+
+  inline_policy {
+    name = "execute-api"
+
+    policy = jsonencode({
+      Version = "2012-10-17"
+      Statement = [
+        {
+          Action   = ["execute-api::*"]
+          Effect   = "Allow"
+          Resource = "${aws_apigatewayv2_api.websocket_api_gw.arn}*"
+        },
+      ]
+    })
+  }
 }
 
 resource "aws_iam_role_policy_attachment" "terraform_lambda_policy" {
