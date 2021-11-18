@@ -36,7 +36,11 @@ exports.handler = async event => {
       }
     }
   });
-  
+
+  console.log(`Websocket connectionId is "${event.requestContext.connectionId}"`);
+  console.log(`Websocket GW event is "${JSON.stringify(event)}"`);
+  console.log(`Websocket postData is "${postData}"`);
+
   try {
     await Promise.all(postCalls);
   } catch (e) {
