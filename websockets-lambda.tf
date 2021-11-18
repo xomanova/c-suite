@@ -74,7 +74,7 @@ resource "aws_iam_role" "websockets_function_role" {
       Version = "2012-10-17"
       Statement = [
         {
-          Action   = ["execute-api::*"]
+          Action   = ["execute-api:*"]
           Effect   = "Allow"
           Resource = "arn:aws:execute-api:us-east-1:${data.aws_caller_identity.caller.account_id}:*"
         },
