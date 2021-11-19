@@ -5,14 +5,12 @@ const AWS = require('aws-sdk');
 
 const ddb = new AWS.DynamoDB.DocumentClient({ apiVersion: '2012-08-10', region: process.env.AWS_REGION });
 
-const { TABLE_NAME } = process.env.TABLE_NAME;
-
 exports.handler = async event => {
   let connectionData;
   console.log(event.toString());
 
   try {
-    connectionData = await ddb.scan({ TableName: TABLE_NAME, ProjectionExpression: 'connectionId' }).promise();
+    connectionData = await ddb.scan({ TableName: process.env.TABLE_NAME, ProjectionExpression: 'connectionId' }).promise();
   } catch (e) {
     return { statusCode: 500, body: e.stack };
   }
@@ -30,7 +28,7 @@ exports.handler = async event => {
     } catch (e) {
       if (e.statusCode === 410) {
         console.log(`Found stale connection, deleting ${connectionId}`);
-        await ddb.delete({ TableName: TABLE_NAME, Key: { connectionId } }).promise();
+        await ddb.delete({ TableName: process.env.TABLE_NAME, Key: { connectionId } }).promise();
       } else {
         throw e;
       }
