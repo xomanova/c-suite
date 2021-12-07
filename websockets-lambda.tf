@@ -63,6 +63,11 @@ resource "aws_iam_role" "websockets_function_role" {
           Effect   = "Allow"
           Resource = "${aws_dynamodb_table.websockets_ddb.arn}"
         },
+        {
+          Action   = ["sns:*"]
+          Effect   = "Allow"
+          Resource = "${aws_sns_topic.event_topic.arn}"
+        },
       ]
     })
   }

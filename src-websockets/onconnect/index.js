@@ -27,11 +27,14 @@ exports.handler = async event => {
   console.log("Received event:", eventText);
   var sns = new AWS.SNS();
   var params = {
-      Message: event, 
+      Message: JSON.stringify(event), 
       Subject: "From onconnect lambda",
-      TopicArn: process.env.TOPIC_ARN
+      TopicArn: process.env.WEBSOCKET_TOPIC_ARN
   };
-  sns.publish(params, context.done);
+  sns.publish(params, function(err, data) {
+    if (err) console.log(err, err.stack);
+    else     console.log(data);
+  });
 
   return { statusCode: 200, body: 'Connected.' };
 };
