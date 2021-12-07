@@ -9,7 +9,7 @@ exports.handler = async event => {
   let connectionData;
 
   var message = JSON.parse(event.Records[0].Sns.Message);
-  console.log(`Message received from SNS:"${JSON.stringify(message)}"`);
+  console.log(`Message received from SNS: ${JSON.stringify(message)}`);
 
   try {
     connectionData = await ddb.scan({ TableName: process.env.TABLE_NAME, ProjectionExpression: 'connectionId' }).promise();
@@ -22,13 +22,10 @@ exports.handler = async event => {
   
 
   const postData = `{"sid":"wtX_tiBPCn6FlIpJAAZC-TEST","upgrades":[],"pingInterval":5000,"pingTimeout":5000}`
-  const apigwManagementApi = new AWS.ApiGatewayManagementApi({
-    apiVersion: '2018-11-29',
-    endpoint: message.requestContext.domainName + '/' + message.requestContext.stage
-  });
+  const apigwManagementApi = new AWS.ApiGatewayManagementApi({ endpoint: message.requestContext.domainName + '/' + message.requestContext.stage });
 
   try {
-    await apigwManagementApi.postToConnection({ ConnectionId: connectionId, Data: postData }).promise();
+    await apigwManagementApi.postToConnection({ ConnectionId: connectionId, Data: JSON.stringify(postData) }).promise();
   } catch (e) {
     if (e.statusCode === 410) {
       console.log(`Found stale connection, deleting ${connectionId}`);
@@ -59,9 +56,9 @@ exports.handler = async event => {
 //    }
 //  });
 
-  console.log(`Websocket connectionId is "${message.requestContext.connectionId}"`);
-  console.log(`Websocket GW event is "${JSON.stringify(message)}"`);
-  console.log(`Websocket postData is "${postData}"`);
+  console.log(`Websocket connectionId is ${message.requestContext.connectionId}`);
+  console.log(`Websocket GW event is ${JSON.stringify(message)}`);
+  console.log(`Websocket postData is ${postData}`);
 
   try {
     await Promise.all(postCalls);
