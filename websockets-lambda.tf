@@ -186,7 +186,7 @@ resource "aws_sns_topic" "event_topic" {
 resource "aws_sns_topic_subscription" "event_topic_lambda" {
   topic_arn = aws_sns_topic.event_topic.arn
   protocol  = "lambda"
-  endpoint  = aws_lambda_function.lambda.arn
+  endpoint  = aws_lambda_function.sendmessage_lambda.arn
 }
 
 resource "aws_lambda_permission" "with_sns" {
