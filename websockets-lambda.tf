@@ -106,6 +106,7 @@ resource "aws_lambda_function" "onconnect_lambda" {
   environment {
     variables = {
       TABLE_NAME = aws_dynamodb_table.websockets_ddb.name
+      WEBSOCKET_TOPIC_ARN = aws_sns_topic.event_topic.arn
     }
   }
 }
@@ -136,6 +137,7 @@ resource "aws_lambda_function" "ondisconnect_lambda" {
   environment {
     variables = {
       TABLE_NAME = aws_dynamodb_table.websockets_ddb.name
+      WEBSOCKET_TOPIC_ARN = aws_sns_topic.event_topic.arn
     }
   }
 }
@@ -166,6 +168,7 @@ resource "aws_lambda_function" "sendmessage_lambda" {
   environment {
     variables = {
       TABLE_NAME = aws_dynamodb_table.websockets_ddb.name
+      WEBSOCKET_TOPIC_ARN = aws_sns_topic.event_topic.arn
     }
   }
 }
