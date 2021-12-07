@@ -177,3 +177,22 @@ resource "aws_lambda_permission" "gw_sendmessage_lambda_permissions" {
   principal     = "apigateway.amazonaws.com"
   source_arn    = "arn:aws:execute-api:${data.aws_region.current_region.name}:${data.aws_caller_identity.caller.account_id}:${aws_apigatewayv2_api.websocket_api_gw.id}/*/$default"
 }
+
+# SNS Topic and Sub for SendMessage Lambda
+resource "aws_sns_topic" "event_topic" {
+  name = "${var.project}-event-topic"
+}
+
+resource "aws_sns_topic_subscription" "event_topic_lambda" {
+  topic_arn = "${aws_sns_topic.event_topic.arn}"
+  protocol  = "lambda"
+  endpoint  = "${aws_lambda_function.lambda.arn}"
+}
+
+resource "aws_lambda_permission" "with_sns" {
+    statement_id  = "AllowExecutionFromSNS"
+    action        = "lambda:InvokeFunction"
+    function_name = "${aws_lambda_function.sendmessage_lambda.arn}"
+    principal     = "sns.amazonaws.com"
+    source_arn    = "${aws_sns_topic.event_topic.arn}"
+}

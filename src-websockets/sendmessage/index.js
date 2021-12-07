@@ -15,11 +15,32 @@ exports.handler = async event => {
     return { statusCode: 500, body: e.stack };
   }
   
+
+  
+
+  //const postData = `{"sid":"wtX_tiBPCn6FlIpJAAZC-TEST","upgrades":[],"pingInterval":5000,"pingTimeout":5000}`
+  //const apigwManagementApi = new AWS.ApiGatewayManagementApi({
+  //  apiVersion: '2018-11-29',
+  //  endpoint: event.requestContext.domainName + '/' + event.requestContext.stage
+  //});
+//
+  //try {
+  //  await apigwManagementApi.postToConnection({ ConnectionId: connectionData, Data: postData }).promise();
+  //} catch (e) {
+  //  if (e.statusCode === 410) {
+  //    console.log(`Found stale connection, deleting ${connectionData}`);
+  //    await ddb.delete({ TableName: process.env.TABLE_NAME, Key: { connectionData } }).promise();
+  //  } else {
+  //    throw e;
+  //  }
+  //}
+
+
   const apigwManagementApi = new AWS.ApiGatewayManagementApi({
     apiVersion: '2018-11-29',
     endpoint: event.requestContext.domainName + '/' + event.requestContext.stage
   });
-  
+
   const postData = JSON.parse(event.body).data;
   
   const postCalls = connectionData.Items.map(async ({ connectionId }) => {
