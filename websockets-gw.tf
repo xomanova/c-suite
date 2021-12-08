@@ -70,7 +70,7 @@ resource "aws_apigatewayv2_deployment" "deploy_gw" {
   description = md5(file("websockets-gw.tf"))
 
   variables {
-    deployed_at = "${timestamp()}"
+    deployed_at = timestamp()
   }
 
   lifecycle {
