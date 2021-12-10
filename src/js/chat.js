@@ -1,4 +1,4 @@
-let socket = new WebSocket("wss://c-suite.xomanova.io/socket");
+let socket = new WebSocket("wss://c-suite.xomanova.io/socket/");
 
 socket.onopen = function(e) {
   alert("[open] Connection established");
