@@ -8,8 +8,10 @@ const ddb = new AWS.DynamoDB.DocumentClient({ apiVersion: '2012-08-10', region: 
 exports.handler = async event => {
   let connectionData;
 
-  var message = JSON.parse(event.Records[0].Sns.Message);
-  console.log(`Message received from SNS: ${JSON.stringify(message)}`);
+  console.log(`Websocket GW event is ${JSON.stringify(event)}`);
+  const connectionId = event.requestContext.connectionId;
+  const domainName = event.requestContext.domainName;
+  const stage = event.requestContext.stage;
 
   try {
     connectionData = await ddb.scan({ TableName: process.env.TABLE_NAME, ProjectionExpression: 'connectionId' }).promise();
@@ -17,12 +19,10 @@ exports.handler = async event => {
     return { statusCode: 500, body: e.stack };
   }
   
-
-  var connectionId = message.requestContext.connectionId
   
 
   const postData = `{"sid":"wtX_tiBPCn6FlIpJAAZC-TEST","upgrades":[],"pingInterval":5000,"pingTimeout":5000}`
-  const apigwManagementApi = new AWS.ApiGatewayManagementApi({ endpoint: message.requestContext.domainName + '/' + message.requestContext.stage });
+  const apigwManagementApi = new AWS.ApiGatewayManagementApi({ endpoint: domainName + '/' + stage });
 
   try {
     await apigwManagementApi.postToConnection({ ConnectionId: connectionId, Data: JSON.stringify(postData) }).promise();
@@ -56,9 +56,6 @@ exports.handler = async event => {
 //    }
 //  });
 
-  console.log(`Websocket connectionId is ${message.requestContext.connectionId}`);
-  console.log(`Websocket GW event is ${JSON.stringify(message)}`);
-  console.log(`Websocket postData is ${postData}`);
 
   try {
     await Promise.all(postCalls);
