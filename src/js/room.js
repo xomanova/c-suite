@@ -269,78 +269,78 @@
   };
 
   netgames.change = function(state) {
-    return netgames.socket.send({
+    return netgames.socket.send(JSON.stringify({
       action: 'change',
       room_id: netgames.room_id,
       player_id: netgames.player.id,
       state: state,
       clock: netgames.room.clock.server
-    });
+    }));
   };
 
   netgames.shuffle = function(amount) {
-    return netgames.socket.send({
+    return netgames.socket.send(JSON.stringify({
       action: 'shuffle',
       room_id: netgames.room_id,
       player_id: netgames.player.id,
       amount: amount
-    });
+    }));
   };
 
   netgames.join = function() {
-    return netgames.socket.send({
+    return netgames.socket.send(JSON.stringify({
       action: 'join',
       room_id: netgames.room_id,
       player: netgames.player,
       timestamp: Date.now()
-    });
+    }));
   };
 
   netgames.join_midway = function() {
-    return netgames.socket.send({
+    return netgames.socket.send(JSON.stringify({
       action: 'join-midway',
       room_id: netgames.room_id,
       player_id: netgames.player.id
-    });
+    }));
   };
 
   netgames.change_name = function(player_name) {
     if (!netgames.change_name_storage(player_name)) {
       return false;
     }
-    netgames.socket.send({
+    netgames.socket.send(JSON.stringify({
       action: 'change-name',
       room_id: netgames.room_id,
       player: netgames.player
-    });
+    }));
     return true;
   };
 
   netgames.leave = function() {
-    return netgames.socket.send({
+    return netgames.socket.send(JSON.stringify({
       action: 'leave',
       room_id: netgames.room_id,
       player_id: netgames.player.id
-    });
+    }));
   };
 
   netgames.boot = function(player_ids) {
-    return netgames.socket.send({
+    return netgames.socket.send(JSON.stringify({
       action: 'boot',
       room_id: netgames.room_id,
       player_ids: player_ids
-    });
+    }));
   };
 
   netgames.restart = function() {
-    return netgames.socket.send({
+    return netgames.socket.send(JSON.stringify({
       action: 'restart',
       room_id: netgames.room_id
-    });
+    }));
   };
 
   netgames.measure_time_difference = function() {
-    return netgames.socket.send({
+    return netgames.socket.send(JSON.stringify({
       action: 'measure-time-difference',
       timestamp: Date.now()
     });
@@ -1227,10 +1227,10 @@
     clock_difference = ((ref1 = (ref2 = netgames.room) != null ? (ref3 = ref2.clock) != null ? ref3.server : void 0 : void 0) != null ? ref1 : 0) - room.clock.server;
     time_difference = ((ref4 = (ref5 = netgames.room) != null ? ref5.last_modified : void 0) != null ? ref4 : 0) - room.last_modified;
     if (same_room && (clock_difference > 0 || (clock_difference === 0 && time_difference > 0))) {
-      netgames.socket.send({
+      netgames.socket.send(JSON.stringify({
         action: 'recover',
         room: netgames.room
-      });
+      }));
     } else {
       netgames.room = room;
     }
