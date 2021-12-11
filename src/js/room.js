@@ -1237,7 +1237,7 @@ const io = require("../socket/robust-websocket.js");
     if (host.endsWith('.translate.goog')) {
       host = host.match(/(.*).translate.goog/)[1].replace(/-/g, '.');
     }
-    socket = netgames.socket = new io(window.location.protocol + '//' + window.netgames_host + '/' + game_id, {
+    socket = netgames.socket = new WebSocket(window.location.protocol + '//' + window.netgames_host + '/' + game_id, {
       path: '/socket',
       transports: ['websocket']
     });

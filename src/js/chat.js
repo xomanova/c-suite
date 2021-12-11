@@ -1,8 +1,6 @@
 let socket = new WebSocket("wss://c-suite.xomanova.io/socket/");
 
 socket.onopen = function(e) {
-  alert("[open] Connection established");
-  alert("Sending to server");
   socket.send("Connection established");
 };
 
