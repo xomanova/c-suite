@@ -343,7 +343,7 @@
     return netgames.socket.send(JSON.stringify({
       action: 'measure-time-difference',
       timestamp: Date.now()
-    });
+    }));
   };
 
   netgames.refresh_if = function(needs_refresh) {
