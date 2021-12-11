@@ -24,24 +24,24 @@ exports.handler = async event => {
   const eventBody = JSON.parse(event.body)
 
   switch(eventBody.action) {
-    case change:
+    case 'change':
       break;
-    case shuffle:
+    case 'shuffle':
       break;
-    case join:
+    case 'join':
       actions.join(eventBody);
       break;
-    case join-midway:
+    case 'join-midway':
       break;
-    case change-name:
+    case 'change-name':
       break;
-    case leave:
+    case 'leave':
       break;
-    case boot:
+    case 'boot':
       break;
-    case restart:
+    case 'restart':
       break;
-    case measure-time-difference:
+    case 'measure-time-difference':
       break;
     default:
       returnString = "Request action not implemented."
