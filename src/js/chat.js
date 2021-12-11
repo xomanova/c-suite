@@ -8,6 +8,7 @@ socket.onopen = function(e) {
 
 socket.onmessage = function(event) {
   alert(`[message] Data received from server: ${event.data}`);
+  return false;
 };
 
 socket.onclose = function(event) {
