@@ -1235,10 +1235,7 @@
     if (host.endsWith('.translate.goog')) {
       host = host.match(/(.*).translate.goog/)[1].replace(/-/g, '.');
     }
-    socket = netgames.socket = new WebSocket('wss://' + window.netgames_host + '/' + game_id, {
-      path: '/socket',
-      transports: ['websocket']
-    });
+    socket = netgames.socket = new WebSocket('wss://' + window.netgames_host + '/socket');
     socket.on('connect', function() {
       $('#connecting').hide();
       if (netgames.time_difference_filter == null) {
