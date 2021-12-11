@@ -2,11 +2,12 @@
 // SPDX-License-Identifier: MIT-0
 
 const AWS = require('aws-sdk');
-
+const actions = require('./actions')
 const ddb = new AWS.DynamoDB.DocumentClient({ apiVersion: '2012-08-10', region: process.env.AWS_REGION });
 
 exports.handler = async event => {
   let connectionData;
+  let returnString;
 
   console.log(`Websocket GW event is ${JSON.stringify(event)}`);
   const connectionId = event.requestContext.connectionId;
@@ -20,8 +21,35 @@ exports.handler = async event => {
   }
   
   
+  const eventBody = JSON.parse(event.body)
 
-  const postData = event.body
+  switch(eventBody.action) {
+    case change:
+      break;
+    case shuffle:
+      break;
+    case join:
+      actions.join(eventBody);
+      break;
+    case join-midway:
+      break;
+    case change-name:
+      break;
+    case leave:
+      break;
+    case boot:
+      break;
+    case restart:
+      break;
+    case measure-time-difference:
+      break;
+    default:
+      returnString = "Request action not implemented."
+      break;
+  }
+
+
+  const postData = returnString
   const apigwManagementApi = new AWS.ApiGatewayManagementApi({ endpoint: domainName + '/' + stage });
 
   try {
