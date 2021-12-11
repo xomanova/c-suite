@@ -3,12 +3,24 @@ let socket = new WebSocket("wss://c-suite.xomanova.io/socket/");
 socket.onopen = function(e) {
   alert("[open] Connection established");
   alert("Sending to server");
-  socket.send("My name is Penelope");
+  socket.send("Connection established");
 };
 
+// send message from the form
+document.forms.publish.onsubmit = function() {
+    let outgoingMessage = this.message.value;
+
+    socket.send(outgoingMessage);
+    return false;
+};
+
+// message received - show the message in div#messages
 socket.onmessage = function(event) {
-  alert(`[message] Data received from server: ${event.data}`);
-  return false;
+    let message = event.data;
+  
+    let messageElem = document.createElement('div');
+    messageElem.textContent = message;
+    document.getElementById('messages').prepend(messageElem);
 };
 
 socket.onclose = function(event) {
