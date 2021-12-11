@@ -2,8 +2,8 @@
   "orientation": "portrait",
   "theme_color": "#4f2461",
   "background_color": "#222222",
-  "name": "netgames.io remixed",
-  "short_name": "netgames",
+  "name": "C-Suite",
+  "short_name": "C-Suite",
   "display": "standalone",
   "start_url": "/games/",
   "icons": [
