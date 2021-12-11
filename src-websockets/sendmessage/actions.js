@@ -1,4 +1,4 @@
-function join(message) {
+async function join(message) {
     if (message.room_id = 'XDXD'){
         // Create new Room
         var new_room_id = random_room_string()
