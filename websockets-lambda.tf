@@ -59,8 +59,8 @@ resource "aws_iam_role" "websockets_function_role" {
       Version = "2012-10-17"
       Statement = [
         {
-          Action   = ["dynamodb:*"]
-          Effect   = "Allow"
+          Action = ["dynamodb:*"]
+          Effect = "Allow"
           Resource = [
             "${aws_dynamodb_table.websockets_ddb.arn}",
             "${aws_dynamodb_table.rooms_ddb.arn}"
