@@ -35,11 +35,5 @@ exports.handler = async event => {
     }
   }
 
-  try {
-    await Promise.all(postCalls);
-  } catch (e) {
-    return { statusCode: 500, body: e.stack };
-  }
-
   return { statusCode: 200, body: 'Data sent.' };
 };
