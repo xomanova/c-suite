@@ -21,7 +21,7 @@ exports.handler = async event => {
   
   
 
-  const postData = `{"sid":"wtX_tiBPCn6FlIpJAAZC-TEST","upgrades":[],"pingInterval":5000,"pingTimeout":5000}`
+  const postData = event.body
   const apigwManagementApi = new AWS.ApiGatewayManagementApi({ endpoint: domainName + '/' + stage });
 
   try {
