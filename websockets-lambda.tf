@@ -61,7 +61,10 @@ resource "aws_iam_role" "websockets_function_role" {
         {
           Action   = ["dynamodb:*"]
           Effect   = "Allow"
-          Resource = "${aws_dynamodb_table.websockets_ddb.arn}"
+          Resource = [
+            "${aws_dynamodb_table.websockets_ddb.arn}",
+            "${aws_dynamodb_table.rooms_ddb.arn}"
+          ]
         },
         {
           Action   = ["sns:*"]
@@ -110,8 +113,9 @@ resource "aws_lambda_function" "onconnect_lambda" {
   runtime          = "nodejs14.x"
   environment {
     variables = {
-      TABLE_NAME          = aws_dynamodb_table.websockets_ddb.name
-      WEBSOCKET_TOPIC_ARN = aws_sns_topic.event_topic.arn
+      CONNECTIONS_TABLE_NAME = aws_dynamodb_table.websockets_ddb.name
+      ROOMS_TABLE_NAME       = aws_dynamodb_table.rooms_ddb.name
+      WEBSOCKET_TOPIC_ARN    = aws_sns_topic.event_topic.arn
     }
   }
 }
@@ -141,8 +145,9 @@ resource "aws_lambda_function" "ondisconnect_lambda" {
   runtime          = "nodejs14.x"
   environment {
     variables = {
-      TABLE_NAME          = aws_dynamodb_table.websockets_ddb.name
-      WEBSOCKET_TOPIC_ARN = aws_sns_topic.event_topic.arn
+      CONNECTIONS_TABLE_NAME = aws_dynamodb_table.websockets_ddb.name
+      ROOMS_TABLE_NAME       = aws_dynamodb_table.rooms_ddb.name
+      WEBSOCKET_TOPIC_ARN    = aws_sns_topic.event_topic.arn
     }
   }
 }
@@ -163,7 +168,7 @@ data "archive_file" "sendmessage_lambda_zip" {
 }
 
 resource "aws_lambda_function" "sendmessage_lambda" {
-  filename         = "sendmessage.zip"
+  filename         = "sendmessage.zip"`
   source_code_hash = data.archive_file.sendmessage_lambda_zip.output_base64sha256
   function_name    = "${var.project}-sendmessage-lambda"
   role             = aws_iam_role.websockets_function_role.arn
@@ -172,8 +177,9 @@ resource "aws_lambda_function" "sendmessage_lambda" {
   runtime          = "nodejs14.x"
   environment {
     variables = {
-      TABLE_NAME          = aws_dynamodb_table.websockets_ddb.name
-      WEBSOCKET_TOPIC_ARN = aws_sns_topic.event_topic.arn
+      CONNECTIONS_TABLE_NAME = aws_dynamodb_table.websockets_ddb.name
+      ROOMS_TABLE_NAME       = aws_dynamodb_table.rooms_ddb.name
+      WEBSOCKET_TOPIC_ARN    = aws_sns_topic.event_topic.arn
     }
   }
 }

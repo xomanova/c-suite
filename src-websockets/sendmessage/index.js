@@ -14,7 +14,7 @@ exports.handler = async event => {
   const stage = event.requestContext.stage;
 
   try {
-    connectionData = await ddb.scan({ TableName: process.env.TABLE_NAME, ProjectionExpression: 'connectionId' }).promise();
+    connectionData = await ddb.scan({ TableName: process.env.CONNECTIONS_TABLE_NAME, ProjectionExpression: 'connectionId' }).promise();
   } catch (e) {
     return { statusCode: 500, body: e.stack };
   }
@@ -29,7 +29,7 @@ exports.handler = async event => {
   } catch (e) {
     if (e.statusCode === 410) {
       console.log(`Found stale connection, deleting ${connectionId}`);
-      await ddb.delete({ TableName: process.env.TABLE_NAME, Key: { connectionId } }).promise();
+      await ddb.delete({ TableName: process.env.CONNECTIONS_TABLE_NAME, Key: { connectionId } }).promise();
     } else {
       throw e;
     }
