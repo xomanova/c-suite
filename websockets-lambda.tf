@@ -168,7 +168,7 @@ data "archive_file" "sendmessage_lambda_zip" {
 }
 
 resource "aws_lambda_function" "sendmessage_lambda" {
-  filename         = "sendmessage.zip"`
+  filename         = "sendmessage.zip"
   source_code_hash = data.archive_file.sendmessage_lambda_zip.output_base64sha256
   function_name    = "${var.project}-sendmessage-lambda"
   role             = aws_iam_role.websockets_function_role.arn
