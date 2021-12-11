@@ -269,7 +269,8 @@
   };
 
   netgames.change = function(state) {
-    return netgames.socket.emit('change', {
+    return netgames.socket.send({
+      action: 'change',
       room_id: netgames.room_id,
       player_id: netgames.player.id,
       state: state,
@@ -278,7 +279,8 @@
   };
 
   netgames.shuffle = function(amount) {
-    return netgames.socket.emit('shuffle', {
+    return netgames.socket.send({
+      action: 'shuffle',
       room_id: netgames.room_id,
       player_id: netgames.player.id,
       amount: amount
@@ -286,7 +288,8 @@
   };
 
   netgames.join = function() {
-    return netgames.socket.emit('join', {
+    return netgames.socket.send({
+      action: 'join',
       room_id: netgames.room_id,
       player: netgames.player,
       timestamp: Date.now()
@@ -294,7 +297,8 @@
   };
 
   netgames.join_midway = function() {
-    return netgames.socket.emit('join-midway', {
+    return netgames.socket.send({
+      action: 'join-midway',
       room_id: netgames.room_id,
       player_id: netgames.player.id
     });
@@ -304,7 +308,8 @@
     if (!netgames.change_name_storage(player_name)) {
       return false;
     }
-    netgames.socket.emit('change-name', {
+    netgames.socket.send({
+      action: 'change-name',
       room_id: netgames.room_id,
       player: netgames.player
     });
@@ -312,27 +317,31 @@
   };
 
   netgames.leave = function() {
-    return netgames.socket.emit('leave', {
+    return netgames.socket.send({
+      action: 'leave',
       room_id: netgames.room_id,
       player_id: netgames.player.id
     });
   };
 
   netgames.boot = function(player_ids) {
-    return netgames.socket.emit('boot', {
+    return netgames.socket.send({
+      action: 'boot',
       room_id: netgames.room_id,
       player_ids: player_ids
     });
   };
 
   netgames.restart = function() {
-    return netgames.socket.emit('restart', {
+    return netgames.socket.send({
+      action: 'restart',
       room_id: netgames.room_id
     });
   };
 
   netgames.measure_time_difference = function() {
-    return netgames.socket.emit('measure-time-difference', {
+    return netgames.socket.send({
+      action: 'measure-time-difference',
       timestamp: Date.now()
     });
   };
@@ -1218,7 +1227,8 @@
     clock_difference = ((ref1 = (ref2 = netgames.room) != null ? (ref3 = ref2.clock) != null ? ref3.server : void 0 : void 0) != null ? ref1 : 0) - room.clock.server;
     time_difference = ((ref4 = (ref5 = netgames.room) != null ? ref5.last_modified : void 0) != null ? ref4 : 0) - room.last_modified;
     if (same_room && (clock_difference > 0 || (clock_difference === 0 && time_difference > 0))) {
-      netgames.socket.emit('recover', {
+      netgames.socket.send({
+        action: 'recover',
         room: netgames.room
       });
     } else {
