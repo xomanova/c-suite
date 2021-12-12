@@ -7,3 +7,7 @@
     font-family: 'marker';
     src: url('fonts/DryWhiteboardMarker-Regular.ttf');
 }
+
+::-webkit-scrollbar {
+    display: none;
+}
