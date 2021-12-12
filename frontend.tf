@@ -9,11 +9,15 @@ locals {
   src_files_raw = fileset("src/", "**")
   no_html_files = toset([
     for file in local.src_files_raw :
-    file if !(element(split(".", file), length(split(".", file)) - 1) == "html")
+    file if !(element(split(".", file), length(split(".", file)) - 1) == "html") && !(element(split(".", file), length(split(".", file)) - 1) == "css")
   ])
   html_files = toset([
     for file in local.src_files_raw :
     file if(element(split(".", file), length(split(".", file)) - 1) == "html")
+  ])
+  css_files = toset([
+    for file in local.src_files_raw :
+    file if(element(split(".", file), length(split(".", file)) - 1) == "css")
   ])
 }
 
@@ -23,6 +27,16 @@ resource "aws_s3_bucket_object" "html_objects" {
   bucket       = aws_s3_bucket.www_bucket.id
   key          = each.value
   content_type = "text/html"
+  acl          = "public-read"
+  source       = "src/${each.value}"
+  etag         = filemd5("src/${each.value}")
+}
+
+resource "aws_s3_bucket_object" "css_objects" {
+  for_each     = local.css_files
+  bucket       = aws_s3_bucket.www_bucket.id
+  key          = each.value
+  content_type = "text/css"
   acl          = "public-read"
   source       = "src/${each.value}"
   etag         = filemd5("src/${each.value}")
