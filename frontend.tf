@@ -9,7 +9,7 @@ locals {
   src_files_raw = fileset("src/", "**")
   no_html_files = toset([
     for file in local.src_files_raw :
-    file if !(element(split(".", file), length(split(".", file)) - 1) == "html") && !(element(split(".", file), length(split(".", file)) - 1) == "css")
+    file if !(element(split(".", file), length(split(".", file)) - 1) == "html") && !(element(split(".", file), length(split(".", file)) - 1) == "css") && !(element(split(".", file), length(split(".", file)) - 1) == "map")
   ])
   html_files = toset([
     for file in local.src_files_raw :
@@ -18,6 +18,10 @@ locals {
   css_files = toset([
     for file in local.src_files_raw :
     file if(element(split(".", file), length(split(".", file)) - 1) == "css")
+  ])
+  map_files = toset([
+    for file in local.src_files_raw :
+    file if(element(split(".", file), length(split(".", file)) - 1) == "map")
   ])
 }
 
@@ -37,6 +41,16 @@ resource "aws_s3_bucket_object" "css_objects" {
   bucket       = aws_s3_bucket.www_bucket.id
   key          = each.value
   content_type = "text/css"
+  acl          = "public-read"
+  source       = "src/${each.value}"
+  etag         = filemd5("src/${each.value}")
+}
+
+resource "aws_s3_bucket_object" "map_objects" {
+  for_each     = local.map_files
+  bucket       = aws_s3_bucket.www_bucket.id
+  key          = each.value
+  content_type = "application/json"
   acl          = "public-read"
   source       = "src/${each.value}"
   etag         = filemd5("src/${each.value}")
