@@ -9,8 +9,6 @@
 
   netgames = window.netgames = {};
 
-  console.log('Hey there, tech whiz.\n\nIf you\'re looking to cheat, you\'ve come to the right place; every piece of information you need is right here for the taking. But if you cheat, have you really won? 🤔 Either way, I urge you not to send me a bug report about it.\n\nSending the entire game state to every client is an intentional design decision made to improve reliability. For example, if the server crashes because of a stupid ol\' bug I wrote, your game will be recovered so long as one of you doesn\'t navigate away from the page. And it just keeps the code simple, reducing the chance that I write a stupid ol\' bug.\n\nThis ain\'t a competitive gaming site, so I\'d like to think we can all rely on trust. If you play these games physically, there\'s nothing stopping someone from taking a peep during the night phase or looking at things they shouldn\'t. But in general, people decide to be on their best behaviour, and the game goes on; the same applies here.\n\nLet me know if you are having issues with a duplicitous friend, I might consider making it harder to cheat. In the meantime, I recommend playing with other friends 🙂\n\nYours truly,\nLuke');
-
   netgames.has_touch = 'ontouchstart' in window || 'msMaxTouchPoints' in window.navigator;
 
   netgames.key_value = function(key, value) {
