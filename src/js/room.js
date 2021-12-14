@@ -1261,42 +1261,45 @@
         return $('#disconnected').show();
       }
     };
-    //socket.on('reconnecting', function() {
-    //  return $('#connecting').show();
-    //});
-    //socket.on('time-difference', function(arg) {
-    //  var client_timestamp, server_timestamp;
-    //  client_timestamp = arg.client_timestamp, server_timestamp = arg.server_timestamp;
-    //  return update_time_difference_filter(client_timestamp, server_timestamp);
-    //});
-    //socket.on('joined', function(arg) {
-    //  var client_timestamp, room, server_timestamp;
-    //  client_timestamp = arg.client_timestamp, server_timestamp = arg.server_timestamp, room = arg.room;
-    //  update_time_difference_filter(client_timestamp, server_timestamp);
-    //  return update_room(room);
-    //});
-    //socket.on('left', function() {
-    //  socket.disconnect(true);
-    //  return window.location = window.location.toString().replace(/[^\/]*[\/][^\/?]*($|(?=\?))/, '');
-    //});
-    //socket.on('booted', function(player_id) {
-    //  if (netgames.player.id === player_id) {
-    //    $('#content').hide();
-    //    $('#booted').show();
-    //    return socket.disconnect(true);
-    //  }
-    //});
-    //socket.on('state', function(room) {
-    //  return update_room(room);
-    //});
-    //socket.on('register-player-interactions', function(arg) {
-    //  var players, timestamp;
-    //  timestamp = arg.timestamp, players = arg.players;
-    //  netgames.register_player_interactions(timestamp, players);
-    //  return dataLayer.push({
-    //    event: 'register-player-interactions'
-    //  });
-    //});
+//    socket.on('reconnecting', function() {
+//      return $('#connecting').show();
+//    });
+//    socket.on('time-difference', function(arg) {
+//      var client_timestamp, server_timestamp;
+//      client_timestamp = arg.client_timestamp, server_timestamp = arg.server_timestamp;
+//      return update_time_difference_filter(client_timestamp, server_timestamp);
+//    });
+//    socket.on('joined', function(arg) {
+//      var client_timestamp, room, server_timestamp;
+//      client_timestamp = arg.client_timestamp, server_timestamp = arg.server_timestamp, room = arg.room;
+//      update_time_difference_filter(client_timestamp, server_timestamp);
+//      return update_room(room);
+//    });
+//    socket.on('left', function() {
+//      socket.disconnect(true);
+//      return window.location = window.location.toString().replace(/[^\/]*[\/][^\/?]*($|(?=\?))/, '');
+//    });
+//    socket.on('booted', function(player_id) {
+//      if (netgames.player.id === player_id) {
+//        $('#content').hide();
+//        $('#booted').show();
+//        return socket.disconnect(true);
+//      }
+//    });
+    socket.onmessage = function(event) {
+      if (event.action == 'state') {
+        update_room(room)
+      }
+    }
+
+//    socket.on('register-player-interactions', function(arg) {
+//      var players, timestamp;
+//      timestamp = arg.timestamp, players = arg.players;
+//      netgames.register_player_interactions(timestamp, players);
+//      return dataLayer.push({
+//        event: 'register-player-interactions'
+//      });
+//    });
     return socket.onerror = function(message) {
       $('#error-message').text(message);
       return console.error(message);

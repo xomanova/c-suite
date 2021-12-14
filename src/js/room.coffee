@@ -1098,8 +1098,9 @@ join_room = ->
 
   socket = netgames.socket = new WebSocket('wss://' + window.netgames_host + '/socket/');
 
-  socket.on 'connect', ->
+  socket.onopen = function(event) {
     $('#connecting').hide()
+  };
 
     unless netgames.time_difference_filter?
       netgames.time_difference_filter = new ScalarKalmanFilter({
@@ -1110,42 +1111,46 @@ join_room = ->
       })
     netgames.join()
 
-  socket.on 'disconnect', (reason) ->
+  socket.onclose = function(event) {
     if reason == 'io server disconnect'
       $('#disconnected').show()
+  };
 
-  socket.on 'reconnecting', ->
-    $('#connecting').show()
+#  socket.on 'reconnecting', ->
+#    $('#connecting').show()
+#
+#  socket.on 'time-difference', ({client_timestamp, server_timestamp}) ->
+#    update_time_difference_filter(client_timestamp, server_timestamp)
+#
+#  socket.on 'joined', ({client_timestamp, server_timestamp, room}) ->
+#    update_time_difference_filter(client_timestamp, server_timestamp)
+#    update_room(room)
+#
+#  socket.on 'left', ->
+#    socket.disconnect(true)
+#    # Navigate to '..', but retain query params so that the Google translate proxy doesn't break...
+#    window.location = window.location.toString().replace(/[^/]*[/][^/?]*($|(?=\?))/, '')
+#
+#  socket.on 'booted', (player_id) ->
+#    if netgames.player.id == player_id
+#      $('#content').hide()
+#      $('#booted').show()
+#      socket.disconnect(true)
+#
+  socket.onmessage(event) = function(event) {
+    if (event.action == 'state') {
+      update_room(room)
+    }
+  } 
 
-  socket.on 'time-difference', ({client_timestamp, server_timestamp}) ->
-    update_time_difference_filter(client_timestamp, server_timestamp)
+#  socket.on 'register-player-interactions', ({timestamp, players}) ->
+#    netgames.register_player_interactions(timestamp, players)
+#    dataLayer.push event: 'register-player-interactions'
 
-  socket.on 'joined', ({client_timestamp, server_timestamp, room}) ->
-    update_time_difference_filter(client_timestamp, server_timestamp)
-    update_room(room)
-
-  socket.on 'left', ->
-    socket.disconnect(true)
-    # Navigate to '..', but retain query params so that the Google translate proxy doesn't break...
-    window.location = window.location.toString().replace(/[^/]*[/][^/?]*($|(?=\?))/, '')
-
-  socket.on 'booted', (player_id) ->
-    if netgames.player.id == player_id
-      $('#content').hide()
-      $('#booted').show()
-      socket.disconnect(true)
-
-  socket.on 'state', (room) ->
-    update_room(room)
-
-  socket.on 'register-player-interactions', ({timestamp, players}) ->
-    netgames.register_player_interactions(timestamp, players)
-    dataLayer.push event: 'register-player-interactions'
-
-  socket.on 'error-message', (message) ->
-    $('#error-message').text(message)
-    console.error message
-
+  socket.onerror = function(event) {
+    $('#error-message').text(event)
+    console.error event
+  };
 
 $ ->
 
