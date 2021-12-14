@@ -4,12 +4,13 @@ resource "aws_s3_bucket" "www_bucket" {
   acl    = "private"
 }
 
+// Organize source directory into MIME type sets for upload
 locals {
   s3_origin_id  = "S3Origin"
   src_files_raw = fileset("src/", "**")
   no_html_files = toset([
     for file in local.src_files_raw :
-    file if !(element(split(".", file), length(split(".", file)) - 1) == "html") && !(element(split(".", file), length(split(".", file)) - 1) == "css") && !(element(split(".", file), length(split(".", file)) - 1) == "map")
+    file if !(element(split(".", file), length(split(".", file)) - 1) == "html") && !(element(split(".", file), length(split(".", file)) - 1) == "css") && !(element(split(".", file), length(split(".", file)) - 1) == "map") && !(element(split(".", file), length(split(".", file)) - 1) == "js")
   ])
   html_files = toset([
     for file in local.src_files_raw :
@@ -23,8 +24,11 @@ locals {
     for file in local.src_files_raw :
     file if(element(split(".", file), length(split(".", file)) - 1) == "map")
   ])
+  js_files = toset([
+    for file in local.src_files_raw :
+    file if(element(split(".", file), length(split(".", file)) - 1) == "js")
+  ])
 }
-
 
 resource "aws_s3_bucket_object" "html_objects" {
   for_each     = local.html_files
@@ -57,6 +61,16 @@ resource "aws_s3_bucket_object" "map_objects" {
 }
 
 resource "aws_s3_bucket_object" "js_objects" {
+  for_each     = local.js_files
+  bucket       = aws_s3_bucket.www_bucket.id
+  key          = each.value
+  content_type = "text/javascript"
+  acl          = "public-read"
+  source       = "src/${each.value}"
+  etag         = filemd5("src/${each.value}")
+}
+
+resource "aws_s3_bucket_object" "static_objects" {
   for_each = local.no_html_files
   bucket   = aws_s3_bucket.www_bucket.id
   key      = each.value
