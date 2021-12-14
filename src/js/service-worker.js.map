@@ -3,7 +3,7 @@
   "file": "service-worker.js",
   "sourceRoot": "..",
   "sources": [
-    "js/service-worker.coffee"
+    "service-worker.coffee"
   ],
   "names": [],
   "mappings": ";AAAA;;AAAA"
