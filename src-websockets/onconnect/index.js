@@ -29,15 +29,6 @@ exports.handler = async event => {
       Subject: "From onconnect lambda",
       TopicArn: process.env.WEBSOCKET_TOPIC_ARN
   };
-  try {
-    sns.publish(params, function(err, data) {
-      if (err) console.log(err, err.stack);
-      else     console.log(data);
-    });
-    console.log(`SNS message published for new connection to ${process.env.WEBSOCKET_TOPIC_ARN}`);
-  } catch (err) {
-    return { statusCode: 500, body: `Failed to publish to ${process.env.WEBSOCKET_TOPIC_ARN}. Error: ` + JSON.stringify(err) };
-  }
 
   return { statusCode: 200, body: 'Connected.' };
 };
