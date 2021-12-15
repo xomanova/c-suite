@@ -1330,9 +1330,14 @@
       return join_room();
     });
     netgames.player = {};
+
+    /* Generate a new UUID - Assuming that self.crypto.randomUUID() is available */
+    let new_player_uuid = self.crypto.randomUUID();
+    console.log(new_player_uuid);
+
     netgames.player.id = (ref1 = safe_localStorage_access(function() {
       return localStorage.player_id;
-    })) != null ? ref1 : $('#uuid').val();
+    })) != null ? ref1 : new_player_uuid;
     netgames.player.name = safe_localStorage_access(function() {
       return localStorage.player_name;
     });
