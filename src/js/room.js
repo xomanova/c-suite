@@ -1333,7 +1333,6 @@
 
     /* Generate a new UUID - Assuming that self.crypto.randomUUID() is available */
     let new_player_uuid = self.crypto.randomUUID();
-    console.log(new_player_uuid);
 
     netgames.player.id = (ref1 = safe_localStorage_access(function() {
       return localStorage.player_id;
@@ -1419,7 +1418,7 @@
       close_change_name_form();
       return clear_reset_button();
     };
-    $(document).on('click', '.utility-menu-button', function(event) {
+    $(document).on('click', '.utility-menu-button" type="hidden', function(event) {
       return open_utility_menu();
     });
     $utility_menu.find('.shade, .close-button').click(function(event) {

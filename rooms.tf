@@ -10,4 +10,15 @@ resource "aws_dynamodb_table" "rooms_ddb" {
     name = "room_id"
     type = "S"
   }
+
+  # Expire abandoned room records after a time
+  attribute {
+    name = "expiration"
+    type = "Number"
+  }
+
+  ttl {
+    attribute_name = "expiration"
+    enabled        = true
+  }
 }

@@ -95,25 +95,23 @@ body, html {
       <h1>Connecting</h1>
       <h2>Please wait...</h2>
     </div>
-      <div class="overlay error" id="disconnected" style="display: none">
+    <div class="overlay error" id="disconnected" style="display: none">
       <h1>Disconnected</h1>
       <h2 id="error-message"></h2>
       <div class="base not-spectator">
-       <div class="utility-menu-button">📌</div>
-      <div class="info-menu-button">💬</div>
+       
       <a class="btn btn-primary" href="index.html">Back</a>
+      </div>
     </div>
-  </div>
     <div class="overlay error" id="booted" style="display: none">
       <h1>Booted</h1>
       <h3>The host booted you from the game.</h3>
       <div class="base not-spectator">
-       <div class="utility-menu-button">📌</div>
-      <div class="info-menu-button">💬</div>
+       
       <a class="join-again btn btn-default">Join again</a>
       <a class="btn btn-primary" href="index.html">Back</a>
+      </div>
     </div>
-  </div>
       <input id="uuid" type="hidden" value="938299e2-7d67-42b1-9d23-43eafad3ecb3"/>
       <input id="game-id" type="hidden" value="onu-werewolf"/>
       <input id="room-id" type="hidden" value="QDRQ"/>
@@ -121,8 +119,8 @@ body, html {
       <h1><label>Your Name</label></h1>
       <input autofocus="autofocus" maxlength="20" style="text-align: center;"/>
       <div class="base not-spectator">
-        <div class="utility-menu-button">📌</div>
-        <div class="info-menu-button">💬</div>
+      <!--  <div class="utility-menu-button" type="hidden">📌</div>
+        <div class="info-menu-button" type="hidden">💬</div> -->
         <a class="btn btn-primary">Save</a>
       </div>
     </form>
@@ -458,8 +456,7 @@ body, html {
       <h3>Spectators</h3>
       <ul class="spectators"></ul></div>
       <div class="base not-spectator">
-      <div class="utility-menu-button">📌</div>
-      <div class="info-menu-button">💬</div>
+      
       <div class="shuffle horizontal-buttons half-width">
       <a class="up btn btn-default">Up</a>
       <a class="down btn btn-default">Down</a></div>
@@ -470,8 +467,7 @@ body, html {
       <h3>Select which roles you wish to include</h3>
       <p>Roles are displayed in wake-up order</p>
       <div class="base not-spectator">
-      <div class="utility-menu-button">📌</div>
-      <div class="info-menu-button">💬</div>
+      
       <a class="btn btn-primary">OK</a></div></div>
       <div class="not-host">
       <h1>Please wait</h1>
@@ -573,8 +569,7 @@ body, html {
       <span class="tanner-team">Tanner Team</span> wins if a 
       <strong>Tanner dies</strong>. Players must also meet their personal win condition.</p>
       <div class="base not-spectator">
-      <div class="utility-menu-button">📌</div>
-      <div class="info-menu-button">💬</div>
+      
       <a class="btn btn-primary">OK</a></div></section>
       <section class="slide-reveal" id="identify">
       <div class="slider not-spectator">
@@ -849,8 +844,7 @@ body, html {
       <div class="team"></div></footer></div>
       <p>If a Werewolf votes to kill you, then you will transform into a Werewolf.</p></div></div>
       <div class="base not-spectator">
-      <div class="utility-menu-button">📌</div>
-      <div class="info-menu-button">💬</div>
+      
       <a class="btn btn-primary">OK</a></div></section>
       <section id="pause">
       <h1>Night has fallen...</h1>
@@ -895,8 +889,7 @@ body, html {
       <div class="description"></div>
       <div class="team"></div></footer></div></div></div>
       <div class="base not-spectator">
-      <div class="utility-menu-button">📌</div>
-      <div class="info-menu-button">💬</div>
+      
       <a class="btn btn-primary">Imitate</a></div></div>
       <div class="not-Copycat">
       <h1>Night has fallen...</h1>
@@ -942,8 +935,7 @@ body, html {
       <div class="team"></div></footer></div></div></div>
       <p>and transform into that role.</p>
       <div class="base not-spectator">
-      <div class="utility-menu-button">📌</div>
-      <div class="info-menu-button">💬</div>
+      
       <a class="btn btn-primary">OK</a></div></div>
       <div class="not-Copycat">
       <h1>Night has fallen...</h1>
@@ -963,8 +955,7 @@ body, html {
       <p>Select a player to imitate</p>
       <div class="list-group players"></div>
       <div class="base not-spectator">
-      <div class="utility-menu-button">📌</div>
-      <div class="info-menu-button">💬</div>
+      
       <a class="btn btn-primary">Imitate</a></div></div>
       <div class="not-Doppelgänger">
       <h1>Night has fallen...</h1>
@@ -993,8 +984,7 @@ body, html {
       <p class="is-copycat">but you 
       <strong>don't</strong> perform the Copycat night action.</p>
       <div class="base not-spectator">
-      <div class="utility-menu-button">📌</div>
-      <div class="info-menu-button">💬</div>
+      
       <a class="btn btn-primary">OK</a></div></div>
       <div class="not-Doppelgänger">
       <h1>Night has fallen...</h1>
@@ -1016,8 +1006,7 @@ body, html {
       <br/>with the Centre Werewolf card</p>
       <div class="list-group players"></div>
       <div class="base not-spectator">
-      <div class="utility-menu-button">📌</div>
-      <div class="info-menu-button">💬</div>
+      
       <a class="btn btn-primary">OK</a></div></div>
       <div class="not-Doppelgänger">
       <h1>Night has fallen...</h1>
@@ -1053,8 +1042,7 @@ body, html {
       <div class="team"></div></footer></div></div>
       <p>They have no knowledge that this happened.</p>
       <div class="base not-spectator">
-      <div class="utility-menu-button">📌</div>
-      <div class="info-menu-button">💬</div>
+      
       <a class="btn btn-primary">OK</a></div></div>
       <div class="not-Doppelgänger">
       <h1>Night has fallen...</h1>
@@ -1077,8 +1065,7 @@ body, html {
       <a class="list-group-item">Nobody</a></div>
       <div class="list-group players"></div>
       <div class="base not-spectator">
-      <div class="utility-menu-button">📌</div>
-      <div class="info-menu-button">💬</div>
+      
       <a class="btn btn-primary">OK</a></div></div>
       <div class="not-Doppelgänger">
       <h1>Night has fallen...</h1>
@@ -1108,8 +1095,7 @@ body, html {
       <div class="abstained">
       <p>You chose to observe nobody's card.</p></div>
       <div class="base not-spectator">
-      <div class="utility-menu-button">📌</div>
-      <div class="info-menu-button">💬</div>
+      
       <a class="btn btn-primary">OK</a></div></div>
       <div class="not-Doppelgänger">
       <h1>Night has fallen...</h1>
@@ -1157,8 +1143,7 @@ body, html {
       <p>...or select a player to view their card</p>
       <div class="list-group players"></div>
       <div class="base not-spectator">
-      <div class="utility-menu-button">📌</div>
-      <div class="info-menu-button">💬</div>
+      
       <a class="btn btn-primary">OK</a></div></div>
       <div class="not-Doppelgänger">
       <h1>Night has fallen...</h1>
@@ -1214,8 +1199,7 @@ body, html {
       <div class="description"></div>
       <div class="team"></div></footer></div></div>
       <div class="base not-spectator">
-      <div class="utility-menu-button">📌</div>
-      <div class="info-menu-button">💬</div>
+      
       <a class="btn btn-primary">OK</a></div></div>
       <div class="not-Doppelgänger">
       <h1>Night has fallen...</h1>
@@ -1346,8 +1330,7 @@ body, html {
       <a class="list-group-item">Nobody</a></div>
       <div class="list-group players"></div>
       <div class="base not-spectator">
-      <div class="utility-menu-button">📌</div>
-      <div class="info-menu-button">💬</div>
+      
       <a class="btn btn-primary">OK</a></div></div>
       <div class="not-Doppelgänger">
       <h1>Night has fallen...</h1>
@@ -1385,8 +1368,7 @@ body, html {
       <br/>You're still on the 
       <span class="villager-team">Villager team</span>.</p></div>
       <div class="base not-spectator">
-      <div class="utility-menu-button">📌</div>
-      <div class="info-menu-button">💬</div>
+      
       <a class="btn btn-primary">OK</a></div></div>
       <div class="not-Doppelgänger">
       <h1>Night has fallen...</h1>
@@ -1409,8 +1391,7 @@ body, html {
       <a class="list-group-item">Nobody</a></div>
       <div class="list-group players"></div>
       <div class="base not-spectator">
-      <div class="utility-menu-button">📌</div>
-      <div class="info-menu-button">💬</div>
+      
       <a class="btn btn-primary">OK</a></div></div>
       <div class="not-Doppelgänger">
       <h1>Night has fallen...</h1>
@@ -1442,8 +1423,7 @@ body, html {
       <div class="abstained">
       <p>You chose to rob nobody. Your card remains unchanged.</p></div>
       <div class="base not-spectator">
-      <div class="utility-menu-button">📌</div>
-      <div class="info-menu-button">💬</div>
+      
       <a class="btn btn-primary">OK</a></div></div>
       <div class="not-Doppelgänger">
       <h1>Night has fallen...</h1>
@@ -1492,8 +1472,7 @@ body, html {
       <p class="list-group abstain">
       <a class="list-group-item">Don't look</a></p>
       <div class="base not-spectator">
-      <div class="utility-menu-button">📌</div>
-      <div class="info-menu-button">💬</div>
+      
       <a class="btn btn-primary">OK</a></div></div>
       <div class="not-Doppelgänger">
       <h1>Night has fallen...</h1>
@@ -1542,8 +1521,7 @@ body, html {
       <p>You may choose yourself.</p>
       <div class="list-group players"></div>
       <div class="base not-spectator">
-      <div class="utility-menu-button">📌</div>
-      <div class="info-menu-button">💬</div>
+      
       <a class="btn btn-primary">OK</a></div></div>
       <div class="not-Doppelgänger">
       <h1>Night has fallen...</h1>
@@ -1602,8 +1580,7 @@ body, html {
       <p>You chose not to look at a centre card.</p>
       <p>Your card remains unchanged.</p></div>
       <div class="base not-spectator">
-      <div class="utility-menu-button">📌</div>
-      <div class="info-menu-button">💬</div>
+      
       <a class="btn btn-primary">OK</a></div></div>
       <div class="not-Doppelgänger">
       <h1>Night has fallen...</h1>
@@ -1627,8 +1604,7 @@ body, html {
       <a class="list-group-item">Nobody</a></div>
       <div class="list-group players"></div>
       <div class="base not-spectator">
-      <div class="utility-menu-button">📌</div>
-      <div class="info-menu-button">💬</div>
+      
       <a class="btn btn-primary">OK</a></div></div>
       <div class="not-Doppelgänger">
       <h1>Night has fallen...</h1>
@@ -1666,8 +1642,7 @@ body, html {
       <div class="abstained">
       <p>You did not swap anyone's cards.</p></div>
       <div class="base not-spectator">
-      <div class="utility-menu-button">📌</div>
-      <div class="info-menu-button">💬</div>
+      
       <a class="btn btn-primary">OK</a></div></div>
       <div class="not-Doppelgänger">
       <h1>Night has fallen...</h1>
@@ -1713,8 +1688,7 @@ body, html {
       <div class="description"></div>
       <div class="team"></div></footer></div></div></div>
       <div class="base not-spectator">
-      <div class="utility-menu-button">📌</div>
-      <div class="info-menu-button">💬</div>
+      
       <a class="btn btn-primary">OK</a></div></div>
       <div class="not-Doppelgänger">
       <h1>Night has fallen...</h1>
@@ -1767,8 +1741,7 @@ body, html {
       <div class="description"></div>
       <div class="team"></div></footer></div>
       <div class="base not-spectator">
-      <div class="utility-menu-button">📌</div>
-      <div class="info-menu-button">💬</div>
+      
       <a class="btn btn-primary">OK</a></div></div>
       <div class="not-Doppelgänger">
       <h1>Night has fallen...</h1>
@@ -1796,8 +1769,7 @@ body, html {
       <span class="singular-dream-wolf">Wolf</span>
       <span class="plural-dream-wolves">Wolves</span> 🌙</span> can't see other Werewolves.</p>
       <div class="base not-spectator">
-      <div class="utility-menu-button">📌</div>
-      <div class="info-menu-button">💬</div>
+      
       <a class="btn btn-primary">OK</a></div></div>
       <div class="not-Werewolves">
       <h1>Night has fallen...</h1>
@@ -1843,8 +1815,7 @@ body, html {
       <div class="description"></div>
       <div class="team"></div></footer></div></div></div>
       <div class="base not-spectator">
-      <div class="utility-menu-button">📌</div>
-      <div class="info-menu-button">💬</div>
+      
       <a class="btn btn-primary">OK</a></div></div>
       <div class="not-Werewolves">
       <h1>Night has fallen...</h1>
@@ -1889,8 +1860,7 @@ body, html {
       <div class="description"></div>
       <div class="team"></div></footer></div></div></div>
       <div class="base not-spectator">
-      <div class="utility-menu-button">📌</div>
-      <div class="info-menu-button">💬</div>
+      
       <a class="btn btn-primary">OK</a></div></div>
       <div class="not-Werewolves">
       <h1>Night has fallen...</h1>
@@ -1911,8 +1881,7 @@ body, html {
       <br/>with the Centre Werewolf card</p>
       <div class="list-group players"></div>
       <div class="base not-spectator">
-      <div class="utility-menu-button">📌</div>
-      <div class="info-menu-button">💬</div>
+      
       <a class="btn btn-primary">OK</a></div></div>
       <div class="not-AlphaWolf">
       <h1>Night has fallen...</h1>
@@ -1947,8 +1916,7 @@ body, html {
       <div class="team"></div></footer></div></div>
       <p>They have no knowledge that this happened.</p>
       <div class="base not-spectator">
-      <div class="utility-menu-button">📌</div>
-      <div class="info-menu-button">💬</div>
+      
       <a class="btn btn-primary">OK</a></div></div>
       <div class="not-AlphaWolf">
       <h1>Night has fallen...</h1>
@@ -1970,8 +1938,7 @@ body, html {
       <a class="list-group-item">Nobody</a></div>
       <div class="list-group players"></div>
       <div class="base not-spectator">
-      <div class="utility-menu-button">📌</div>
-      <div class="info-menu-button">💬</div>
+      
       <a class="btn btn-primary">OK</a></div></div>
       <div class="not-MysticWolf">
       <h1>Night has fallen...</h1>
@@ -2000,8 +1967,7 @@ body, html {
       <div class="abstained">
       <p>You chose to observe nobody's card.</p></div>
       <div class="base not-spectator">
-      <div class="utility-menu-button">📌</div>
-      <div class="info-menu-button">💬</div>
+      
       <a class="btn btn-primary">OK</a></div></div>
       <div class="not-MysticWolf">
       <h1>Night has fallen...</h1>
@@ -2031,8 +1997,7 @@ body, html {
       <span class="plural">allies are</span></p>
       <ul class="werewolves werewolf-team"></ul></div>
       <div class="base not-spectator">
-      <div class="utility-menu-button">📌</div>
-      <div class="info-menu-button">💬</div>
+      
       <a class="btn btn-primary">OK</a></div></div>
       <div class="not-Minion">
       <h1>Night has fallen...</h1>
@@ -2071,8 +2036,7 @@ body, html {
       <span class="tanner-team">Tanner</span> and wins if 
       <span class="werewolf-team">they die</span>.</p></div>
       <div class="base not-spectator">
-      <div class="utility-menu-button">📌</div>
-      <div class="info-menu-button">💬</div>
+      
       <a class="btn btn-primary">OK</a></div></div>
       <div class="not-ApprenticeTanner">
       <h1>Night has fallen...</h1>
@@ -2097,8 +2061,7 @@ body, html {
       <span class="plural">Masons are listed</span> below
       <ul class="masons villager-team"></ul></div>
       <div class="base not-spectator">
-      <div class="utility-menu-button">📌</div>
-      <div class="info-menu-button">💬</div>
+      
       <a class="btn btn-primary">OK</a></div></div>
       <div class="not-Mason">
       <h1>Night has fallen...</h1>
@@ -2145,8 +2108,7 @@ body, html {
       <p>...or select a player to view their card</p>
       <div class="list-group players"></div>
       <div class="base not-spectator">
-      <div class="utility-menu-button">📌</div>
-      <div class="info-menu-button">💬</div>
+      
       <a class="btn btn-primary">OK</a></div></div>
       <div class="not-Seer">
       <h1>Night has fallen...</h1>
@@ -2201,8 +2163,7 @@ body, html {
       <div class="description"></div>
       <div class="team"></div></footer></div></div>
       <div class="base not-spectator">
-      <div class="utility-menu-button">📌</div>
-      <div class="info-menu-button">💬</div>
+      
       <a class="btn btn-primary">OK</a></div></div>
       <div class="not-Seer">
       <h1>Night has fallen...</h1>
@@ -2330,8 +2291,7 @@ body, html {
       <a class="list-group-item">Nobody</a></div>
       <div class="list-group players"></div>
       <div class="base not-spectator">
-      <div class="utility-menu-button">📌</div>
-      <div class="info-menu-button">💬</div>
+      
       <a class="btn btn-primary">OK</a></div></div>
       <div class="not-ParanormalInvestigator">
       <h1>Night has fallen...</h1>
@@ -2368,8 +2328,7 @@ body, html {
       <br/>You're still on the 
       <span class="villager-team">Villager team</span>.</p></div>
       <div class="base not-spectator">
-      <div class="utility-menu-button">📌</div>
-      <div class="info-menu-button">💬</div>
+      
       <a class="btn btn-primary">OK</a></div></div>
       <div class="not-ParanormalInvestigator">
       <h1>Night has fallen...</h1>
@@ -2391,8 +2350,7 @@ body, html {
       <a class="list-group-item">Nobody</a></div>
       <div class="list-group players"></div>
       <div class="base not-spectator">
-      <div class="utility-menu-button">📌</div>
-      <div class="info-menu-button">💬</div>
+      
       <a class="btn btn-primary">OK</a></div></div>
       <div class="not-Robber">
       <h1>Night has fallen...</h1>
@@ -2423,8 +2381,7 @@ body, html {
       <div class="abstained">
       <p>You chose to rob nobody. Your card remains unchanged.</p></div>
       <div class="base not-spectator">
-      <div class="utility-menu-button">📌</div>
-      <div class="info-menu-button">💬</div>
+      
       <a class="btn btn-primary">OK</a></div></div>
       <div class="not-Robber">
       <h1>Night has fallen...</h1>
@@ -2472,8 +2429,7 @@ body, html {
       <p class="list-group abstain">
       <a class="list-group-item">Don't look</a></p>
       <div class="base not-spectator">
-      <div class="utility-menu-button">📌</div>
-      <div class="info-menu-button">💬</div>
+      
       <a class="btn btn-primary">OK</a></div></div>
       <div class="not-Witch">
       <h1>Night has fallen...</h1>
@@ -2521,8 +2477,7 @@ body, html {
       <p>You may choose yourself.</p>
       <div class="list-group players"></div>
       <div class="base not-spectator">
-      <div class="utility-menu-button">📌</div>
-      <div class="info-menu-button">💬</div>
+      
       <a class="btn btn-primary">OK</a></div></div>
       <div class="not-Witch">
       <h1>Night has fallen...</h1>
@@ -2580,8 +2535,7 @@ body, html {
       <p>You chose not to look at a centre card.</p>
       <p>Your card remains unchanged.</p></div>
       <div class="base not-spectator">
-      <div class="utility-menu-button">📌</div>
-      <div class="info-menu-button">💬</div>
+      
       <a class="btn btn-primary">OK</a></div></div>
       <div class="not-Witch">
       <h1>Night has fallen...</h1>
@@ -2604,8 +2558,7 @@ body, html {
       <a class="list-group-item">Nobody</a></div>
       <div class="list-group players"></div>
       <div class="base not-spectator">
-      <div class="utility-menu-button">📌</div>
-      <div class="info-menu-button">💬</div>
+      
       <a class="btn btn-primary">OK</a></div></div>
       <div class="not-Troublemaker">
       <h1>Night has fallen...</h1>
@@ -2642,8 +2595,7 @@ body, html {
       <div class="abstained">
       <p>You did not swap anyone's cards.</p></div>
       <div class="base not-spectator">
-      <div class="utility-menu-button">📌</div>
-      <div class="info-menu-button">💬</div>
+      
       <a class="btn btn-primary">OK</a></div></div>
       <div class="not-Troublemaker">
       <h1>Night has fallen...</h1>
@@ -2667,8 +2619,7 @@ body, html {
       <a class="list-group-item">Nobody</a></div>
       <div class="list-group players"></div>
       <div class="base not-spectator">
-      <div class="utility-menu-button">📌</div>
-      <div class="info-menu-button">💬</div>
+      
       <a class="btn btn-primary">OK</a></div></div>
       <div class="not-Gremlin">
       <h1>Night has fallen...</h1>
@@ -2705,8 +2656,7 @@ body, html {
       <div class="abstained">
       <p>You did not swap anyone's cards.</p></div>
       <div class="base not-spectator">
-      <div class="utility-menu-button">📌</div>
-      <div class="info-menu-button">💬</div>
+      
       <a class="btn btn-primary">OK</a></div></div>
       <div class="not-Gremlin">
       <h1>Night has fallen...</h1>
@@ -2731,8 +2681,7 @@ body, html {
       <a class="list-group-item">Nobody</a></div>
       <div class="list-group players"></div>
       <div class="base not-spectator">
-      <div class="utility-menu-button">📌</div>
-      <div class="info-menu-button">💬</div>
+      
       <a class="btn btn-primary">OK</a></div></div>
       <div class="not-Doppelgänger">
       <h1>Night has fallen...</h1>
@@ -2770,8 +2719,7 @@ body, html {
       <div class="abstained">
       <p>You did not swap anyone's cards.</p></div>
       <div class="base not-spectator">
-      <div class="utility-menu-button">📌</div>
-      <div class="info-menu-button">💬</div>
+      
       <a class="btn btn-primary">OK</a></div></div>
       <div class="not-Doppelgänger">
       <h1>Night has fallen...</h1>
@@ -2796,8 +2744,7 @@ body, html {
       <div class="no-movement">
       <p>No players have moved or viewed a card.</p></div>
       <div class="base not-spectator">
-      <div class="utility-menu-button">📌</div>
-      <div class="info-menu-button">💬</div>
+      
       <a class="btn btn-primary">OK</a></div></div>
       <div class="not-AuraSeer">
       <h1>Night has fallen...</h1>
@@ -2842,8 +2789,7 @@ body, html {
       <div class="description"></div>
       <div class="team"></div></footer></div></div></div>
       <div class="base not-spectator">
-      <div class="utility-menu-button">📌</div>
-      <div class="info-menu-button">💬</div>
+      
       <a class="btn btn-primary">OK</a></div></div>
       <div class="not-Drunk">
       <h1>Night has fallen...</h1>
@@ -2895,8 +2841,7 @@ body, html {
       <div class="description"></div>
       <div class="team"></div></footer></div>
       <div class="base not-spectator">
-      <div class="utility-menu-button">📌</div>
-      <div class="info-menu-button">💬</div>
+      
       <a class="btn btn-primary">OK</a></div></div>
       <div class="not-Drunk">
       <h1>Night has fallen...</h1>
@@ -2921,8 +2866,7 @@ body, html {
       <div class="description"></div>
       <div class="team"></div></footer></div>
       <div class="base not-spectator">
-      <div class="utility-menu-button">📌</div>
-      <div class="info-menu-button">💬</div>
+      
       <a class="btn btn-primary">OK</a></div></div>
       <div class="not-Insomniac">
       <h1>Night has fallen...</h1>
@@ -2963,8 +2907,7 @@ body, html {
       <p class="player-name"></p></li>
       <ul class="card-list werewolves"></ul></div>
       <div class="base not-spectator">
-      <div class="utility-menu-button">📌</div>
-      <div class="info-menu-button">💬</div>
+      
       <a class="btn btn-primary">OK</a></div></div>
       <div class="not-Squire">
       <h1>Night has fallen...</h1>
@@ -3004,8 +2947,7 @@ body, html {
       <p class="player-name"></p></li>
       <ul class="card-list seers"></ul></div>
       <div class="base not-spectator">
-      <div class="utility-menu-button">📌</div>
-      <div class="info-menu-button">💬</div>
+      
       <a class="btn btn-primary">OK</a></div></div>
       <div class="not-Beholder">
       <h1>Night has fallen...</h1>
@@ -3027,8 +2969,7 @@ body, html {
       <a class="list-group-item">Nobody</a></div>
       <div class="list-group players"></div>
       <div class="base not-spectator">
-      <div class="utility-menu-button">📌</div>
-      <div class="info-menu-button">💬</div>
+      
       <a class="btn btn-primary">OK</a></div></div>
       <div class="not-Revealer">
       <h1>Night has fallen...</h1>
@@ -3065,8 +3006,7 @@ body, html {
       <div class="abstained">
       <p>You chose to observe nobody's card.</p></div>
       <div class="base not-spectator">
-      <div class="utility-menu-button">📌</div>
-      <div class="info-menu-button">💬</div>
+      
       <a class="btn btn-primary">OK</a></div></div>
       <div class="not-Revealer">
       <h1>Night has fallen...</h1>
@@ -3089,8 +3029,7 @@ body, html {
       <a class="list-group-item">Nobody</a></div>
       <div class="list-group players"></div>
       <div class="base not-spectator">
-      <div class="utility-menu-button">📌</div>
-      <div class="info-menu-button">💬</div>
+      
       <a class="btn btn-primary">OK</a></div></div>
       <div class="not-Doppelgänger">
       <h1>Night has fallen...</h1>
@@ -3128,8 +3067,7 @@ body, html {
       <div class="abstained">
       <p>You chose to observe nobody's card.</p></div>
       <div class="base not-spectator">
-      <div class="utility-menu-button">📌</div>
-      <div class="info-menu-button">💬</div>
+      
       <a class="btn btn-primary">OK</a></div></div>
       <div class="not-Doppelgänger">
       <h1>Night has fallen...</h1>
@@ -3436,8 +3374,7 @@ body, html {
       <p>x
       <span class="num-Cursed"></span></p></li></ol>
       <div class="base not-spectator">
-      <div class="utility-menu-button">📌</div>
-      <div class="info-menu-button">💬</div>
+      
       <a class="btn btn-default">Skip to vote</a></div></section>
       <section id="vote">
       <h1>No more talking!</h1>
@@ -3463,8 +3400,7 @@ body, html {
       <div class="only-spectator">
       <p>Players are voting to kill someone now</p></div>
       <div class="base not-spectator">
-      <div class="utility-menu-button">📌</div>
-      <div class="info-menu-button">💬</div>
+      
       <p class="shame-text"></p></div></section>
       <section id="outcome">
       <div class="win-lose">
@@ -3665,20 +3601,17 @@ body, html {
       <div class="team"></div></footer></div>
       <ol class="events"></ol></div>
       <div class="base not-spectator">
-      <div class="utility-menu-button">📌</div>
-      <div class="info-menu-button">💬</div>
+      
       <a class="restart only-host btn btn-primary">Restart Game</a>
       <a class="play-again not-host btn btn-primary">Play Again</a>
       <a class="leave btn btn-danger">Leave Game</a></div></section></div>
       <div class="base only-spectator" id="spectator-base">
-      <div class="utility-menu-button">📌</div>
-      <div class="info-menu-button">💬</div>
+      
       <h3>You are spectating</h3>
       <div class="horizontal-buttons">
       <a class="join-in only-can-join btn btn-primary">Join in</a>
       <a class="leave-game btn btn-danger">Leave</a></div></div></div>
-      <div class="utility-menu-button">📌</div>
-      <div class="info-menu-button">💬</div>
+      
   </div>
 </div>
 

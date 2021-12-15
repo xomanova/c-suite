@@ -10,7 +10,7 @@ body {
 @include not-only('spectator');
 @include not-only('has-spectators');
 
-%utility-menu-button-shape {
+%utility-menu-button" type="hidden-shape {
   border-top-right-radius: 10px;
 }
 
@@ -27,9 +27,9 @@ body {
   bottom: 0;
 }
 
-%utility-menu-button-pseudo {
+%utility-menu-button" type="hidden-pseudo {
   @extend %menu-button-pseudo;
-  @extend %utility-menu-button-shape;
+  @extend %utility-menu-button" type="hidden-shape;
 }
 
 %info-menu-button-pseudo {
@@ -103,26 +103,26 @@ $border-spread: ($base-border-spread * 2/3);
   }
 }
 
-.utility-menu-button {
+.utility-menu-button" type="hidden {
   @extend %menu-button;
-  @extend %utility-menu-button-shape;
+  @extend %utility-menu-button" type="hidden-shape;
 
   left: 0;
   font-size: $size * 0.5;
 
   &::before {
-    @extend %utility-menu-button-shape;
+    @extend %utility-menu-button" type="hidden-shape;
     right: initial;
   }
 
   &::after {
-    @extend %utility-menu-button-pseudo;
+    @extend %utility-menu-button" type="hidden-pseudo;
     left: -$border-blur;
   }
 
   .base & {
     &::after {
-      @extend %utility-menu-button-pseudo;
+      @extend %utility-menu-button" type="hidden-pseudo;
       left: -$border-blur;
     }
   }

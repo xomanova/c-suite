@@ -3,7 +3,7 @@
   font-family: "Glyphicons Regular";
   src: url("../fonts/glyphicons-regular.woff2") format("woff2"), url("../fonts/glyphicons-regular.woff") format("woff");
 }
-.glyphicon, .info-menu-button, .utility-menu-button {
+.glyphicon, .info-menu-button, .utility-menu-button" type="hidden {
   font-family: "Glyphicons Halflings";
   position: initial;
 }
@@ -81,7 +81,7 @@ body {
   display: none;
 }
 
-.utility-menu-button::before, .utility-menu-button, .base .utility-menu-button::after, .utility-menu-button::after {
+.utility-menu-button" type="hidden::before, .utility-menu-button" type="hidden, .base .utility-menu-button" type="hidden::after, .utility-menu-button" type="hidden::after {
   border-top-right-radius: 10px;
 }
 
@@ -89,7 +89,7 @@ body {
   border-top-left-radius: 10px;
 }
 
-.base .info-menu-button::after, .base .utility-menu-button::after, .info-menu-button::after, .utility-menu-button::after, .info-menu-button::before, .utility-menu-button::before {
+.base .info-menu-button::after, .base .utility-menu-button" type="hidden::after, .info-menu-button::after, .utility-menu-button" type="hidden::after, .info-menu-button::before, .utility-menu-button" type="hidden::before {
   content: "";
   position: absolute;
   left: 0;
@@ -98,7 +98,7 @@ body {
   bottom: 0;
 }
 
-.info-menu-button, .utility-menu-button {
+.info-menu-button, .utility-menu-button" type="hidden {
   display: initial;
   position: fixed;
   bottom: 0;
@@ -108,44 +108,44 @@ body {
   background-color: #222;
   cursor: pointer;
 }
-.info-menu-button::before, .utility-menu-button::before {
+.info-menu-button::before, .utility-menu-button" type="hidden::before {
   top: initial;
   width: 72px;
   height: 72px;
 }
-.base .info-menu-button::before, .base .utility-menu-button::before {
+.base .info-menu-button::before, .base .utility-menu-button" type="hidden::before {
   bottom: 50%;
   margin-bottom: -36px;
 }
-.info-menu-button::after, .utility-menu-button::after {
+.info-menu-button::after, .utility-menu-button" type="hidden::after {
   z-index: -1;
   bottom: -26.6666666667px;
   box-shadow: 0 0 26.6666666667px 13.3333333333px rgba(0, 0, 0, 0.5);
 }
-.base .info-menu-button, .base .utility-menu-button {
+.base .info-menu-button, .base .utility-menu-button" type="hidden {
   position: absolute;
   top: -32px;
 }
-.base .info-menu-button::after, .base .utility-menu-button::after {
+.base .info-menu-button::after, .base .utility-menu-button" type="hidden::after {
   z-index: -1;
   bottom: 13.3333333333px;
   box-shadow: 0 -13.3333333333px 26.6666666667px -1px rgba(0, 0, 0, 0.75);
 }
-#disconnected .info-menu-button, #disconnected .utility-menu-button, #booted .info-menu-button, #booted .utility-menu-button {
+#disconnected .info-menu-button, #disconnected .utility-menu-button" type="hidden, #booted .info-menu-button, #booted .utility-menu-button" type="hidden {
   display: none;
 }
 
-.utility-menu-button {
+.utility-menu-button" type="hidden {
   left: 0;
   font-size: 24px;
 }
-.utility-menu-button::before {
+.utility-menu-button" type="hidden::before {
   right: initial;
 }
-.utility-menu-button::after {
+.utility-menu-button" type="hidden::after {
   left: -26.6666666667px;
 }
-.base .utility-menu-button::after {
+.base .utility-menu-button" type="hidden::after {
   left: -26.6666666667px;
 }
 

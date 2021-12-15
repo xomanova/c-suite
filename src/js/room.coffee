@@ -1247,7 +1247,7 @@ $ ->
     close_change_name_form()
     clear_reset_button()
 
-  $(document).on 'click', '.utility-menu-button', (event) ->
+  $(document).on 'click', '.utility-menu-button" type="hidden', (event) ->
     open_utility_menu()
 
   $utility_menu.find('.shade, .close-button').click (event) ->

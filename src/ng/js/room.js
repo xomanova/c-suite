@@ -1413,7 +1413,7 @@
       close_change_name_form();
       return clear_reset_button();
     };
-    $(document).on('click', '.utility-menu-button', function(event) {
+    $(document).on('click', '.utility-menu-button" type="hidden', function(event) {
       return open_utility_menu();
     });
     $utility_menu.find('.shade, .close-button').click(function(event) {

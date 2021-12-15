@@ -19,7 +19,8 @@ exports.handler = async event => {
     return { statusCode: 500, body: e.stack };
   }
   
-  
+  const room_expiration = Math.floor(new Date().getTime() / 1000) + (6*60) // Now + 6hrs*60seconds - allow rooms to persist for 6hrs unused
+
   const eventBody = JSON.parse(event.body)
   const action = eventBody.action
 
@@ -30,7 +31,7 @@ exports.handler = async event => {
     case 'shuffle':
       break;
     case 'join':
-      returnString = join_room(eventBody, ddb);
+      returnString = join_room(eventBody, ddb, room_expiration);
       break;
     case 'join-midway':
       break;
@@ -67,7 +68,7 @@ exports.handler = async event => {
   return { statusCode: 200, body: 'Data sent.' };
 };
 
-async function join_room(message, ddb) {
+async function join_room(message, ddb, room_expiration) {
     if (message.room_id == 'QDRQ'){
         // Create new Room
         var new_room_id = random_room_string()
@@ -77,7 +78,8 @@ async function join_room(message, ddb) {
               room_id: new_room_id,
               owner_id: JSON.stringify(message.player),
               players: "[" + JSON.stringify(message.player) + "]",
-              state: "{}"
+              state: "{}",
+              expiration: room_expiration
             }
           };
         
