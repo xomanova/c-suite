@@ -58,7 +58,7 @@
       event.preventDefault();
       code = $('input').val().toUpperCase();
       if (code) {
-        return window.location = 'rooms/' + code;
+        return window.location = 'new.html';
       }
     });
   });
