@@ -175,7 +175,7 @@ resource "aws_dynamodb_table" "websockets_ddb" {
   # Expire abandoned connection records after a time
   attribute {
     name = "expiration"
-    type = "Number"
+    type = "N"
   }
 
   ttl {
