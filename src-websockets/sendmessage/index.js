@@ -68,15 +68,16 @@ exports.handler = async event => {
 };
 
 async function join_room(message, ddb) {
-    if (message.room_id == 'XDXD'){
+    if (message.room_id == 'QDRQ'){
         // Create new Room
         var new_room_id = random_room_string()
         const params = {
             TableName: process.env.ROOMS_TABLE_NAME,
             Item: {
               room_id: new_room_id,
-              owner: JSON.stringify(message.player),
-              players: "[" + JSON.stringify(message.player) + "]"
+              owner_id: JSON.stringify(message.player),
+              players: "[" + JSON.stringify(message.player) + "]",
+              state: "{}"
             }
           };
         
@@ -95,7 +96,7 @@ async function join_room(message, ddb) {
             ':s': message.room_id,
           },
           KeyConditionExpression: '#r = :s',
-          ProjectionExpression: 'room_id, owner, players',
+          ProjectionExpression: 'room_id, owner_id, players, state',
           TableName: process.env.ROOMS_TABLE_NAME
         };
 
