@@ -1,6 +1,3 @@
-// Copyright 2018-2020Amazon.com, Inc. or its affiliates. All Rights Reserved.
-// SPDX-License-Identifier: MIT-0
-
 const AWS = require('aws-sdk');
 const ddb = new AWS.DynamoDB.DocumentClient({ apiVersion: '2012-08-10', region: process.env.AWS_REGION });
 
@@ -126,10 +123,12 @@ async function join_room(message, ddb, room_expiration) {
 
 function random_room_string() {
     const charlist = "ABCDEFGHIJKLMNPQRSTUVWXYZ";
-    var randomstring = "";
-    for(var i = 0; i < 4; i++) {
-        var rnd = Math.floor(Math.random() * charlist.length);
-        randomstring = randomstring + charlist.charAt(rnd);
-    }
+    do {
+      var randomstring = "";
+      for(var i = 0; i < 4; i++) {
+          var rnd = Math.floor(Math.random() * charlist.length);
+          randomstring = randomstring + charlist.charAt(rnd);
+      }
+    } while (randomstring == 'XDXD');
     return randomstring;
 }
