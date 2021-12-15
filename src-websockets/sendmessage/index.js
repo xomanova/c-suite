@@ -69,7 +69,7 @@ exports.handler = async event => {
 };
 
 async function join_room(message, ddb, room_expiration) {
-    if (message.room_id == 'QDRQ'){
+    if (message.room_id == 'XDXD'){
         // Create new Room
         var new_room_id = random_room_string()
         const params = {
