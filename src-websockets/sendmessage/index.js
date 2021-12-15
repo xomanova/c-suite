@@ -19,7 +19,7 @@ exports.handler = async event => {
     return { statusCode: 500, body: e.stack };
   }
   
-  const room_expiration = Math.floor(new Date().getTime() / 1000) + (6*60) // Now + 6hrs*60seconds - allow rooms to persist for 6hrs unused
+  const room_expiration = Math.floor(new Date().getTime() / 1000) + (6*60*60) // Now + 6h*60m*60s - allow rooms to persist for 6hrs unused
 
   const eventBody = JSON.parse(event.body)
   const action = eventBody.action

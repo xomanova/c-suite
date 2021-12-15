@@ -4,7 +4,7 @@
 const AWS = require('aws-sdk');
 
 const ddb = new AWS.DynamoDB.DocumentClient({ apiVersion: '2012-08-10', region: process.env.AWS_REGION });
-const connection_expiration = Math.floor(new Date().getTime() / 1000) + (12*60) // Now + 12hrs*60seconds - allow persistent connections for 12 hrs
+const connection_expiration = Math.floor(new Date().getTime() / 1000) + (12*60*60) // Now + 12h*60m*60s - allow persistent connections for 12 hrs
 
 exports.handler = async event => {
   const putParams = {
