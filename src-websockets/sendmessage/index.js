@@ -4,6 +4,7 @@ const ddb = new AWS.DynamoDB.DocumentClient({ apiVersion: '2012-08-10', region: 
 exports.handler = async event => {
   let connectionData;
   let returnString;
+  var room_players = [];
 
   console.log(`Websocket GW event is ${JSON.stringify(event)}`);
   const connectionId = event.requestContext.connectionId;
@@ -28,7 +29,7 @@ exports.handler = async event => {
     case 'shuffle':
       break;
     case 'join':
-      returnString = join_room(eventBody, ddb, room_expiration);
+      returnString = join_room(eventBody, ddb, room_players, room_expiration);
       break;
     case 'join-midway':
       break;
@@ -65,7 +66,7 @@ exports.handler = async event => {
   return { statusCode: 200, body: 'Data sent.' };
 };
 
-async function join_room(message, ddb, room_expiration) {
+async function join_room(message, ddb, room_players, room_expiration) {
     if (message.room_id == 'XDXD'){
         // Create new Room
         var new_room_id = random_room_string()
@@ -73,7 +74,7 @@ async function join_room(message, ddb, room_expiration) {
             TableName: process.env.ROOMS_TABLE_NAME,
             Item: {
               room_id: new_room_id,
-              owner_id: JSON.stringify(message.player),
+              owner: JSON.stringify(message.player),
               players: "[" + JSON.stringify(message.player) + "]",
               state: "{}",
               expiration: room_expiration
@@ -87,18 +88,19 @@ async function join_room(message, ddb, room_expiration) {
           }
         return params;
     } else {
+        // Update players for existing Room
         var params = {
           ExpressionAttributeNames: {
-            '#r': 'room_id' 
+            '#r': 'room_id',
+            '#p': 'players'
           },
           ExpressionAttributeValues: {
             ':s': message.room_id,
           },
           KeyConditionExpression: '#r = :s',
-          ProjectionExpression: 'room_id, owner_id, players, state',
+          ProjectionExpression: '#r, #p',
           TableName: process.env.ROOMS_TABLE_NAME
         };
-
         ddb.query(params, function(err, data) {
           if (err) {
               console.error("Unable to query. Error:", JSON.stringify(err, null, 2));
@@ -106,12 +108,51 @@ async function join_room(message, ddb, room_expiration) {
               console.log("Query succeeded.");
               data.Items.forEach(function(item) {
                   console.log(" -", item.room_id + ": " + item.players);
-                  var obj = JSON.parse(item);
-                  obj['players'].push({"id": message.player.id, "name": message.player.name})
+
+                  var game_players = [];
+                  for (var p in JSON.parse(item.players)) 
+                    game_players.push(JSON.parse(item.players)[p]);
+                  game_players.push(message.player);
+                  item.players = game_players;
                   // Update player list for open room
                   console.log(" New ddb item would be: ", JSON.stringify(item));
-              });
+                  room_players = game_players;
+                  var update_params = {
+                    TableName: process.env.ROOMS_TABLE_NAME,
+                    Key: { 
+                      "room_id":{
+                        "S": item.room_id
+                      }
+                    },
+                    UpdateExpression: "set #P = :p",
+                    ExpressionAttributeNames: {"#P":"players"},
+                    ExpressionAttributeValues: { ":p": JSON.stringify(game_players) },
+                    ReturnValues: "ALL_NEW"
+                  };
+                  var force_update_params = {
+                    TableName: process.env.ROOMS_TABLE_NAME,
+                    Item: {
+                      room_id: item.room_id,
+                      players: JSON.stringify(game_players),
+                      expiration: room_expiration
+                    }
+                  };
 
+                  console.log("Updating room players...");
+                  try {
+                    var update = ddb.update(update_params).promise();
+                    return update.then();
+                  } catch (err) {
+                    console.log("Error", err);
+                  }
+                  //ddb.update(update_params, function(err, data) {
+                  //if (err) {
+                  //    console.error("Unable to update item. Error JSON:", JSON.stringify(err, null, 2));
+                  //} else {
+                  //    console.log("UpdateItem succeeded:", JSON.stringify(data, null, 2));
+                  //}
+                  //}).promise();
+              });
           }
         });
         // 1. Get DDB data for this room_id
