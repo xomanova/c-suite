@@ -1236,13 +1236,10 @@
   };
 
   join_room = function() {
-    var game_id, host, room_id, socket;
-    game_id = netgames.game_id = $('#game-id').val();
-    room_id = netgames.room_id = $('#room-id').val();
+    var host, room_id, socket;
+    room_id = netgames.room_id = localStorage.join_request != null ? localStorage.join_request : $('#room-id').val();
     host = window.location.host;
-    if (host.endsWith('.translate.goog')) {
-      host = host.match(/(.*).translate.goog/)[1].replace(/-/g, '.');
-    }
+
     socket = netgames.socket = new WebSocket('wss://' + window.netgames_host + '/socket/');
     socket.onopen = function() {
       $('#connecting').hide();
@@ -1418,7 +1415,7 @@
       close_change_name_form();
       return clear_reset_button();
     };
-    $(document).on('click', '.utility-menu-button" type="hidden', function(event) {
+    $(document).on('click', '.utility-menu-button', function(event) {
       return open_utility_menu();
     });
     $utility_menu.find('.shade, .close-button').click(function(event) {

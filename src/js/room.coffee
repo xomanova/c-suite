@@ -1089,12 +1089,9 @@ update_room = (room) ->
 
 join_room = ->
 
-  game_id = netgames.game_id = $('#game-id').val()
   room_id = netgames.room_id = $('#room-id').val()
 
   host = window.location.host
-  if host.endsWith('.translate.goog')
-    host = host.match(/(.*).translate.goog/)[1].replace(/-/g, '.')
 
   socket = netgames.socket = new WebSocket('wss://' + window.netgames_host + '/socket/');
 
@@ -1170,7 +1167,7 @@ $ ->
     join_room()
 
   netgames.player = {}
-  netgames.player.id = safe_localStorage_access(-> localStorage.player_id) ? $('#uuid').val()
+  netgames.player.id = safe_localStorage_access(-> localStorage.player_id)
   netgames.player.name = safe_localStorage_access -> localStorage.player_name
 
   safe_localStorage_access ->
@@ -1247,7 +1244,7 @@ $ ->
     close_change_name_form()
     clear_reset_button()
 
-  $(document).on 'click', '.utility-menu-button" type="hidden', (event) ->
+  $(document).on 'click', '.utility-menu-button', (event) ->
     open_utility_menu()
 
   $utility_menu.find('.shade, .close-button').click (event) ->

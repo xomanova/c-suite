@@ -1,8 +1,6 @@
 window.root_path = $('head').data('root-path')
 
 window.netgames_host = window.location.host
-if window.netgames_host.endsWith('.translate.goog')
-  window.netgames_host = window.netgames_host.match(/(.*).translate.goog/)[1].replace(/-/g, '.')
 
 window.addEventListener 'error', (event) ->
   $.ajax({

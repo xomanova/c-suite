@@ -4,10 +4,6 @@
 
   window.netgames_host = window.location.host;
 
-  if (window.netgames_host.endsWith('.translate.goog')) {
-    window.netgames_host = window.netgames_host.match(/(.*).translate.goog/)[1].replace(/-/g, '.');
-  }
-
   window.addEventListener('error', function(event) {
     var ref, ref1;
     return $.ajax({
