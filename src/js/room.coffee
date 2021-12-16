@@ -1177,12 +1177,12 @@ $ ->
   if netgames.player.name?
     join_room()
   else
-    if URLSearchParams
-      url_params = new URLSearchParams(window.location.search)
-      for key in Array.from(url_params.keys())
-        if key.endsWith('name')
-          $create_user.find('input').val(url_params.get(key))
-          break
+    #if URLSearchParams
+    #  url_params = new URLSearchParams(window.location.search)
+    #  for key in Array.from(url_params.keys())
+    #    if key.endsWith('name')
+    #      $create_user.find('input').val(url_params.get(key))
+    #      break
     $create_user.show()
 
   $('#booted .join-again').click ->
