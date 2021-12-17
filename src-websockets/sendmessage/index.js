@@ -10,17 +10,12 @@ exports.handler = async event => {
   const connectionId = event.requestContext.connectionId;
   const domainName = event.requestContext.domainName;
   const stage = event.requestContext.stage;
-
-  try {
-    connectionData = await ddb.scan({ TableName: process.env.CONNECTIONS_TABLE_NAME, ProjectionExpression: 'connectionId' }).promise();
-  } catch (e) {
-    return { statusCode: 500, body: e.stack };
-  }
   
   const room_expiration = Math.floor(new Date().getTime() / 1000) + (6*60*60) // Now + 6h*60m*60s - allow rooms to persist for 6hrs unused
 
   const eventBody = JSON.parse(event.body)
   const action = eventBody.action
+  const apigwManagementApi = new AWS.ApiGatewayManagementApi({ endpoint: domainName + '/' + stage });
 
   returnString = "Action function not implemented"
   switch(String(action)) {
@@ -29,7 +24,7 @@ exports.handler = async event => {
     case 'shuffle':
       break;
     case 'join':
-      returnString = join_room(eventBody, ddb, room_players, connectionId, room_expiration);
+      returnString = await join_room(eventBody, ddb, room_players, connectionId, room_expiration);
       break;
     case 'join-midway':
       break;
@@ -49,8 +44,8 @@ exports.handler = async event => {
       break;
   }
 
-
-  const apigwManagementApi = new AWS.ApiGatewayManagementApi({ endpoint: domainName + '/' + stage });
+  console.log(JSON.stringify(returnString));
+  // const apigwManagementApi = new AWS.ApiGatewayManagementApi({ endpoint: domainName + '/' + stage });
 
   try {
     await apigwManagementApi.postToConnection({ ConnectionId: connectionId, Data: JSON.stringify(returnString) }).promise();
@@ -63,10 +58,55 @@ exports.handler = async event => {
     }
   }
 
+  // Get ConnectionIds
+  //const params = {
+  //  ExpressionAttributeNames: {
+  //    '#r': 'room_id',
+  //    '#c': 'connections'
+  //  },
+  //  ExpressionAttributeValues: {
+  //    ':s': eventBody.room_id,
+  //  },
+  //  KeyConditionExpression: '#r = :s',
+  //  ProjectionExpression: '#c',
+  //  TableName: process.env.ROOMS_TABLE_NAME
+  //};
+  //
+  //
+  //try {
+  //  await ddb.query(params, function(err, data) {
+  //    if (err) {
+  //        console.error("Unable to query. Error:", JSON.stringify(err, null, 2));
+  //    } else {
+  //        console.log("Connections query succeeded. Data: " + JSON.stringify(data));
+  //        data.Items.forEach(function(item){
+  //          var connections_arr = JSON.parse(item.connections);
+  //          for (var i=0; i < connections_arr.length; i++) {
+  //            try {
+  //              apigwManagementApi.postToConnection({ ConnectionId: connections_arr[i], Data: JSON.stringify(returnString) }).promise();
+  //            } catch (e) {
+  //              if (e.statusCode === 410) {
+  //                console.log(`Found stale connection, ${item.connections[i]}`);
+  //              } else {
+  //                throw e;
+  //              }
+  //            }
+  //          }
+  //        })
+  //    }
+  //  }).promise();
+  //} catch (err) {
+  //  return { statusCode: 500, body: 'Failed to update ddb: ' + JSON.stringify(err) };
+  //}
+  
+
   return { statusCode: 200, body: 'Data sent.' };
 };
 
 async function join_room(message, ddb, room_players, connectionId, room_expiration) {
+    // Add this connection to message json
+    message.connectionId = connectionId;
+
     if (message.room_id == 'XDXD'){
         // Create new Room
         var new_room_id = random_room_string()
@@ -74,7 +114,7 @@ async function join_room(message, ddb, room_players, connectionId, room_expirati
             TableName: process.env.ROOMS_TABLE_NAME,
             Item: {
               room_id: new_room_id,
-              connections: "[" + connectionId + "]",
+              connections: "[{\"id\":\"" + connectionId + "\"}]",
               owner: JSON.stringify(message.player),
               players: "[" + JSON.stringify(message.player) + "]",
               state: "{}",
@@ -128,14 +168,27 @@ async function join_room(message, ddb, room_players, connectionId, room_expirati
 }
 
 async function update_room_players(item,room_players,room_expiration,message,ddb) {
-  console.log(" -", item.room_id + ": " + item.players);
+  console.log(" -", item.room_id + ": " + JSON.stringify(item));
+  console.log(" - room_players: " + JSON.stringify(room_players));
+  console.log(" - room_expiration: " + JSON.stringify(room_expiration));
+  console.log(" - message: " + JSON.stringify(message));
 
+
+  // Build room connections
+  var game_connections = JSON.parse(item.connections);
+  var new_connection = new Object;
+  new_connection.id = message.connectionId
+  game_connections.push(new_connection);
+  item.connections = game_connections;
+
+  // Build room players
   var game_players = [];
   for (var p in JSON.parse(item.players)) 
     game_players.push(JSON.parse(item.players)[p]);
   game_players.push(message.player);
   item.players = game_players;
-  // Update player list for open room
+
+  // Update players and connections for open room
   console.log(" New ddb item would be: ", JSON.stringify(item));
   room_players = game_players;
   var update_params = {
@@ -143,9 +196,9 @@ async function update_room_players(item,room_players,room_expiration,message,ddb
     Key: { 
       room_id: item.room_id
     },
-    UpdateExpression: "set #P = :p, #E = :e",
-    ExpressionAttributeNames: {"#P":"players","#E":"expiration"},
-    ExpressionAttributeValues: { ":p": JSON.stringify(game_players), ":e": room_expiration },
+    UpdateExpression: "set #C = :c, #P = :p, #E = :e",
+    ExpressionAttributeNames: {"#C":"connections","#P":"players","#E":"expiration"},
+    ExpressionAttributeValues: { ":c": JSON.stringify(item.connections),":p": JSON.stringify(game_players), ":e": room_expiration },
     ReturnValues: "ALL_NEW"
   };
 
@@ -156,6 +209,10 @@ async function update_room_players(item,room_players,room_expiration,message,ddb
   } catch (err) {
     console.log("Error", err);
   }
+}
+
+async function update_room_change(apigwManagementApi,ddb,eventBody,returnString) {
+
 }
 
 function random_room_string() {
