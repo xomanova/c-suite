@@ -44,11 +44,11 @@ exports.handler = async event => {
       break;
   }
 
-  console.log(JSON.stringify(returnString));
+  console.log(returnString);
   // const apigwManagementApi = new AWS.ApiGatewayManagementApi({ endpoint: domainName + '/' + stage });
 
   try {
-    await apigwManagementApi.postToConnection({ ConnectionId: connectionId, Data: JSON.stringify(returnString) }).promise();
+    await apigwManagementApi.postToConnection({ ConnectionId: connectionId, Data: returnString }).promise();
   } catch (e) {
     if (e.statusCode === 410) {
       console.log(`Found stale connection, deleting ${connectionId}`);
@@ -127,7 +127,7 @@ async function join_room(message, ddb, room_players, connectionId, room_expirati
           } catch (err) {
             return { statusCode: 500, body: 'Failed to connect: ' + JSON.stringify(err) };
           }
-        return params;
+        //return params;
     } else {
         // Update players and connections for existing Room
         const params = {
@@ -158,13 +158,42 @@ async function join_room(message, ddb, room_players, connectionId, room_expirati
         } catch (err) {
           return { statusCode: 500, body: 'Failed to update ddb: ' + JSON.stringify(err) };
         }
-
-        // DONE 1. Get DDB data for this room_id
-        // DONE 2. Add this player to this room's player ids map
-        //      "players" : [{"id" : "guid", "name" : "pname"},{"id" : "guid", "name" : "pname"}]
-        // 3. SendMessage to all ConnectionIds from this ROOM with new player list data
-        return params;
     }
+    var query_params = {
+      ExpressionAttributeNames: {
+        '#r': 'room_id',
+        '#c': 'connections',
+        '#p': 'players',
+        '#s': 'state'
+      },
+      ExpressionAttributeValues: {
+        ':r': message.room_id,
+      },
+      KeyConditionExpression: '#r = :r',
+      ProjectionExpression: '#r, #c, #p, #s',
+      TableName: process.env.ROOMS_TABLE_NAME
+    };
+    try {
+      var room = await ddb.query(query_params, function(err, data) {
+        if (err) {
+            console.error("Unable to query. Error:", JSON.stringify(err, null, 2));
+        } else {
+            console.log("Query succeeded.");
+            data.Items.forEach(function(item) {
+              update_room_players(item,room_players,room_expiration,message,ddb);
+            });
+        }
+      }).promise();
+    } catch (err) {
+      return { statusCode: 500, body: 'Failed to update ddb: ' + JSON.stringify(err) };
+    }
+    var room_push = [];
+    room_push.room_id = message.room_id;
+    console.log(JSON.stringify(room.Items));
+    //room_push.players = room.Items[0].players;
+    //room_push.state = room.Items[0].state;
+
+    return JSON.stringify(room_push);
 }
 
 async function update_room_players(item,room_players,room_expiration,message,ddb) {
@@ -211,7 +240,7 @@ async function update_room_players(item,room_players,room_expiration,message,ddb
   }
 }
 
-async function update_room_change(apigwManagementApi,ddb,eventBody,returnString) {
+async function update_room_change(apigwManagementApi,returnString) {
 
 }
 
