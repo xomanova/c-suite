@@ -207,11 +207,11 @@ netgames.restart = ->
     room_id: netgames.room_id
   }
 
-#netgames.measure_time_difference = ->
-#  netgames.socket.send(JSON.stringify({
-#    action: 'measure-time-difference',
-#    timestamp: Date.now()
-#  }
+netgames.measure_time_difference = ->
+  netgames.socket.send(JSON.stringify({
+    action: 'measure-time-difference',
+    timestamp: Date.now()
+  }
 
 # Refresh the client once if needed
 netgames.refresh_if = (needs_refresh) ->

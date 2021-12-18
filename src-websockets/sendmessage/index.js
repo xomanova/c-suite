@@ -36,7 +36,7 @@ exports.handler = async event => {
     case 'restart':
       break;
     case 'measure-time-difference':
-      break;
+      return { statusCode: 200, body: 'Data sent.' };
     default:
       console.log(`Websocket GW event is ${JSON.stringify(eventBody.action)}`);
       returnString = "Default action taken";
@@ -44,50 +44,8 @@ exports.handler = async event => {
   }
 
   console.log(returnString);
-  // const apigwManagementApi = new AWS.ApiGatewayManagementApi({ endpoint: domainName + '/' + stage });
 
   await publish_room_change(apigwManagementApi,returnString);
-
-  // Get ConnectionIds
-  //const params = {
-  //  ExpressionAttributeNames: {
-  //    '#r': 'room_id',
-  //    '#c': 'connections'
-  //  },
-  //  ExpressionAttributeValues: {
-  //    ':s': eventBody.room_id,
-  //  },
-  //  KeyConditionExpression: '#r = :s',
-  //  ProjectionExpression: '#c',
-  //  TableName: process.env.ROOMS_TABLE_NAME
-  //};
-  //
-  //
-  //try {
-  //  await ddb.query(params, function(err, data) {
-  //    if (err) {
-  //        console.error("Unable to query. Error:", JSON.stringify(err, null, 2));
-  //    } else {
-  //        console.log("Connections query succeeded. Data: " + JSON.stringify(data));
-  //        data.Items.forEach(function(item){
-  //          var connections_arr = JSON.parse(item.connections);
-  //          for (var i=0; i < connections_arr.length; i++) {
-  //            try {
-  //              apigwManagementApi.postToConnection({ ConnectionId: connections_arr[i], Data: JSON.stringify(returnString) }).promise();
-  //            } catch (e) {
-  //              if (e.statusCode === 410) {
-  //                console.log(`Found stale connection, ${item.connections[i]}`);
-  //              } else {
-  //                throw e;
-  //              }
-  //            }
-  //          }
-  //        })
-  //    }
-  //  }).promise();
-  //} catch (err) {
-  //  return { statusCode: 500, body: 'Failed to update ddb: ' + JSON.stringify(err) };
-  //}
   
   return { statusCode: 200, body: 'Data sent.' };
 };
@@ -99,6 +57,7 @@ async function join_room(message, ddb, room_players, connectionId, room_expirati
     if (message.room_id == 'XDXD'){
         // Create new Room
         var new_room_id = random_room_string();
+        message.room_id = new_room_id;
         const params = {
             TableName: process.env.ROOMS_TABLE_NAME,
             Item: {
@@ -225,13 +184,16 @@ async function update_room_players(item,room_players,room_expiration,message,ddb
 }
 
 async function publish_room_change(apigwManagementApi,returnString) {
-  // room.Items.map(({room_id,players,state}) => ({room_id,players,state}))
-  var data = [];
+  const allowed = ['room_id', 'players','state'];
+  const data = Object.keys(returnString).filter(key => allowed.includes(key)).reduce((obj, key) => {
+      obj[key] = returnString[key];
+      return obj;
+    }, {});
 
   for ( const connection of returnString.connections) {
     var connectionId = connection.id;
     try {
-      await apigwManagementApi.postToConnection({ ConnectionId: connectionId, Data: JSON.stringify(returnString) }).promise();
+      await apigwManagementApi.postToConnection({ ConnectionId: connectionId, Data: JSON.stringify(data) }).promise();
     } catch (e) {
       //if (e.statusCode === 410) {
         console.log(`Found stale connection: ${connectionId}`);
@@ -239,6 +201,7 @@ async function publish_room_change(apigwManagementApi,returnString) {
       //} else {
       //  throw e;
       //}
+      // TODO: uncomment this when ondisconnect function is improved to cleanup this table
       continue;
     }
   }

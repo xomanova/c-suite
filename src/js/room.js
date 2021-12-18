@@ -337,12 +337,12 @@
     }));
   };
 
-  //netgames.measure_time_difference = function() {
-  //  return netgames.socket.send(JSON.stringify({
-  //    action: 'measure-time-difference',
-  //    timestamp: Date.now()
-  //  }));
-  //};
+  netgames.measure_time_difference = function() {
+    return netgames.socket.send(JSON.stringify({
+      action: 'measure-time-difference',
+      timestamp: Date.now()
+    }));
+  };
 
   netgames.refresh_if = function(needs_refresh) {
     return safe_localStorage_access(function() {
@@ -1289,14 +1289,16 @@
       }
     }
 
-//    socket.on('register-player-interactions', function(arg) {
-//      var players, timestamp;
-//      timestamp = arg.timestamp, players = arg.players;
-//      netgames.register_player_interactions(timestamp, players);
-//      return dataLayer.push({
-//        event: 'register-player-interactions'
-//      });
-//    });
+    socket.onmessage = function(arg) {
+      if (arg.action == 'register-player-interactions') {
+        var players, timestamp;
+        timestamp = arg.timestamp, players = arg.players;
+        netgames.register_player_interactions(timestamp, players);
+        return dataLayer.push({
+          event: 'register-player-interactions'
+        });
+      }
+    };
     return socket.onerror = function(message) {
       $('#error-message').text(message);
       return console.error(message);
