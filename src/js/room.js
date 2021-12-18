@@ -337,12 +337,12 @@
     }));
   };
 
-  netgames.measure_time_difference = function() {
-    return netgames.socket.send(JSON.stringify({
-      action: 'measure-time-difference',
-      timestamp: Date.now()
-    }));
-  };
+  //netgames.measure_time_difference = function() {
+  //  return netgames.socket.send(JSON.stringify({
+  //    action: 'measure-time-difference',
+  //    timestamp: Date.now()
+  //  }));
+  //};
 
   netgames.refresh_if = function(needs_refresh) {
     return safe_localStorage_access(function() {

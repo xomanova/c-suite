@@ -168,6 +168,7 @@ resource "aws_lambda_function" "sendmessage_lambda" {
   description      = "Handle websocket sendmessage traffic"
   handler          = "index.handler"
   runtime          = "nodejs14.x"
+  timeout          = 5
   environment {
     variables = {
       CONNECTIONS_TABLE_NAME = aws_dynamodb_table.websockets_ddb.name

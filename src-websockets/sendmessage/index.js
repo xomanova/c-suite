@@ -2,7 +2,6 @@ const AWS = require('aws-sdk');
 const ddb = new AWS.DynamoDB.DocumentClient({ apiVersion: '2012-08-10', region: process.env.AWS_REGION });
 
 exports.handler = async event => {
-  let connectionData;
   let returnString;
   var room_players = [];
 
@@ -11,13 +10,13 @@ exports.handler = async event => {
   const domainName = event.requestContext.domainName;
   const stage = event.requestContext.stage;
   
-  const room_expiration = Math.floor(new Date().getTime() / 1000) + (6*60*60) // Now + 6h*60m*60s - allow rooms to persist for 6hrs unused
+  const room_expiration = Math.floor(new Date().getTime() / 1000) + (6*60*60); // Now + 6h*60m*60s - allow rooms to persist for 6hrs unused
 
-  const eventBody = JSON.parse(event.body)
-  const action = eventBody.action
+  const eventBody = JSON.parse(event.body);
+  const action = eventBody.action;
   const apigwManagementApi = new AWS.ApiGatewayManagementApi({ endpoint: domainName + '/' + stage });
 
-  returnString = "Action function not implemented"
+  returnString = "Action function not implemented";
   switch(String(action)) {
     case 'change':
       break;
@@ -40,23 +39,14 @@ exports.handler = async event => {
       break;
     default:
       console.log(`Websocket GW event is ${JSON.stringify(eventBody.action)}`);
-      returnString = "Default action taken"
+      returnString = "Default action taken";
       break;
   }
 
   console.log(returnString);
   // const apigwManagementApi = new AWS.ApiGatewayManagementApi({ endpoint: domainName + '/' + stage });
 
-  try {
-    await apigwManagementApi.postToConnection({ ConnectionId: connectionId, Data: returnString }).promise();
-  } catch (e) {
-    if (e.statusCode === 410) {
-      console.log(`Found stale connection, deleting ${connectionId}`);
-      await ddb.delete({ TableName: process.env.CONNECTIONS_TABLE_NAME, Key: { connectionId } }).promise();
-    } else {
-      throw e;
-    }
-  }
+  await publish_room_change(apigwManagementApi,returnString);
 
   // Get ConnectionIds
   //const params = {
@@ -99,7 +89,6 @@ exports.handler = async event => {
   //  return { statusCode: 500, body: 'Failed to update ddb: ' + JSON.stringify(err) };
   //}
   
-
   return { statusCode: 200, body: 'Data sent.' };
 };
 
@@ -109,7 +98,7 @@ async function join_room(message, ddb, room_players, connectionId, room_expirati
 
     if (message.room_id == 'XDXD'){
         // Create new Room
-        var new_room_id = random_room_string()
+        var new_room_id = random_room_string();
         const params = {
             TableName: process.env.ROOMS_TABLE_NAME,
             Item: {
@@ -127,7 +116,6 @@ async function join_room(message, ddb, room_players, connectionId, room_expirati
           } catch (err) {
             return { statusCode: 500, body: 'Failed to connect: ' + JSON.stringify(err) };
           }
-        //return params;
     } else {
         // Update players and connections for existing Room
         const params = {
@@ -187,13 +175,8 @@ async function join_room(message, ddb, room_players, connectionId, room_expirati
     } catch (err) {
       return { statusCode: 500, body: 'Failed to update ddb: ' + JSON.stringify(err) };
     }
-    var room_push = [];
-    room_push.room_id = message.room_id;
-    console.log(JSON.stringify(room.Items));
-    //room_push.players = room.Items[0].players;
-    //room_push.state = room.Items[0].state;
 
-    return JSON.stringify(room);
+    return room.Items[0];
 }
 
 async function update_room_players(item,room_players,room_expiration,message,ddb) {
@@ -206,7 +189,7 @@ async function update_room_players(item,room_players,room_expiration,message,ddb
   // Build room connections and add this connection if new.
   var game_connections = JSON.parse(item.connections);
   var new_connection = new Object;
-  new_connection.id = message.connectionId
+  new_connection.id = message.connectionId;
   game_connections.some(x => x.id === new_connection.id) ? console.log("This connection is already in the room.") : game_connections.push(new_connection) ;
   item.connections = game_connections;
 
@@ -241,8 +224,25 @@ async function update_room_players(item,room_players,room_expiration,message,ddb
   }
 }
 
-async function update_room_change(apigwManagementApi,returnString) {
+async function publish_room_change(apigwManagementApi,returnString) {
+  // room.Items.map(({room_id,players,state}) => ({room_id,players,state}))
+  var data = [];
 
+  for ( const connection of returnString.connections) {
+    var connectionId = connection.id;
+    try {
+      await apigwManagementApi.postToConnection({ ConnectionId: connectionId, Data: JSON.stringify(returnString) }).promise();
+    } catch (e) {
+      //if (e.statusCode === 410) {
+        console.log(`Found stale connection: ${connectionId}`);
+      //  await ddb.delete({ TableName: process.env.CONNECTIONS_TABLE_NAME, Key: { connectionId } }).promise();
+      //} else {
+      //  throw e;
+      //}
+      continue;
+    }
+  }
+  return;
 }
 
 function random_room_string() {
