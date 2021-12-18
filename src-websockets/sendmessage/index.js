@@ -193,7 +193,7 @@ async function join_room(message, ddb, room_players, connectionId, room_expirati
     //room_push.players = room.Items[0].players;
     //room_push.state = room.Items[0].state;
 
-    return JSON.stringify(room_push);
+    return JSON.stringify(room);
 }
 
 async function update_room_players(item,room_players,room_expiration,message,ddb) {
@@ -203,18 +203,18 @@ async function update_room_players(item,room_players,room_expiration,message,ddb
   console.log(" - message: " + JSON.stringify(message));
 
 
-  // Build room connections
+  // Build room connections and add this connection if new.
   var game_connections = JSON.parse(item.connections);
   var new_connection = new Object;
   new_connection.id = message.connectionId
-  game_connections.push(new_connection);
+  game_connections.some(x => x.id === new_connection.id) ? console.log("This connection is already in the room.") : game_connections.push(new_connection) ;
   item.connections = game_connections;
 
-  // Build room players
+  // Build room players - no duplicate ids.
   var game_players = [];
   for (var p in JSON.parse(item.players)) 
     game_players.push(JSON.parse(item.players)[p]);
-  game_players.push(message.player);
+  game_players.some(x => x.id === message.player.id) ? console.log("This player is already in the room.") : game_players.push(message.player) ;
   item.players = game_players;
 
   // Update players and connections for open room
@@ -233,8 +233,9 @@ async function update_room_players(item,room_players,room_expiration,message,ddb
 
   try {
     console.log("Updating room players...");
-    await ddb.update(update_params).promise();
-    Promise.all();
+    var updates = await ddb.update(update_params).promise();
+    Promise.resolve(updates);
+    return updates;
   } catch (err) {
     console.log("Error", err);
   }
