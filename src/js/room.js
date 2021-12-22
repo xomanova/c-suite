@@ -1242,6 +1242,7 @@
 
     socket = netgames.socket = new WebSocket('wss://' + window.netgames_host + '/socket/');
     socket.onopen = function() {
+      console.log('socket connection opened')
       $('#connecting').hide();
       if (netgames.time_difference_filter == null) {
         netgames.time_difference_filter = new ScalarKalmanFilter({
@@ -1251,6 +1252,7 @@
           initial_measurement_variance: 1e4
         });
       }
+      console.log('Inside time_different_fileter check, netgames:' + JSON.stringify(netgames))
       return netgames.join();
     };
     socket.onclose = function(reason) {
@@ -1284,12 +1286,14 @@
 //      }
 //    });
     socket.onmessage = function(event) {
+      console.log('Inside onmessage one, netgames:' + JSON.stringify(netgames))
       if (event.action == 'state') {
         update_room(room)
       }
     }
 
     socket.onmessage = function(arg) {
+      console.log('Inside onmessage two, netgames:' + JSON.stringify(netgames))
       if (arg.action == 'register-player-interactions') {
         var players, timestamp;
         timestamp = arg.timestamp, players = arg.players;
@@ -1300,6 +1304,7 @@
       }
     };
     return socket.onerror = function(message) {
+      console.log('Inside onerror, netgames:' + JSON.stringify(netgames))
       $('#error-message').text(message);
       return console.error(message);
     };
