@@ -268,10 +268,10 @@ netgames.render = (state, players) ->
   $content.show()
 
 netgames.refresh = ->
-  state = netgames.room.state
+  state = netgames.state
   $section = $('#' + state.phase)
   phase = netgames.phases[state.phase]
-  phase?.refresh?(state, netgames.room.players, $section)
+  phase?.refresh?(state, netgames.players, $section)
 
 netgames.phases = {}
 netgames.utility_menu_player_class_predicates = {
@@ -1084,7 +1084,7 @@ update_room = (room) ->
   else
     netgames.room = room
 
-  netgames.render(netgames.room.state, netgames.room.players)
+  netgames.render(netgames.state, netgames.players)
 
 
 join_room = ->

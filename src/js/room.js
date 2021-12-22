@@ -413,10 +413,10 @@
 
   netgames.refresh = function() {
     var $section, phase, state;
-    state = netgames.room.state;
+    state = netgames.state;
     $section = $('#' + state.phase);
     phase = netgames.phases[state.phase];
-    return phase != null ? typeof phase.refresh === "function" ? phase.refresh(state, netgames.room.players, $section) : void 0 : void 0;
+    return phase != null ? typeof phase.refresh === "function" ? phase.refresh(state, netgames.players, $section) : void 0 : void 0;
   };
 
   netgames.phases = {};
@@ -1232,7 +1232,7 @@
     } else {
       netgames.room = room;
     }
-    return netgames.render(netgames.room.state, netgames.room.players);
+    return netgames.render(netgames.state, netgames.players);
   };
 
   join_room = function() {
