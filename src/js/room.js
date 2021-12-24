@@ -1285,12 +1285,21 @@
 //        return socket.disconnect(true);
 //      }
 //    });
-    socket.onmessage = function(event) {
-      console.log('Inside onmessage one, netgames:' + JSON.stringify(netgames))
+//    socket.onmessage = function(event) {
+//      console.log('Inside onmessage one, netgames:' + JSON.stringify(netgames))
+//      if (event.action == 'state') {
+//        update_room(room)
+//      }
+//    }
+
+    socket.addEventListener("message", function(event) {
+      console.log('Inside addedEventListener, netgames:' + JSON.stringify(netgames))
+      console.log('Inside addedEventListener, event:' + JSON.stringify(event))
+      console.log('Inside addedEventListener, room:' + JSON.stringify(room))
       if (event.action == 'state') {
         update_room(room)
       }
-    }
+    });
 
     socket.onmessage = function(arg) {
       console.log('Inside onmessage two, netgames:' + JSON.stringify(netgames))
