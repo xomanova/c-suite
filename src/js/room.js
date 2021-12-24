@@ -272,7 +272,7 @@
       room_id: netgames.room_id,
       player_id: netgames.player.id,
       state: state,
-      clock: netgames.room.clock.server
+      //clock: netgames.room.clock.server
     }));
   };
 
