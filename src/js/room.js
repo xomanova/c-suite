@@ -1294,7 +1294,7 @@
 
     socket.addEventListener("message", function(event) {
       console.log('Inside addedEventListener, netgames:' + JSON.stringify(netgames))
-      console.log('Inside addedEventListener, event:' + JSON.stringify(event))
+      console.log('Inside addedEventListener, event:' + JSON.stringify(event.data))
       console.log('Inside addedEventListener, room:' + JSON.stringify(room))
       if (event.action == 'state') {
         update_room(room)
