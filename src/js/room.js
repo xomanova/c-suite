@@ -1294,6 +1294,7 @@
 
     socket.onmessage = function(arg) {
       console.log('Inside onmessage two, netgames:' + JSON.stringify(netgames))
+      console.log('arg:' + JSON.stringify(arg))
       if (arg.action == 'register-player-interactions') {
         var players, timestamp;
         timestamp = arg.timestamp, players = arg.players;
