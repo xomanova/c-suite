@@ -152,7 +152,7 @@ netgames.change = (state) ->
     room_id: netgames.room_id
     player_id: netgames.player.id
     state: state
-    clock: netgames.room.clock.server
+    # clock: netgames.room.clock.server
   }
 
 netgames.shuffle = (amount) ->
@@ -254,7 +254,7 @@ netgames.render = (state, players) ->
   })
 
   $spectator_base = $('#spectator-base')
-  $spectator_base.toggleClass('can-join', netgames.room.can_join)
+  $spectator_base.toggleClass('can-join', true) #  netgames.room.can_join)
 
   netgames.prerender?(state, players, $section)
   phase = netgames.phases[state.phase]
@@ -1072,17 +1072,20 @@ update_time_difference_filter = (client_timestamp, server_timestamp) ->
 
 update_room = (room) ->
 
-  # Check whether the received room is stale. If so, send a recovery message to bring game state back up to date.
-  same_room = netgames.room?.created == room.created
-  clock_difference = (netgames.room?.clock?.server ? 0) - room.clock.server
-  time_difference = (netgames.room?.last_modified ? 0) - room.last_modified
-  # Only recover the room if the clock is ahead of the received room, or if it's the same but was modified afterwards.
-  if same_room and (clock_difference > 0 or (clock_difference == 0 and time_difference > 0))
-    netgames.socket.send(JSON.stringify({
-    action: 'recover',
-    room: netgames.room)}
-  else
-    netgames.room = room
+  ## Check whether the received room is stale. If so, send a recovery message to bring game state back up to date.
+  #same_room = netgames.room?.created == room.created
+  #clock_difference = (netgames.room?.clock?.server ? 0) - room.clock.server
+  #time_difference = (netgames.room?.last_modified ? 0) - room.last_modified
+  ## Only recover the room if the clock is ahead of the received room, or if it's the same but was modified afterwards.
+  #if same_room and (clock_difference > 0 or (clock_difference == 0 and time_difference > 0))
+  #  netgames.socket.send(JSON.stringify({
+  #  action: 'recover',
+  #  room: netgames.room)}
+  #else
+  #  netgames.room = room
+  netgames.state = room.state
+  netgames.players = room.players
+  netgames.room = room
 
   netgames.render(netgames.state, netgames.players)
 

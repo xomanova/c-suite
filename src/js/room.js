@@ -1220,18 +1220,19 @@
   };
 
   update_room = function(room) {
-    var clock_difference, ref, ref1, ref2, ref3, ref4, ref5, same_room, time_difference;
-    same_room = ((ref = netgames.room) != null ? ref.created : void 0) === room.created;
-    clock_difference = ((ref1 = (ref2 = netgames.room) != null ? (ref3 = ref2.clock) != null ? ref3.server : void 0 : void 0) != null ? ref1 : 0) - room.clock.server;
-    time_difference = ((ref4 = (ref5 = netgames.room) != null ? ref5.last_modified : void 0) != null ? ref4 : 0) - room.last_modified;
-    if (same_room && (clock_difference > 0 || (clock_difference === 0 && time_difference > 0))) {
-      netgames.socket.send(JSON.stringify({
-        action: 'recover',
-        room: netgames.room
-      }));
-    } else {
-      netgames.room = room;
-    }
+    //var clock_difference, ref, ref1, ref2, ref3, ref4, ref5, same_room, time_difference;
+    //same_room = ((ref = netgames.room) != null ? ref.created : void 0) === room.created;
+    //clock_difference = ((ref1 = (ref2 = netgames.room) != null ? (ref3 = ref2.clock) != null ? ref3.server : void 0 : void 0) != null ? ref1 : 0) - room.clock.server;
+    //time_difference = ((ref4 = (ref5 = netgames.room) != null ? ref5.last_modified : void 0) != null ? ref4 : 0) - room.last_modified;
+    //if (same_room && (clock_difference > 0 || (clock_difference === 0 && time_difference > 0))) {
+    //  netgames.socket.send(JSON.stringify({
+    //    action: 'recover',
+    //    room: netgames.room
+    //  }));
+    //} else {
+    //  netgames.room = room;
+    //}
+    netgames.room = room;
     return netgames.render(netgames.state, netgames.players);
   };
 
@@ -1295,10 +1296,7 @@
     socket.addEventListener("message", function(event) {
       console.log('Inside addedEventListener, netgames:' + JSON.stringify(netgames))
       console.log('Inside addedEventListener, event:' + JSON.stringify(event.data))
-      console.log('Inside addedEventListener, room:' + JSON.stringify(room))
-      if (event.action == 'state') {
-        update_room(room)
-      }
+      update_room(event.data);
     });
 
     socket.onmessage = function(arg) {
