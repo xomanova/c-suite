@@ -1297,15 +1297,9 @@
 //      }
 //    }
 
-    socket.addEventListener("message", function(event) {
-      console.log('Inside addedEventListener, netgames:' + JSON.stringify(netgames))
-      console.log('Inside addedEventListener, event:' + JSON.stringify(event.data))
-      update_room(event.data);
-    });
-
     socket.onmessage = function(arg) {
       console.log('Inside onmessage two, netgames:' + JSON.stringify(netgames))
-      console.log('arg:' + JSON.stringify(arg))
+      console.log('Inside onmessage two, arg.data:' + JSON.stringify(arg.data))
       if (arg.action == 'register-player-interactions') {
         var players, timestamp;
         timestamp = arg.timestamp, players = arg.players;
@@ -1313,6 +1307,8 @@
         return dataLayer.push({
           event: 'register-player-interactions'
         });
+      } else {
+        update_room(arg.data);
       }
     };
     return socket.onerror = function(message) {
@@ -1320,6 +1316,12 @@
       $('#error-message').text(message);
       return console.error(message);
     };
+
+    //socket.addEventListener("message", function(event) {
+    //  console.log('Inside addedEventListener, netgames:' + JSON.stringify(netgames))
+    //  console.log('Inside addedEventListener, event:' + JSON.stringify(event.data))
+    //  update_room(event.data);
+    //});
   };
 
   $(function() {
