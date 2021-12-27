@@ -65,7 +65,7 @@ async function join_room(message, ddb, room_players, connectionId, room_expirati
               connections: "[{\"id\":\"" + connectionId + "\"}]",
               owner: JSON.stringify(message.player),
               players: "[" + JSON.stringify(message.player) + "]",
-              state: "{\"phase\": \"huddle\"}",
+              state: '{"phase":"huddle"}',
               expiration: room_expiration
             }
           };
