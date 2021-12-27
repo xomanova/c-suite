@@ -1237,7 +1237,7 @@
     //  netgames.room = room;
     //}
     netgames.room = room;
-    return netgames.render(netgames.state, netgames.players);
+    return netgames.render(netgames.room.state, netgames.room.players);
   };
 
   join_room = function() {
