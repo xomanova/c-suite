@@ -359,8 +359,7 @@
 
   netgames.render = function(state, players) {
     var $content, $section, $spectator_base, $utility_menu, phase, player, ref, spectator;
-    state.phase = 'huddle';
-    
+
     console.log("logging from netgames.render room.js:363, state: " + state );
     console.log("logging from netgames.render room.js:364, state.phase: " + state.phase );
 

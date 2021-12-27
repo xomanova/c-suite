@@ -1088,6 +1088,7 @@ update_room = (room) ->
   netgames.state = room.state
   netgames.players = room.players
   netgames.room = room
+  console.log(' inside update_room - room.coffee:1091 - netgames:' + netgames)
 
   netgames.render(netgames.state, netgames.players)
 
