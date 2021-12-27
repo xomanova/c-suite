@@ -1072,7 +1072,7 @@ update_time_difference_filter = (client_timestamp, server_timestamp) ->
   netgames.time_difference = netgames.time_difference_filter.time_difference
 
 
-update_room = (room) ->
+update_room = (event.data) ->
 
   ## Check whether the received room is stale. If so, send a recovery message to bring game state back up to date.
   #same_room = netgames.room?.created == room.created
@@ -1085,12 +1085,12 @@ update_room = (room) ->
   #  room: netgames.room)}
   #else
   #  netgames.room = room
-  netgames.state = room.state
-  netgames.players = room.players
-  netgames.room = room
+  netgames.state = event.data.state
+  netgames.players = event.data.players
+  netgames.room = event.data
   console.log(' inside update_room - room.coffee:1091 - netgames:' + netgames)
 
-  netgames.render(netgames.state, netgames.players)
+  netgames.render(netgames.room.state, netgames.room.players)
 
 
 join_room = ->
@@ -1142,7 +1142,7 @@ join_room = ->
 #
   socket.onmessage(event) = function(event) {
     if (event.action == 'state') {
-      update_room(room)
+      update_room(event.data)
     }
   } 
 
