@@ -225,6 +225,8 @@ netgames.refresh_if = (needs_refresh) ->
 
 netgames.render = (state, players) ->
 
+  console.log("logging from netgames.render room.coffee:228, state: " + state );
+  console.log("logging from netgames.render room.coffee:229, state.phase: " + state.phase );
   $section = $('#' + state.phase)
   # If a section is missing, try refreshing the client once
   netgames.refresh_if($section.length == 0)

@@ -359,6 +359,10 @@
 
   netgames.render = function(state, players) {
     var $content, $section, $spectator_base, $utility_menu, phase, player, ref, spectator;
+
+    console.log("logging from netgames.render room.js:363, state: " + state );
+    console.log("logging from netgames.render room.js:364, state.phase: " + state.phase );
+
     $section = $('#' + state.phase);
     netgames.refresh_if($section.length === 0);
     if ($section.is(':hidden')) {
