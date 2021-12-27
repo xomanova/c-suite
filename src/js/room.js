@@ -1300,7 +1300,7 @@
     socket.addEventListener("message", function(event) {
       console.log('Inside addedEventListener, netgames:' + JSON.stringify(netgames))
       console.log('Inside addedEventListener, event:' + JSON.stringify(event.data))
-      update_room(event.data);
+      update_room(JSON.parse(event.data));
     });
 
     socket.onmessage = function(arg) {
