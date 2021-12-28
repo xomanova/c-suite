@@ -1085,9 +1085,9 @@ update_room = (room) ->
   #  room: netgames.room)}
   #else
   #  netgames.room = room
-  netgames.state = room.state
-  netgames.players = room.players
-  netgames.room = room
+  netgames.state = JSON.parse(room.state);
+  netgames.players = JSON.parse(room.players);
+  netgames.room = JSON.parse(room);
   console.log(' inside update_room - room.coffee:1091 - room:' + room)
 
   netgames.render(netgames.state, netgames.players)
