@@ -1299,7 +1299,7 @@
     socket.onmessage = function(arg) {
       console.log('Inside onmessage two, netgames:' + JSON.stringify(netgames));
       console.log('Inside onmessage two, arg.data:' + JSON.stringify(arg.data));
-      var room = arg.data;
+      var room = JSON.parse(arg.data);
       if (arg.action == 'register-player-interactions') {
         var players, timestamp;
         timestamp = arg.timestamp, players = arg.players;
