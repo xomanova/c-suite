@@ -1298,8 +1298,9 @@
 //    }
 
     socket.onmessage = function(arg) {
-      console.log('Inside onmessage two, netgames:' + JSON.stringify(netgames))
-      console.log('Inside onmessage two, arg.data:' + JSON.stringify(arg.data))
+      console.log('Inside onmessage two, netgames:' + JSON.stringify(netgames));
+      console.log('Inside onmessage two, arg.data:' + JSON.stringify(arg.data));
+      var room = JSON.parse(arg.data);
       if (arg.action == 'register-player-interactions') {
         var players, timestamp;
         timestamp = arg.timestamp, players = arg.players;
@@ -1308,7 +1309,10 @@
           event: 'register-player-interactions'
         });
       } else {
-        update_room(arg.data);
+        console.log('Inside onmessage two room.js:1311, room:' + JSON.stringify(room));
+        console.log('Inside onmessage two room.js:1312, room type:' + typeof room);
+        console.log('Inside onmessage two room.js:1313 calling update_room(room)');
+        update_room(room);
       }
     };
     return socket.onerror = function(message) {
