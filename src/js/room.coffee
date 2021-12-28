@@ -1090,7 +1090,7 @@ update_room = (room) ->
   netgames.room = room;
   console.log(' inside update_room - room.coffee:1091 - room:' + room)
 
-  netgames.render(netgames.state, netgames.players)
+  netgames.render(room.state, room.players)
 
 
 join_room = ->
