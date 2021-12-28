@@ -363,7 +363,7 @@
     players = JSON.parse(players);
     console.log("logging from netgames.render room.js:362, state typeof: " + typeof state );
     console.log("logging from netgames.render room.js:363, state: " + state );
-    console.log("logging from netgames.render room.js:364, state[phase]: " + state.phase );
+    console.log("logging from netgames.render room.js:364, state.phase: " + state.phase );
 
     $section = $('#' + state.phase);
     netgames.refresh_if($section.length === 0);
@@ -1249,7 +1249,6 @@
 
     socket = netgames.socket = new WebSocket('wss://' + window.netgames_host + '/socket/');
     socket.onopen = function() {
-      console.log('socket connection opened')
       $('#connecting').hide();
       if (netgames.time_difference_filter == null) {
         netgames.time_difference_filter = new ScalarKalmanFilter({
@@ -1259,7 +1258,6 @@
           initial_measurement_variance: 1e4
         });
       }
-      console.log('Inside time_different_fileter check, netgames:' + JSON.stringify(netgames))
       return netgames.join();
     };
     socket.onclose = function(reason) {
@@ -1293,7 +1291,6 @@
 //      }
 //    });
 //    socket.onmessage = function(event) {
-//      console.log('Inside onmessage one, netgames:' + JSON.stringify(netgames))
 //      if (event.action == 'state') {
 //        update_room(room)
 //      }
@@ -1302,7 +1299,7 @@
     socket.onmessage = function(arg) {
       console.log('Inside onmessage two, netgames:' + JSON.stringify(netgames));
       console.log('Inside onmessage two, arg.data:' + JSON.stringify(arg.data));
-      var room = JSON.parse(arg.data);
+      var room = arg.data;
       if (arg.action == 'register-player-interactions') {
         var players, timestamp;
         timestamp = arg.timestamp, players = arg.players;
