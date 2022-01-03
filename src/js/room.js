@@ -365,7 +365,7 @@
     console.log("logging from netgames.render room.js:365, state: " + state );
     console.log("logging from netgames.render room.js:366, state.phase: " + state.phase );
     console.log("logging from netgames.render room.js:367, players typeof: " + typeof players );
-    console.log("logging from netgames.render room.js:368, players: " + players );
+    console.log("logging from netgames.render room.js:368, players: " + JSON.stringify(players) );
 
     $section = $('#' + state.phase);
     netgames.refresh_if($section.length === 0);
