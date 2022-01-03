@@ -8,7 +8,6 @@
   jQuery.prototype[Symbol.iterator] = Array.prototype[Symbol.iterator];
 
   netgames = window.netgames = {};
-  const netgames = window.netgames;
 
   netgames.has_touch = 'ontouchstart' in window || 'msMaxTouchPoints' in window.navigator;
 
