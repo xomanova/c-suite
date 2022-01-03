@@ -121,5 +121,3 @@
   }
 
 }).call(this);
-
-//# sourceMappingURL=data.js.map
