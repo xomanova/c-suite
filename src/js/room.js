@@ -27,6 +27,8 @@
   };
 
   netgames.player_by_id = function(players, player_id) {
+    console.log("logging from netgames.render room.js:30, players typeof: " + typeof players );
+    console.log("logging from netgames.render room.js:31, players: " + JSON.stringify(players) );
     var i, len, player;
     for (i = 0, len = players.length; i < len; i++) {
       player = players[i];
