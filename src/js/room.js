@@ -510,6 +510,8 @@
 
   netgames.lib.huddle = function(arg, additional) {
     var down_button_selector, enable_shuffle, leave_button_selector, max_players, message, min_players, players_selector, ref, ref1, ref10, ref2, ref3, ref4, ref5, ref6, ref7, ref8, ref9, spectators_selector, start_button_selector, up_button_selector;
+    console.log("logging from netgames.lib.huddle room.js:513, arg: " + JSON.stringify(arg) );
+    console.log("logging from netgames.lib.huddle room.js:514, additional: " + JSON.stringify(additional) );
     ref = arg != null ? arg : {}, players_selector = (ref1 = ref.players_selector) != null ? ref1 : '.players', spectators_selector = (ref2 = ref.spectators_selector) != null ? ref2 : '.spectators', start_button_selector = (ref3 = ref.start_button_selector) != null ? ref3 : '.start', leave_button_selector = (ref4 = ref.leave_button_selector) != null ? ref4 : '.leave', up_button_selector = (ref5 = ref.up_button_selector) != null ? ref5 : '.up', down_button_selector = (ref6 = ref.down_button_selector) != null ? ref6 : '.down', min_players = (ref7 = ref.min_players) != null ? ref7 : 1, max_players = (ref8 = ref.max_players) != null ? ref8 : 2e308, message = (ref9 = ref.message) != null ? ref9 : null, enable_shuffle = (ref10 = ref.enable_shuffle) != null ? ref10 : false;
     if (additional == null) {
       additional = {};
