@@ -1,7 +1,7 @@
 # Make jquery results iterable
 jQuery.prototype[Symbol.iterator] = Array.prototype[Symbol.iterator];
 
-netgames = window.netgames = {}
+# netgames = window.netgames = {}
 
 netgames.has_touch = 'ontouchstart' of window or 'msMaxTouchPoints' of window.navigator
 
