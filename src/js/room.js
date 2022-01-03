@@ -360,7 +360,7 @@
   netgames.render = function(state, players) {
     var $content, $section, $spectator_base, $utility_menu, phase, player, ref, spectator;
     state = JSON.parse(state);
-    //players = JSON.parse(players);
+    players = JSON.parse(players);
     console.log("logging from netgames.render room.js:362, state typeof: " + typeof state );
     console.log("logging from netgames.render room.js:363, state: " + state );
     console.log("logging from netgames.render room.js:364, state.phase: " + state.phase );
