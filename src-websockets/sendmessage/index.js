@@ -112,13 +112,14 @@ async function join_room(message, ddb, room_players, connectionId, room_expirati
         '#r': 'room_id',
         '#c': 'connections',
         '#p': 'players',
-        '#s': 'state'
+        '#s': 'state',
+        '#sp': 'spectators'
       },
       ExpressionAttributeValues: {
         ':r': message.room_id,
       },
       KeyConditionExpression: '#r = :r',
-      ProjectionExpression: '#r, #c, #p, #s',
+      ProjectionExpression: '#r, #c, #p, #s, #sp',
       TableName: process.env.ROOMS_TABLE_NAME
     };
     try {
@@ -185,7 +186,7 @@ async function update_room_players(item,room_players,room_expiration,message,ddb
 }
 
 async function publish_room_change(apigwManagementApi,returnString) {
-  const allowed = ['room_id', 'players','state'];
+  const allowed = ['room_id', 'players','state','spectators'];
   const data = Object.keys(returnString).filter(key => allowed.includes(key)).reduce((obj, key) => {
       obj[key] = returnString[key];
       return obj;
