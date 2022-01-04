@@ -1,0 +1,245 @@
+@import '../../../css/mixins';
+@import '../../../css/vars';
+
+$good-colour: $blue;
+$evil-colour: $red;
+
+ul,
+ol.policies {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  text-align: inherit;
+}
+
+#content {
+  &.executed .base .btn {
+    display: none;
+    &.only-executee {
+      display: inherit;
+    }
+  }
+
+  &.fascist,
+  &.liberal {
+    color: inherit;
+  }
+}
+
+$roles: 'president', 'chancellor', 'executee', 'executed', 'hitler', 'fascist', 'liberal';
+@each $role in $roles {
+  @include not-only($role);
+}
+
+.liberal {
+  color: $good-colour;
+}
+
+.fascist {
+  color: $evil-colour;
+}
+
+@mixin policy($policy-width) {
+  $policy-height: $policy-width * 1.618;
+  $border-size: $policy-width/12.5;
+  $inside-width: $policy-width - $border-size * 2;
+
+  width: $policy-width;
+  height: $policy-height;
+  margin: $border-size;
+  border: $border-size solid;
+
+  h1 {
+    font-size: $inside-width/5;
+    line-height: $inside-width/5;
+    margin: $border-size/2 0;
+
+    #content[data-theme='sith'] & {
+      font-size: $inside-width/7;
+    }
+  }
+
+  .glyphicon-large {
+    display: block;
+    font-size: $inside-width/1.5;
+    line-height: $inside-width/1.5;
+    margin: $border-size 0;
+  }
+
+  .text {
+    height: $border-size * 5;
+    margin: $border-size;
+    background: repeating-linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.3),
+      rgba(0, 0, 0, 0.3) $border-size/2,
+      rgba(0, 0, 0, 0) $border-size/2,
+      rgba(0, 0, 0, 0) $border-size
+    );
+  }
+}
+
+.policies {
+  perspective: 400px;
+
+  .policy {
+    animation-name: drop;
+    animation-duration: 0.5s;
+    animation-fill-mode: backwards;
+
+    &:nth-child(2) {
+      animation-delay: 0.15s;
+    }
+
+    &:nth-child(3) {
+      animation-delay: 0.3s;
+    }
+  }
+}
+
+.policy {
+  display: inline-block;
+
+  &.fascist {
+    background-color: mix($evil-colour, white);
+    border-color: $evil-colour;
+  }
+
+  &.liberal {
+    background-color: mix($good-colour, white);
+    border-color: $good-colour;
+  }
+
+  &.w250 {
+    @include policy(250px);
+  }
+
+  &.w175 {
+    @include policy(175px);
+  }
+
+  &.w125 {
+    @include policy(125px);
+  }
+}
+
+#policy-board {
+  $circle-size: 30px;
+  $spacing: 4px;
+  $opacity: 30;
+
+  .fascist,
+  .liberal,
+  .deck,
+  .deck-num,
+  .refusals {
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  span {
+    display: inline-block;
+    border-radius: $circle-size;
+    width: $circle-size;
+    height: $circle-size;
+    margin: $spacing;
+    line-height: $circle-size;
+    font-size: $circle-size * 0.6;
+    vertical-align: top;
+  }
+
+  .fascist span {
+    color: $evil-colour;
+    background-color: mix($evil-colour, $bg-color, $opacity);
+
+    &.active {
+      color: white;
+      background-color: $evil-colour;
+    }
+
+    &.danger {
+      border: 1px solid $evil-colour;
+    }
+  }
+
+  .liberal span {
+    background-color: mix($good-colour, $bg-color, $opacity);
+
+    &.active {
+      background-color: $good-colour;
+    }
+  }
+
+  @include deck($circle-size);
+
+  .deck {
+    margin: $spacing;
+  }
+
+  .refusals span {
+    background-color: #444;
+    width: $circle-size/4;
+    height: $circle-size/4;
+
+    &.active {
+      background-color: $evil-colour;
+    }
+  }
+}
+
+#previous-vote {
+  li {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow-x: hidden;
+  }
+}
+
+#intro {
+  .vs .num {
+    font-size: 2em;
+    padding: 0 30px;
+  }
+}
+
+#identify {
+  .fascists li {
+    font-size: 1.2em;
+  }
+}
+
+#president,
+#chancellor {
+  .policy {
+    transition: transform 300ms, opacity 300ms, filter 300ms;
+    opacity: 1;
+    transform: scale(1);
+
+    &.discard {
+      opacity: 0.3;
+      transform: scale(0.9);
+    }
+
+    &.enact {
+      transform: scale(1.1);
+    }
+
+    &:hover {
+      cursor: pointer;
+      filter: brightness(120%);
+    }
+  }
+}
+
+#fascist_victory,
+#liberal_victory {
+  .glyphicon-large {
+    font-size: 200px;
+  }
+}
+
+#execution_result {
+  .glyphicon-skull {
+    font-size: 150px;
+  }
+}
