@@ -1354,6 +1354,7 @@
         return;
       }
       $create_user.hide();
+      window.location = 'room.html';
       return join_room();
     });
     netgames.player = {};
