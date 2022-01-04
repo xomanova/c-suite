@@ -1309,6 +1309,7 @@
       console.log('Inside onmessage two, netgames:' + JSON.stringify(netgames));
       console.log('Inside onmessage two, arg.data:' + JSON.stringify(arg.data));
       var room = JSON.parse(arg.data);
+      netgames.room_id = room.room_id;
       if (arg.action == 'register-player-interactions') {
         var players, timestamp;
         timestamp = arg.timestamp, players = arg.players;
@@ -1377,18 +1378,19 @@
     });
     if (netgames.player.name != null) {
       join_room();
+      window.location = 'room.html';
     } else {
-      if (URLSearchParams) {
-        url_params = new URLSearchParams(window.location.search);
-        ref2 = Array.from(url_params.keys());
-        for (i = 0, len = ref2.length; i < len; i++) {
-          key = ref2[i];
-          if (key.endsWith('name')) {
-            $create_user.find('input').val(url_params.get(key));
-            break;
-          }
-        }
-      }
+      //if (URLSearchParams) {
+      //  url_params = new URLSearchParams(window.location.search);
+      //  ref2 = Array.from(url_params.keys());
+      //  for (i = 0, len = ref2.length; i < len; i++) {
+      //    key = ref2[i];
+      //    if (key.endsWith('name')) {
+      //      $create_user.find('input').val(url_params.get(key));
+      //      break;
+      //    }
+      //  }
+      //}
       $create_user.show();
     }
     $('#booted .join-again').click(function() {
