@@ -59,7 +59,7 @@
       code = $('input').val().toUpperCase();
       if (code) {
         localStorage.join_request = code
-        return window.location = 'new.html';
+        return window.location = 'room.html';
       }
     });
   });

@@ -1264,6 +1264,7 @@
           initial_measurement_variance: 1e4
         });
       }
+      window.location = 'room.html';
       return netgames.join();
     };
     socket.onclose = function(reason) {

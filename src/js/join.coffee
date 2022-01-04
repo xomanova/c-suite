@@ -61,4 +61,4 @@ $ ->
     event.preventDefault()
     code = $('input').val().toUpperCase()
     if code
-      window.location = 'new.html'
+      window.location = 'room.html'
