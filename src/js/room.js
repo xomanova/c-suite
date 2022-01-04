@@ -361,6 +361,9 @@
 
   netgames.render = function(state, players) {
     var $content, $section, $spectator_base, $utility_menu, phase, player, ref, spectator;
+    if (!window.location == 'room.html'){
+      window.location = 'room.html';
+    }
     state = JSON.parse(state);
     //players = JSON.parse(players);
     console.log("logging from netgames.render room.js:364, state typeof: " + typeof state );
@@ -1354,7 +1357,6 @@
         return;
       }
       $create_user.hide();
-      window.location = 'room.html';
       return join_room();
     });
     netgames.player = {};
