@@ -1264,7 +1264,9 @@
           initial_measurement_variance: 1e4
         });
       }
-      localStorage.removeItem(join_request);
+      if (!(localStorage.getItem(join_request) === null)) {
+        localStorage.removeItem(join_request);
+      }
       return netgames.join();
     };
     socket.onclose = function(reason) {
