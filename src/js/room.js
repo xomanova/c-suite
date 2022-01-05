@@ -361,9 +361,6 @@
 
   netgames.render = function(state, players) {
     var $content, $section, $spectator_base, $utility_menu, phase, player, ref, spectator;
-    if (!window.location == 'room.html'){
-      window.location = 'room.html';
-    }
     state = JSON.parse(state);
     //players = JSON.parse(players);
     console.log("logging from netgames.render room.js:364, state typeof: " + typeof state );
@@ -1379,7 +1376,7 @@
     });
     if (netgames.player.name != null) {
       join_room();
-      window.location = 'room.html';
+      windows.location.replace("room.html")
     } else {
       //if (URLSearchParams) {
       //  url_params = new URLSearchParams(window.location.search);
