@@ -107,6 +107,10 @@ body {
   overflow-x: hidden;
 }
 
+.roombody {
+  overflow: hidden;
+}
+
 ol,
 ul {
   text-align: left;
