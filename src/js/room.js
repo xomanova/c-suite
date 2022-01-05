@@ -1375,7 +1375,7 @@
     });
     if (netgames.player.name != null) {
       join_room();
-      window.location.replace("room.html")
+      //window.location.replace("room.html")
     } else {
       //if (URLSearchParams) {
       //  url_params = new URLSearchParams(window.location.search);
