@@ -132,6 +132,9 @@ async function join_room(message, ddb, room_players, connectionId, room_expirati
     if (message.room_id == 'XDXD'){
         // Create new Room
         var new_room_id = random_room_string();
+        var xd_room_state = new Object;
+        xd_room_state.phase = "huddle";
+        xd_room_state.ready = "false";
         message.room_id = new_room_id;
         const params = {
             TableName: process.env.ROOMS_TABLE_NAME,
@@ -140,7 +143,7 @@ async function join_room(message, ddb, room_players, connectionId, room_expirati
               connections: "[{\"id\":\"" + connectionId + "\"}]",
               owner: JSON.stringify(message.player),
               players: "[" + JSON.stringify(message.player) + "]",
-              state: "{\"phase\":\"huddle\"}",
+              state: xd_room_state,
               spectators: "[]",
               expiration: room_expiration
             }
