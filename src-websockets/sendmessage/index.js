@@ -91,15 +91,17 @@ async function update_room_state(item,room_expiration,message,ddb) {
   console.log(" - room_expiration: " + JSON.stringify(room_expiration));
   console.log(" - message: " + JSON.stringify(message));
 
+  var game_state = new Object;
+  game_state = progress_phase(message,message.state,item.state);
   // Merge room state
   item.connections = JSON.parse(item.connections); // This forms the object type correctly for return
-  var game_state = JSON.parse(item.state);
-  var new_state = new Object;
-  new_state = message.state;
-  game_state = {
-    ...game_state,
-    ...new_state
-  }
+  //var game_state = item.state;
+  //var new_state = new Object;
+  //new_state = message.state;
+  //game_state = {
+  //  ...game_state,
+  //  ...new_state
+  //}
   item.state = game_state;
 
   // Update room state
@@ -125,6 +127,33 @@ async function update_room_state(item,room_expiration,message,ddb) {
   }
 }
 
+async function progress_phase(message,received_state,current_state) {
+  var game_state = {
+    ...current_state,
+    ...received_state
+  }
+
+  switch(String(game_state.phase)) {
+    case 'huddle':
+      switch(Boolean(game_state.ready)){
+        case True:
+          return initialize_game(message,game_state,received_state.phase,current_state.phase);
+        case False:
+          return game_state;
+      }
+      break;
+    case 'shuffle':
+      break;
+    default:
+      console.log(`Default phase progression taken, unknown phase: ` + JSON.stringify(game_state));
+      return game_state;
+  }
+}
+
+async function initialize_game(message,game_state,received_phase,current_phase) {
+  return game_state;
+}
+
 async function join_room(message, ddb, room_players, connectionId, room_expiration) {
     // Add this connection to message json
     message.connectionId = connectionId;
@@ -134,6 +163,7 @@ async function join_room(message, ddb, room_players, connectionId, room_expirati
         var new_room_id = random_room_string();
         var xd_room_state = new Object;
         xd_room_state.phase = "huddle";
+        xd_room_state.previous_phase = "huddle";
         xd_room_state.ready = "false";
         message.room_id = new_room_id;
         const params = {
