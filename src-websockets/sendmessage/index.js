@@ -136,9 +136,9 @@ async function progress_phase(message,received_state,current_state) {
   switch(String(game_state.phase)) {
     case 'huddle':
       switch(Boolean(game_state.ready)){
-        case True:
+        case true:
           return initialize_game(message,game_state,received_state.phase,current_state.phase);
-        case False:
+        case false:
           return game_state;
       }
       break;
