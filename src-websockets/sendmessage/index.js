@@ -92,16 +92,10 @@ async function update_room_state(item,room_expiration,message,ddb) {
   console.log(" - message: " + JSON.stringify(message));
 
   var game_state = new Object;
-  game_state = progress_phase(message,message.state,item.state);
-  // Merge room state
+  game_state = await progress_phase(message,message.state,item.state);
+  console.log(`game_state after progress_phase: `+ JSON.stringify(game_state));
+
   item.connections = JSON.parse(item.connections); // This forms the object type correctly for return
-  //var game_state = item.state;
-  //var new_state = new Object;
-  //new_state = message.state;
-  //game_state = {
-  //  ...game_state,
-  //  ...new_state
-  //}
   item.state = game_state;
 
   // Update room state
@@ -113,12 +107,12 @@ async function update_room_state(item,room_expiration,message,ddb) {
     },
     UpdateExpression: "set #C = :c, #S = :s, #E = :e",
     ExpressionAttributeNames: {"#C":"connections","#S":"state","#E":"expiration"},
-    ExpressionAttributeValues: { ":c": JSON.stringify(item.connections), ":s": JSON.stringify(item.state),":e": room_expiration },
+    ExpressionAttributeValues: { ":c": JSON.stringify(item.connections), ":s": JSON.stringify(game_state),":e": room_expiration },
     ReturnValues: "ALL_NEW"
   };
 
   try {
-    console.log("Updating room state...");
+    console.log("Updating room state..." + JSON.stringify(update_params));
     var updates = await ddb.update(update_params).promise();
     Promise.resolve(updates);
     return updates;
@@ -128,30 +122,41 @@ async function update_room_state(item,room_expiration,message,ddb) {
 }
 
 async function progress_phase(message,received_state,current_state) {
-  var game_state = {
+  var prog_game_state = {
     ...current_state,
     ...received_state
   }
 
-  switch(String(game_state.phase)) {
+  switch(String(prog_game_state.phase)) {
     case 'huddle':
-      switch(Boolean(game_state.ready)){
+      switch(Boolean(prog_game_state.ready)){
         case true:
-          return initialize_game(message,game_state,received_state.phase,current_state.phase);
+          console.log(`Huddle phase progression taken, true - game_state: ` + JSON.stringify(prog_game_state));
+          return initialize_game(message,prog_game_state,received_state.phase,current_state.phase);
         case false:
-          return game_state;
+          console.log(`Huddle phase progression taken, false - game_state: ` + JSON.stringify(prog_game_state));
+          return prog_game_state;
+        default:
+          return prog_game_state;
       }
-      break;
     case 'shuffle':
       break;
     default:
-      console.log(`Default phase progression taken, unknown phase: ` + JSON.stringify(game_state));
-      return game_state;
+      console.log(`Default phase progression taken, unknown phase: ` + JSON.stringify(prog_game_state));
+      return prog_game_state;
   }
 }
 
-async function initialize_game(message,game_state,received_phase,current_phase) {
-  return game_state;
+async function initialize_game(message,prog_game_state,received_phase,current_phase) {
+  console.log(`intialize_game() - prog_game_state: ` + JSON.stringify(prog_game_state))
+  // huddle => setup
+  var init_game_state = {
+    phase: 'setup',
+    previous_phase: 'huddle',
+    ready: 'false',
+    theme: 'sith'
+  }
+  return init_game_state;
 }
 
 async function join_room(message, ddb, room_players, connectionId, room_expiration) {
