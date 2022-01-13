@@ -155,7 +155,7 @@ async function initialize_game(message,prog_game_state,received_phase,current_ph
     previous_phase: 'huddle',
     ready: 'false',
     theme: 'sith'
-  }
+  };
   return init_game_state;
 }
 
