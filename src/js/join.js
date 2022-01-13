@@ -58,7 +58,7 @@
       event.preventDefault();
       code = $('input').val().toUpperCase();
       if (code) {
-        localStorage.join_request = code
+        localStorage.room = code
         return window.location = 'room.html';
       }
     });

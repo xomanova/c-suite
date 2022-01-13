@@ -1250,7 +1250,7 @@
 
   join_room = function() {
     var host, room_id, socket;
-    room_id = netgames.room_id = localStorage.join_request != null ? localStorage.join_request : $('#room-id').val();
+    room_id = netgames.room_id = localStorage.room != null ? localStorage.room : $('#room-id').val();
     host = window.location.host;
 
     socket = netgames.socket = new WebSocket('wss://' + window.netgames_host + '/socket/');
@@ -1307,6 +1307,11 @@
       console.log('Inside onmessage two, arg.data:' + JSON.stringify(arg.data));
       var room = JSON.parse(arg.data);
       netgames.room_id = room.room_id;
+      safe_localStorage_access(function() {
+        if (localStorage.room == null) {
+          return localStorage.room = netgames.room_id;
+        }
+      });
       if (arg.action == 'register-player-interactions') {
         var players, timestamp;
         timestamp = arg.timestamp, players = arg.players;
@@ -1316,8 +1321,6 @@
         });
       } else {
         console.log('Inside onmessage two room.js:1311, room:' + JSON.stringify(room));
-        console.log('Inside onmessage two room.js:1312, room type:' + typeof room);
-        console.log('Inside onmessage two room.js:1313 calling update_room(room)');
         update_room(room);
       }
     };
