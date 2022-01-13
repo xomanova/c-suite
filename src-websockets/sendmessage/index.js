@@ -83,6 +83,7 @@ async function change_room_state(message, ddb, connectionId, room_expiration) {
     return { statusCode: 500, body: 'Failed to update ddb: ' + JSON.stringify(err) };
   }
 
+  console.log(JSON.stringify(room.Items[0]));
   return room.Items[0];
 }
 
