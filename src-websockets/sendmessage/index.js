@@ -20,6 +20,7 @@ exports.handler = async event => {
   switch(String(action)) {
     case 'change':
       returnString = await change_room_state(eventBody, ddb, connectionId, room_expiration);
+      returnString.connections = JSON.parse(returnString.connections);
       break;
     case 'shuffle':
       break;
@@ -82,21 +83,16 @@ async function change_room_state(message, ddb, connectionId, room_expiration) {
   } catch (err) {
     return { statusCode: 500, body: 'Failed to update ddb: ' + JSON.stringify(err) };
   }
-
-  console.log(JSON.stringify(room.Items[0]));
+  
   return room.Items[0];
 }
 
 async function update_room_state(item,room_expiration,message,ddb) {
-  console.log(" -", item.room_id + ": " + JSON.stringify(item));
-  console.log(" - room_expiration: " + JSON.stringify(room_expiration));
-  console.log(" - message: " + JSON.stringify(message));
-
   var game_state = new Object;
   game_state = await progress_phase(message,message.state,item.state);
   console.log(`game_state after progress_phase: `+ JSON.stringify(game_state));
 
-  item.connections = JSON.parse(item.connections); // This forms the object type correctly for return
+  //item.connections = JSON.parse(item.connections); // This forms the object type correctly for return
   item.state = game_state;
 
   // Update room state
@@ -108,7 +104,7 @@ async function update_room_state(item,room_expiration,message,ddb) {
     },
     UpdateExpression: "set #C = :c, #S = :s, #E = :e",
     ExpressionAttributeNames: {"#C":"connections","#S":"state","#E":"expiration"},
-    ExpressionAttributeValues: { ":c": JSON.stringify(item.connections), ":s": JSON.stringify(game_state),":e": room_expiration },
+    ExpressionAttributeValues: { ":c": item.connections, ":s": game_state,":e": room_expiration },
     ReturnValues: "ALL_NEW"
   };
 
@@ -116,7 +112,7 @@ async function update_room_state(item,room_expiration,message,ddb) {
     console.log("Updating room state..." + JSON.stringify(update_params));
     var updates = await ddb.update(update_params).promise();
     Promise.resolve(updates);
-    return updates;
+    return game_state;
   } catch (err) {
     console.log("Error", err);
   }
@@ -255,11 +251,6 @@ async function join_room(message, ddb, room_players, connectionId, room_expirati
 }
 
 async function update_room_players(item,room_players,room_expiration,message,ddb) {
-  console.log(" -", item.room_id + ": " + JSON.stringify(item));
-  console.log(" - room_players: " + JSON.stringify(room_players));
-  console.log(" - room_expiration: " + JSON.stringify(room_expiration));
-  console.log(" - message: " + JSON.stringify(message));
-
 
   // Build room connections and add this connection if new.
   var game_connections = JSON.parse(item.connections);
@@ -308,14 +299,11 @@ async function publish_room_change(apigwManagementApi,returnString) {
 
   for ( const connection of returnString.connections) {
     var connectionId = connection.id;
-    console.log(connection);
-    console.log(typeof connection);
     try {
       await apigwManagementApi.postToConnection({ ConnectionId: connectionId, Data: JSON.stringify(data) }).promise();
     } catch (e) {
       //if (e.statusCode === 410) {
-        console.log(`Error sending to connection: ${e}`);
-        console.log(`Found stale connection: ${connectionId}`);
+        console.log(`Error sending to connection: ${e} (Id: ${connectionId})`);
       //  await ddb.delete({ TableName: process.env.CONNECTIONS_TABLE_NAME, Key: { connectionId } }).promise();
       //} else {
       //  throw e;
