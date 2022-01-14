@@ -21,6 +21,7 @@ exports.handler = async event => {
     case 'change':
       returnString = await change_room_state(eventBody, ddb, connectionId, room_expiration);
       returnString.connections = JSON.parse(returnString.connections);
+      returnString.players = JSON.parse(returnString.players);
       break;
     case 'shuffle':
       break;
@@ -93,6 +94,7 @@ async function update_room_state(item,room_expiration,message,ddb) {
   console.log(`game_state after progress_phase: `+ JSON.stringify(game_state));
 
   //item.connections = JSON.parse(item.connections); // This forms the object type correctly for return
+  //item.players = JSON.parse(item.players); // This forms the object type correctly for return
   item.state = game_state;
 
   // Update room state
@@ -136,6 +138,17 @@ async function progress_phase(message,received_state,current_state) {
         default:
           return prog_game_state;
       }
+    case 'setup':
+      switch(Boolean(prog_game_state.ready)){
+        case true:
+          console.log(`setup phase progression taken, true - game_state: ` + JSON.stringify(prog_game_state));
+          return roll_deck(message,prog_game_state,received_state.phase,current_state.phase);
+        case false:
+          console.log(`setup phase progression taken, false - game_state: ` + JSON.stringify(prog_game_state));
+          return prog_game_state;
+        default:
+          return prog_game_state;
+      }
     case 'shuffle':
       break;
     default:
@@ -155,6 +168,73 @@ async function initialize_game(message,prog_game_state,received_phase,current_ph
   };
   return init_game_state;
 }
+
+async function roll_deck(message,prog_game_state,received_phase,current_phase) {
+  console.log(`roll_deck() - prog_game_state: ` + JSON.stringify(prog_game_state))
+
+  var players_ready = players_ready(message.players);
+  var deck = deck();
+  var hitler = roll_baddie(message.players);
+  var allegiances = roll_allegiances(message.players);
+  var executions = players_ready(message.players);
+
+  // setup => intro
+  var intro_game_state = {
+    phase: 'intro',
+    previous_phase: 'setup',
+    theme: message.state.theme,
+    ready: players_ready,// object with playerids/readystate
+    num_enacted: {
+      liberal: 0,
+      fascist: 0
+    },
+    deck: [],// randomized deck of t/f[]
+    removed: 0,
+    president: 2,
+    refusals: 0,
+    hitler: hitler, // has to be determined before this
+    allegiance: allegiances,
+    execute: executions
+  }
+
+  return intro_game_state;
+}
+
+function players_ready(players) {
+  var map = new Object;
+  for (const player of players) {
+    map[player.id] = false
+  }
+  return map;
+}
+
+function deck() {
+  var tf = ['true','false']
+  var deck = [];
+  for (let card = 0; card < 18; card++) {
+    deck[0] = tf.sampe();
+  }
+  return deck;
+}
+
+function roll_baddie(players) {
+  var baddie = players.sample();
+  return baddie.id;
+}
+
+function roll_allegiances(players) {
+  var tf = ['true','false']
+  var map = new Object;
+  for (const player of players) {
+    if (map.filter(x => x.contains(false)).length < 2) {
+      map[player.id] = tf.sample();
+    }
+    else map[player.id] = 'true'
+  }
+  return map;
+}
+
+
 
 async function join_room(message, ddb, room_players, connectionId, room_expiration) {
     // Add this connection to message json
@@ -325,4 +405,8 @@ function random_room_string() {
       }
     } while (randomstring == 'XDXD');
     return randomstring;
+}
+
+Array.prototype.sample = function(){
+  return this[Math.floor(Math.random()*this.length)];
 }
