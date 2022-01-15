@@ -218,7 +218,7 @@ function deck() {
 }
 
 function roll_baddie(players) {
-  var baddie = players.sample();
+  var baddie = players[Math.floor(Math.random()*players.length)];
   return baddie.id;
 }
 
@@ -227,7 +227,7 @@ function roll_allegiances(players) {
   var map = new Object;
   for (const player of players) {
     if (map.filter(x => x.contains(false)).length < 2) {
-      map[player.id] = tf.sample();
+      map[player.id] = tf[Math.floor(Math.random()*tf.length)];
     }
     else map[player.id] = 'true'
   }
@@ -341,6 +341,7 @@ async function update_room_players(item,room_players,room_expiration,message,ddb
 
   // Build room players - no duplicate ids.
   var game_players = [];
+  console.log("item.players: "+JSON.stringify(item.players));
   for (var p in JSON.parse(item.players)) 
     game_players.push(JSON.parse(item.players)[p]);
   game_players.some(x => x.id === message.player.id) ? console.log("This player is already in the room.") : game_players.push(message.player) ;
@@ -405,8 +406,4 @@ function random_room_string() {
       }
     } while (randomstring == 'XDXD');
     return randomstring;
-}
-
-Array.prototype.sample = function(){
-  return this[Math.floor(Math.random()*this.length)];
 }
