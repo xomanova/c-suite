@@ -121,6 +121,7 @@ async function update_room_state(item,room_expiration,message,ddb) {
 }
 
 async function progress_phase(message,received_state,current_state) {
+  var current = current_room_object(message.room_id);
   var prog_game_state = {
     ...current_state,
     ...received_state
@@ -142,7 +143,7 @@ async function progress_phase(message,received_state,current_state) {
       switch(Boolean(prog_game_state.ready)){
         case true:
           console.log(`setup phase progression taken, true - game_state: ` + JSON.stringify(prog_game_state));
-          return roll_deck(message,prog_game_state,received_state.phase,current_state.phase);
+          return roll_deck(current,message,prog_game_state,received_state.phase,current_state.phase);
         case false:
           console.log(`setup phase progression taken, false - game_state: ` + JSON.stringify(prog_game_state));
           return prog_game_state;
@@ -169,26 +170,26 @@ async function initialize_game(message,prog_game_state,received_phase,current_ph
   return init_game_state;
 }
 
-async function roll_deck(message,prog_game_state,received_phase,current_phase) {
+async function roll_deck(current,message,prog_game_state,received_phase,current_phase) {
   console.log(`roll_deck() - prog_game_state: ` + JSON.stringify(prog_game_state))
 
-  var players_ready = players_ready(message.players);
-  var deck = deck();
-  var hitler = roll_baddie(message.players);
-  var allegiances = roll_allegiances(message.players);
-  var executions = players_ready(message.players);
+  var players_r = players_ready(current.players);
+  var deck = prep_deck();
+  var hitler = roll_baddie(current.players);
+  var allegiances = roll_allegiances(current.players);
+  var executions = players_ready(current.players);
 
   // setup => intro
   var intro_game_state = {
     phase: 'intro',
     previous_phase: 'setup',
     theme: message.state.theme,
-    ready: players_ready,// object with playerids/readystate
+    ready: players_r,// object with playerids/readystate
     num_enacted: {
       liberal: 0,
       fascist: 0
     },
-    deck: [],// randomized deck of t/f[]
+    deck: deck,// randomized deck of t/f[]
     removed: 0,
     president: 2,
     refusals: 0,
@@ -202,17 +203,20 @@ async function roll_deck(message,prog_game_state,received_phase,current_phase) {
 
 function players_ready(players) {
   var map = new Object;
+  console.log("typeof players: " + typeof players);
+  console.log("typeof JSON.parse(players): " + typeof JSON.parse(players));
+
   for (const player of players) {
     map[player.id] = false
   }
   return map;
 }
 
-function deck() {
+function prep_deck() {
   var tf = ['true','false']
   var deck = [];
   for (let card = 0; card < 18; card++) {
-    deck[0] = tf.sampe();
+    deck[0] = tf[Math.floor(Math.random()*tf.length)];
   }
   return deck;
 }
@@ -394,6 +398,37 @@ async function publish_room_change(apigwManagementApi,returnString) {
     }
   }
   return;
+}
+
+async function current_room_object(room_id) {
+  var query_params = {
+    ExpressionAttributeNames: {
+      '#r': 'room_id',
+      '#c': 'connections',
+      '#p': 'players',
+      '#s': 'state',
+      '#sp': 'spectators'
+    },
+    ExpressionAttributeValues: {
+      ':r': room_id,
+    },
+    KeyConditionExpression: '#r = :r',
+    ProjectionExpression: '#r, #c, #p, #s, #sp',
+    TableName: process.env.ROOMS_TABLE_NAME
+  };
+  try {
+    var room = await ddb.query(query_params, function(err, data) {
+      if (err) {
+          console.error("Unable to query. Error:", JSON.stringify(err, null, 2));
+      } else {
+          console.log("Query succeeded.");
+      }
+    }).promise();
+  } catch (err) {
+    return { statusCode: 500, body: 'Failed to update ddb: ' + JSON.stringify(err) };
+  }
+  Promise.resolve(room);
+  return room.Items[0];
 }
 
 function random_room_string() {
