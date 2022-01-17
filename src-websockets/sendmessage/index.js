@@ -428,6 +428,7 @@ async function current_room_object(room_id) {
     return { statusCode: 500, body: 'Failed to update ddb: ' + JSON.stringify(err) };
   }
   Promise.resolve(room);
+  console.log("current_room_object() - room: " + JSON.parse(room));
   return room.Items[0];
 }
 
