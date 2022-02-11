@@ -1,38 +1,38 @@
 # Make jquery results iterable
 jQuery.prototype[Symbol.iterator] = Array.prototype[Symbol.iterator];
 
-# netgames = window.netgames = {}
+# games = window.games = {}
 
-netgames.has_touch = 'ontouchstart' of window or 'msMaxTouchPoints' of window.navigator
+games.has_touch = 'ontouchstart' of window or 'msMaxTouchPoints' of window.navigator
 
-netgames.key_value = (key, value) ->
+games.key_value = (key, value) ->
   object = {}
   object[key] = value
   return object
 
-netgames.to_server_timestamp = (client_timestamp) ->
-  return client_timestamp + netgames.time_difference
+games.to_server_timestamp = (client_timestamp) ->
+  return client_timestamp + games.time_difference
 
-netgames.to_client_timestamp = (server_timestamp) ->
-  return server_timestamp - netgames.time_difference
+games.to_client_timestamp = (server_timestamp) ->
+  return server_timestamp - games.time_difference
 
-netgames.player_by_id = (players, player_id) ->
+games.player_by_id = (players, player_id) ->
   for player in players
     if player.id == player_id
       return player
   return null
 
-netgames.comma_list = (list, comma = ', ', final_separator = ' and ') ->
+games.comma_list = (list, comma = ', ', final_separator = ' and ') ->
   [first..., last] = list
   _.filter([first.join(comma), last]).join(final_separator);
 
-netgames.shame_players = (object, players, shameful) ->
+games.shame_players = (object, players, shameful) ->
   return players.filter (player) -> object.hasOwnProperty(player.id) and shameful(object[player.id])
 
-netgames.generate_shame_text = (shame_players, no_shame_text = 'Waiting for others...', shame_threshold = 1) ->
+games.generate_shame_text = (shame_players, no_shame_text = 'Waiting for others...', shame_threshold = 1) ->
   if shame_players.length == 0
     no_shame_text
-  else if netgames.player_by_id(shame_players, netgames.player.id)?
+  else if games.player_by_id(shame_players, games.player.id)?
     if shame_players.length > 1
       other_num = shame_players.length - 1
       plural = if other_num > 1 then 's' else ''
@@ -40,14 +40,14 @@ netgames.generate_shame_text = (shame_players, no_shame_text = 'Waiting for othe
     else
       'Waiting for you!'
   else if shame_players.length <= shame_threshold
-    'Waiting for ' + netgames.comma_list(shame_players.map((player) -> player.name))
+    'Waiting for ' + games.comma_list(shame_players.map((player) -> player.name))
   else
     'Waiting for ' + shame_players.length + ' others...'
 
-netgames.player_name_or_you = (player, {possessive = false, have_has = false, are_is = false, were_was = false} = {}) ->
+games.player_name_or_you = (player, {possessive = false, have_has = false, are_is = false, were_was = false} = {}) ->
   if not player?
     return ''
-  if player.id == netgames.player.id
+  if player.id == games.player.id
     name = if possessive then 'Your' else 'You'
     if have_has then name += ' have'
     if are_is then name += ' are'
@@ -61,7 +61,7 @@ netgames.player_name_or_you = (player, {possessive = false, have_has = false, ar
     if were_was then name += ' was'
     return name
 
-netgames.render_list = ($list, $template, values, render) ->
+games.render_list = ($list, $template, values, render) ->
   $list.children("*:nth-child(n+#{values.length + 1})").remove()
   $items = $list.children()
 
@@ -73,15 +73,15 @@ netgames.render_list = ($list, $template, values, render) ->
       render($item, value, index)
       $list.append($item)
 
-netgames.render_players = (state, players, $players, class_predicates) ->
-  netgames.render_list $players, $('<li>'), players, ($player, player) =>
+games.render_players = (state, players, $players, class_predicates) ->
+  games.render_list $players, $('<li>'), players, ($player, player) =>
     $player.text(player.name)
     $player.addClass('notranslate')
     $player.data('id', player.id)
     for klass, predicate of class_predicates
       $player.toggleClass(klass, predicate(state, players, player))
 
-netgames.render_theme = ($content, theme) ->
+games.render_theme = ($content, theme) ->
   if $content.attr('data-theme') == theme.id
     return
   $content.attr('data-theme', theme.id)
@@ -116,7 +116,7 @@ save_player_interactions = (player_interactions) ->
   safe_localStorage_access ->
     localStorage.player_interactions = JSON.stringify player_interactions
 
-netgames.register_player_interactions = (timestamp, players) ->
+games.register_player_interactions = (timestamp, players) ->
 
   player_interactions = get_player_interactions()
 
@@ -139,82 +139,82 @@ netgames.register_player_interactions = (timestamp, players) ->
 
   save_player_interactions(player_interactions)
 
-netgames.change_name_storage = (player_name) ->
+games.change_name_storage = (player_name) ->
   return false if player_name.length == 0
   safe_localStorage_access ->
     localStorage.player_name = player_name
-  netgames?.player?.name = player_name
+  games?.player?.name = player_name
   return true
 
-netgames.change = (state) ->
-  netgames.socket.send(JSON.stringify({
+games.change = (state) ->
+  games.socket.send(JSON.stringify({
     action: 'change',
-    room_id: netgames.room_id
-    player_id: netgames.player.id
+    room_id: games.room_id
+    player_id: games.player.id
     state: state
-    # clock: netgames.room.clock.server
+    # clock: games.room.clock.server
   }
 
-netgames.shuffle = (amount) ->
-  netgames.socket.send(JSON.stringify({
+games.shuffle = (amount) ->
+  games.socket.send(JSON.stringify({
     action: 'shuffle',
-    room_id: netgames.room_id
-    player_id: netgames.player.id
+    room_id: games.room_id
+    player_id: games.player.id
     amount: amount
   }
 
-netgames.join = ->
-  netgames.socket.send(JSON.stringify({
+games.join = ->
+  games.socket.send(JSON.stringify({
     action: 'join',
-    room_id: netgames.room_id
-    player: netgames.player
+    room_id: games.room_id
+    player: games.player
     timestamp: Date.now()
   }
 
-netgames.join_midway = ->
-  netgames.socket.send(JSON.stringify({
+games.join_midway = ->
+  games.socket.send(JSON.stringify({
     action: 'join-midway',
-    room_id: netgames.room_id
-    player_id: netgames.player.id
+    room_id: games.room_id
+    player_id: games.player.id
   }
 
-netgames.change_name = (player_name) ->
-  return false unless netgames.change_name_storage(player_name)
-  netgames.socket.send(JSON.stringify({
+games.change_name = (player_name) ->
+  return false unless games.change_name_storage(player_name)
+  games.socket.send(JSON.stringify({
     action: 'change-name',
-    room_id: netgames.room_id
-    player: netgames.player
+    room_id: games.room_id
+    player: games.player
   }
   return true
 
-netgames.leave = ->
-  netgames.socket.send(JSON.stringify({
+games.leave = ->
+  games.socket.send(JSON.stringify({
     action: 'leave',
-    room_id: netgames.room_id
-    player_id: netgames.player.id
+    room_id: games.room_id
+    player_id: games.player.id
   }
 
-netgames.boot = (player_ids) ->
-  netgames.socket.send(JSON.stringify({
+games.boot = (player_ids) ->
+  games.socket.send(JSON.stringify({
     action: 'boot',
-    room_id: netgames.room_id
+    room_id: games.room_id
     player_ids
   }
 
-netgames.restart = ->
-  netgames.socket.send(JSON.stringify({
+games.restart = ->
+  games.socket.send(JSON.stringify({
     action: 'restart',
-    room_id: netgames.room_id
+    room_id: games.room_id
   }
 
-netgames.measure_time_difference = ->
-  netgames.socket.send(JSON.stringify({
+games.measure_time_difference = ->
+  games.socket.send(JSON.stringify({
     action: 'measure-time-difference',
     timestamp: Date.now()
   }
 
 # Refresh the client once if needed
-netgames.refresh_if = (needs_refresh) ->
+games.refresh_if = (needs_refresh) ->
   safe_localStorage_access ->
     if needs_refresh
       if not localStorage.client_refreshed
@@ -223,43 +223,43 @@ netgames.refresh_if = (needs_refresh) ->
     else
       delete localStorage.client_refreshed
 
-netgames.render = (state, players) ->
+games.render = (state, players) ->
 
-  console.log("logging from netgames.render room.coffee:228, state: " + state );
-  console.log("logging from netgames.render room.coffee:229, state.phase: " + state.phase );
+  console.log("logging from games.render room.coffee:228, state: " + state );
+  console.log("logging from games.render room.coffee:229, state.phase: " + state.phase );
   $section = $('#' + state.phase)
   # If a section is missing, try refreshing the client once
-  netgames.refresh_if($section.length == 0)
+  games.refresh_if($section.length == 0)
 
   if $section.is(':hidden')
     $(document).scrollTop(0)
   $('section').hide()
   $section.show()
 
-  player = netgames.player_by_id(players, netgames.player.id)
-  spectator = netgames.player_by_id(netgames.room.spectators, netgames.player.id)
+  player = games.player_by_id(players, games.player.id)
+  spectator = games.player_by_id(games.room.spectators, games.player.id)
 
   $content = $('#content')
   $content.toggleClass('host', players[0] == player)
   $content.toggleClass('spectator', spectator?)
-  $content.toggleClass('has-spectators', netgames.room.spectators.length > 0)
+  $content.toggleClass('has-spectators', games.room.spectators.length > 0)
 
   $utility_menu = $('#utility-menu')
   $utility_menu.toggleClass('huddle', state.phase == 'huddle')
   $utility_menu.toggleClass('can-leave', player?.can_leave ? false)
   $utility_menu.toggleClass('can-spectate', players.length > 1)
   $utility_menu.toggleClass('can-boot', players.some (player) -> player.can_leave)
-  netgames.render_players(state, players, $utility_menu.find('.players'), netgames.utility_menu_player_class_predicates)
-  netgames.render_players(state, netgames.room.spectators, $utility_menu.find('.spectators'), {
-    'current-player': (state, spectators, spectator) -> spectator.id == netgames.player.id
-    'boot-enabled': -> players[0].id == netgames.player.id
+  games.render_players(state, players, $utility_menu.find('.players'), games.utility_menu_player_class_predicates)
+  games.render_players(state, games.room.spectators, $utility_menu.find('.spectators'), {
+    'current-player': (state, spectators, spectator) -> spectator.id == games.player.id
+    'boot-enabled': -> players[0].id == games.player.id
   })
 
   $spectator_base = $('#spectator-base')
-  $spectator_base.toggleClass('can-join', true) #  netgames.room.can_join)
+  $spectator_base.toggleClass('can-join', true) #  games.room.can_join)
 
-  netgames.prerender?(state, players, $section)
-  phase = netgames.phases[state.phase]
+  games.prerender?(state, players, $section)
+  phase = games.phases[state.phase]
   if typeof phase == 'function'
     # Backwards compatibility
     phase(state, players, $section)
@@ -269,27 +269,27 @@ netgames.render = (state, players) ->
 
   $content.show()
 
-netgames.refresh = ->
-  state = netgames.state
+games.refresh = ->
+  state = games.state
   $section = $('#' + state.phase)
-  phase = netgames.phases[state.phase]
-  phase?.refresh?(state, netgames.players, $section)
+  phase = games.phases[state.phase]
+  phase?.refresh?(state, games.players, $section)
 
-netgames.phases = {}
-netgames.utility_menu_player_class_predicates = {
-  'current-player': (state, players, player) -> player.id == netgames.player.id
-  'boot-enabled': (state, players, player) -> players[0].id == netgames.player.id and players[0].id != player.id and player.can_leave
+games.phases = {}
+games.utility_menu_player_class_predicates = {
+  'current-player': (state, players, player) -> player.id == games.player.id
+  'boot-enabled': (state, players, player) -> players[0].id == games.player.id and players[0].id != player.id and player.can_leave
 }
 
-netgames.add_phases = (phases) ->
+games.add_phases = (phases) ->
   for name, phase of phases
-    netgames.phases[name] = phase
-netgames.add_utility_menu_player_class_predicates = (class_predicates) ->
+    games.phases[name] = phase
+games.add_utility_menu_player_class_predicates = (class_predicates) ->
   for klass, predicate of class_predicates
-    netgames.utility_menu_player_class_predicates[klass] = predicate
+    games.utility_menu_player_class_predicates[klass] = predicate
 
 
-netgames.lib = {}
+games.lib = {}
 
 adjectives = [
   'Alert'
@@ -428,7 +428,7 @@ extend_phase = (phase, additional = {}) ->
     additional.attach?($section)
   return phase
 
-netgames.lib.huddle = ({
+games.lib.huddle = ({
   players_selector = '.players'
   spectators_selector = '.spectators'
   start_button_selector = '.start'
@@ -442,16 +442,16 @@ netgames.lib.huddle = ({
 } = {}, additional = {}) -> extend_phase {
 
   start: ->
-    netgames.change ready: true
+    games.change ready: true
 
   leave: ->
-    netgames.leave()
+    games.leave()
 
   move_up: ->
-    netgames.shuffle -1
+    games.shuffle -1
 
   move_down: ->
-    netgames.shuffle 1
+    games.shuffle 1
 
   attach: ($section) ->
     $section.find(start_button_selector).click @start
@@ -461,12 +461,12 @@ netgames.lib.huddle = ({
 
   method: (state, players, $section) ->
 
-    is_host = players[0].id == netgames.player.id
-    is_second = players[1]?.id == netgames.player.id
-    is_last = players[players.length-1].id == netgames.player.id
+    is_host = players[0].id == games.player.id
+    is_second = players[1]?.id == games.player.id
+    is_last = players[players.length-1].id == games.player.id
 
-    $section.find('.room-id').text(netgames.room_id)
-    $section.find('.phonetic').text(silly_sentence(netgames.room_id))
+    $section.find('.room-id').text(games.room_id)
+    $section.find('.phonetic').text(silly_sentence(games.room_id))
     $section.find('.shuffle').toggle(enable_shuffle and not state.booting)
     $section.find(up_button_selector).toggleClass('disabled', is_host or is_second)
     $section.find(down_button_selector).toggleClass('disabled', is_last)
@@ -476,11 +476,11 @@ netgames.lib.huddle = ({
     if message?
       $message.text(message)
 
-    netgames.render_players(state, players, $section.find(players_selector), {
-      highlight: (state, players, player) -> player.id == netgames.player.id
+    games.render_players(state, players, $section.find(players_selector), {
+      highlight: (state, players, player) -> player.id == games.player.id
     })
-    netgames.render_players(state, netgames.room.spectators, $section.find(spectators_selector), {
-      highlight: (state, players, player) -> player.id == netgames.player.id
+    games.render_players(state, games.room.spectators, $section.find(spectators_selector), {
+      highlight: (state, players, player) -> player.id == games.player.id
     })
 
     $start_game = $section.find(start_button_selector)
@@ -496,7 +496,7 @@ netgames.lib.huddle = ({
       $start_game.text('Start Game')
 }, additional
 
-netgames.lib.wait = ({
+games.lib.wait = ({
   selector = '.btn'
   text = 'OK'
   is_disabled = (state, players) -> false
@@ -504,7 +504,7 @@ netgames.lib.wait = ({
 } = {}, additional = {}) -> extend_phase {
 
   action: ->
-    netgames.change ready: true
+    games.change ready: true
 
   attach: ($section) ->
     $section.find(selector).click @action
@@ -519,26 +519,26 @@ netgames.lib.wait = ({
       $button.text(text)
 }, additional
 
-netgames.lib.wait_all = ({
+games.lib.wait_all = ({
   selector = '.btn',
   text = 'OK',
   is_disabled = (state, players) -> false
   get_disabled_text = (state, players) -> null
   get_no_shame_text = (state, players) -> null
-  get_shame_players = (state, players) -> netgames.shame_players(state.ready, players, (ready) -> !ready)
+  get_shame_players = (state, players) -> games.shame_players(state.ready, players, (ready) -> !ready)
 } = {}, additional = {}) -> extend_phase {
 
   action: ->
     ready = {}
-    ready[netgames.player.id] = true
-    netgames.change ready: ready
+    ready[games.player.id] = true
+    games.change ready: ready
 
   attach: ($section) ->
     $section.find(selector).click @action
 
   method: (state, players, $section) ->
     $button = $section.find(selector)
-    ready = state.ready[netgames.player.id] ? false
+    ready = state.ready[games.player.id] ? false
     disabled = is_disabled(state, players)
     $button.toggleClass('disabled', ready || disabled)
     $button.text(
@@ -547,27 +547,27 @@ netgames.lib.wait_all = ({
       else if not ready
         text
       else
-        netgames.generate_shame_text(get_shame_players(state, players), get_no_shame_text(state, players))
+        games.generate_shame_text(get_shame_players(state, players), get_no_shame_text(state, players))
     )
 }, additional
 
-netgames.lib.pass = ({
+games.lib.pass = ({
   selector = '.btn',
   text = 'Pass',
-  get_shame_players = (state, players) -> netgames.shame_players(state.pass, players, (val) -> !val),
+  get_shame_players = (state, players) -> games.shame_players(state.pass, players, (val) -> !val),
 } = {}, additional = {}) -> extend_phase {
 
   action: ->
     pass = {}
-    pass[netgames.player.id] = true
-    netgames.change pass: netgames.key_value(netgames.player.id, $(this).is('.btn-default'))
+    pass[games.player.id] = true
+    games.change pass: games.key_value(games.player.id, $(this).is('.btn-default'))
 
   attach: ($section) ->
     $section.find(selector).click @action
 
   method: (state, players, $section) ->
     $button = $section.find(selector)
-    pass = state.pass[netgames.player.id]
+    pass = state.pass[games.player.id]
     shame_players = get_shame_players(state, players)
     $button.toggleClass('btn-default', not pass)
     $button.toggleClass('btn-warning', pass)
@@ -575,11 +575,11 @@ netgames.lib.pass = ({
       if not pass
         text
       else
-        netgames.generate_shame_text(shame_players)
+        games.generate_shame_text(shame_players)
     )
 }, additional
 
-netgames.lib.select_player = ({
+games.lib.select_player = ({
   valid_target = '.enabled a:not(.disabled)'
   target_property = 'target'
   list_selector = '.list-group'
@@ -597,18 +597,18 @@ netgames.lib.select_player = ({
   is_disabled = (state, players, player, index) -> false
   filter = (state, players, player, index) -> true
   button_disabled = (state, players) -> not state[target_property]?
-  change = (target_property, $player, id) -> netgames.key_value(target_property, if $player.is('.active') then null else id)
+  change = (target_property, $player, id) -> games.key_value(target_property, if $player.is('.active') then null else id)
   render_extra = ($player, player, index) -> null
 } = {}, additional = {}) -> extend_phase {
 
   action: ->
     $player = $(this)
-    netgames.change change(target_property, $player, $player.data('id'))
+    games.change change(target_property, $player, $player.data('id'))
 
   attach: ($section) ->
     $section.on 'click', list_selector + valid_target, @action
     $section.find(ok_selector).on 'click', (event) ->
-      netgames.change ready: true
+      games.change ready: true
 
   method: (state, players, $section) ->
     $section.find(ok_selector).toggleClass 'disabled', button_disabled(state, players)
@@ -617,7 +617,7 @@ netgames.lib.select_player = ({
     $players.toggleClass 'enabled', is_enabled(state, players)
 
     filtered_players = players.filter (player, index) -> filter(state, players, player, index)
-    netgames.render_list $players, $player_template, filtered_players, ($player, player, index) ->
+    games.render_list $players, $player_template, filtered_players, ($player, player, index) ->
       $player.toggleClass('active', is_active(state, players, player, index))
       $player.toggleClass('disabled', is_disabled(state, players, player, index))
       player_id = get_id(player, index)
@@ -629,7 +629,7 @@ netgames.lib.select_player = ({
 
 }, additional
 
-netgames.lib.multiplayer_vote = ({
+games.lib.multiplayer_vote = ({
   yes_selector = '.yes'
   yes_class = 'btn-success'
   no_selector = '.no'
@@ -639,32 +639,32 @@ netgames.lib.multiplayer_vote = ({
 } = {}, additional = {}) -> extend_phase {
 
   action: ->
-    netgames.change netgames.key_value vote_property, netgames.key_value netgames.player.id, $(this).is(yes_selector)
+    games.change games.key_value vote_property, games.key_value games.player.id, $(this).is(yes_selector)
 
   attach: ($section) ->
     $section.find(yes_selector).on 'click', @action
     $section.find(no_selector).on 'click', @action
 
   render: (state, players, $section) ->
-    $section.find(yes_selector).toggleClass(yes_class, state[vote_property][netgames.player.id] != false)
-    $section.find(yes_selector).toggleClass('btn-default', state[vote_property][netgames.player.id] == false)
-    $section.find(no_selector).toggleClass(no_class, state[vote_property][netgames.player.id] != true)
-    $section.find(no_selector).toggleClass('btn-default', state[vote_property][netgames.player.id] == true)
+    $section.find(yes_selector).toggleClass(yes_class, state[vote_property][games.player.id] != false)
+    $section.find(yes_selector).toggleClass('btn-default', state[vote_property][games.player.id] == false)
+    $section.find(no_selector).toggleClass(no_class, state[vote_property][games.player.id] != true)
+    $section.find(no_selector).toggleClass('btn-default', state[vote_property][games.player.id] == true)
 
     if shame_selector?
-      has_voted = state[vote_property][netgames.player.id]?
-      shame_players = netgames.shame_players(state[vote_property], players, (val) -> not val?)
+      has_voted = state[vote_property][games.player.id]?
+      shame_players = games.shame_players(state[vote_property], players, (val) -> not val?)
       $shame_text = $section.find(shame_selector)
       $shame_text.toggle(has_voted)
-      $shame_text.text(netgames.generate_shame_text(shame_players))
+      $shame_text.text(games.generate_shame_text(shame_players))
 }, additional
 
-netgames.lib.choose_word_packs = ({
+games.lib.choose_word_packs = ({
   pack_selector = '.word-packs .btn'
   confirm_setup_selector = '.confirm-setup'
 } = {}, additional = {}) -> extend_phase(
 
-  netgames.lib.wait({
+  games.lib.wait({
     selector: confirm_setup_selector
     is_disabled: (state) -> _.sum(_.values(state.chosen_packs)) < 1
     get_disabled_text: (state, players) -> 'Select at least one pack'
@@ -682,12 +682,12 @@ netgames.lib.choose_word_packs = ({
         $this = $(this)
         selected = $this.hasClass('selected')
         pack_name = $this.data('pack-name')
-        netgames.change chosen_packs: netgames.key_value(pack_name, not selected)
+        games.change chosen_packs: games.key_value(pack_name, not selected)
   }),
   additional,
 )
 
-netgames.lib.two_teams = ({
+games.lib.two_teams = ({
   confirm_teams_selector = '.confirm-teams'
   blue_selector = '.btn.blue-team'
   blue_class = 'btn-primary'
@@ -696,7 +696,7 @@ netgames.lib.two_teams = ({
   min_team_size = undefined
 } = {}, additional = {}) -> extend_phase(
 
-  netgames.lib.wait({
+  games.lib.wait({
     selector: confirm_teams_selector
     text: 'Confirm teams'
     is_disabled: (state, players) ->
@@ -707,12 +707,12 @@ netgames.lib.two_teams = ({
 
     attach: ($section) ->
       $section.find(blue_selector).on 'click', ->
-        netgames.change team: netgames.key_value netgames.player.id, 'blue'
+        games.change team: games.key_value games.player.id, 'blue'
       $section.find(red_selector).on 'click', ->
-        netgames.change team: netgames.key_value netgames.player.id, 'red'
+        games.change team: games.key_value games.player.id, 'red'
 
     render: (state, players, $section) ->
-      team = state.team[netgames.player.id]
+      team = state.team[games.player.id]
       $section.find(blue_selector)
         .toggleClass(blue_class, team == 'blue')
         .toggleClass('btn-default', team != 'blue')
@@ -728,8 +728,8 @@ netgames.lib.two_teams = ({
       $section.find('.vs .blue.num').text(blue_team.length)
 
       render_team = (player_ids, $players) ->
-        netgames.render_players state, players.filter( (player) -> player.id in player_ids), $players, {
-          'current-player': (state, players, player) -> player.id == netgames.player.id
+        games.render_players state, players.filter( (player) -> player.id in player_ids), $players, {
+          'current-player': (state, players, player) -> player.id == games.player.id
         }
 
       render_team(red_team, $section.find('.players .red'))
@@ -738,17 +738,17 @@ netgames.lib.two_teams = ({
   additional,
 )
 
-netgames.lib.terminal = ({
+games.lib.terminal = ({
   leave_selector = '.leave'
   restart_selector = '.restart'
   play_again_selector = '.play-again'
 } = {}, additional = {}) -> extend_phase {
 
   leave: ->
-    netgames.leave()
+    games.leave()
 
   restart: ->
-    netgames.restart()
+    games.restart()
 
   play_again: ->
     $(this).addClass('disabled').text('Waiting for host...')
@@ -759,7 +759,7 @@ netgames.lib.terminal = ({
     $section.find(play_again_selector).click @play_again
 }, additional
 
-netgames.lib.hide_flat = ({
+games.lib.hide_flat = ({
   trigger = -> true
 } = {}, additional = {}) ->
   screens = [{
@@ -770,7 +770,7 @@ netgames.lib.hide_flat = ({
     selector: '#hide-flat'
     pitch: 0
   }]
-  object = netgames.lib.rotation_screens {
+  object = games.lib.rotation_screens {
     screens
     trigger
   }, {
@@ -784,7 +784,7 @@ netgames.lib.hide_flat = ({
 to_radians = (degrees) -> Math.PI/180 * degrees
 to_degrees = (radians) -> 180/Math.PI * radians
 
-netgames.lib.rotation = ({
+games.lib.rotation = ({
   trigger = -> true
   on_change = null
   interval = 100
@@ -844,7 +844,7 @@ normalize = (a) ->
   length = vector_length a
   return { x: a.x/length, y: a.y/length, z: a.z/length }
 
-netgames.lib.rotation_screens = ({
+games.lib.rotation_screens = ({
   screens = []
   trigger = -> true
   rotation_options = {}
@@ -861,7 +861,7 @@ netgames.lib.rotation_screens = ({
 
       rotation_options.trigger = trigger
       rotation_options.on_change = object.on_change
-      object.rotation = netgames.lib.rotation(rotation_options)
+      object.rotation = games.lib.rotation(rotation_options)
       object.rotation.attach()
 
       for screen in screens
@@ -911,7 +911,7 @@ netgames.lib.rotation_screens = ({
   }
   return extend_phase(object, additional)
 
-netgames.lib.clock = ({
+games.lib.clock = ({
   clock_selector = '.clock'
   display_selector = '.display'
   front_selector = '.front'
@@ -924,7 +924,7 @@ netgames.lib.clock = ({
     width = +$clock.data('width')
     stroke_width = +$clock.data('stroke-width')
 
-    start_time = netgames.to_client_timestamp(state.start_time)
+    start_time = games.to_client_timestamp(state.start_time)
     elapsed_millis = Math.max(0, Date.now() - start_time)
     elapsed_seconds = Math.floor(elapsed_millis/1000)
     elapsed_minutes = Math.floor(elapsed_seconds/60)
@@ -965,7 +965,7 @@ netgames.lib.clock = ({
     $back.attr('stroke-width', back_steps * stroke_width)
     $back.attr('r', back_diameter/2)
 
-    setTimeout(netgames.refresh, 1000 - elapsed_millis % 1000)
+    setTimeout(games.refresh, 1000 - elapsed_millis % 1000)
 
 }, additional
 
@@ -1068,50 +1068,50 @@ class ScalarKalmanFilter
 update_time_difference_filter = (client_timestamp, server_timestamp) ->
   time_to_return = (Date.now() - client_timestamp)/2
   time_difference = server_timestamp - (client_timestamp + time_to_return)
-  netgames.time_difference_filter.update(time_difference, time_to_return)
-  netgames.time_difference = netgames.time_difference_filter.time_difference
+  games.time_difference_filter.update(time_difference, time_to_return)
+  games.time_difference = games.time_difference_filter.time_difference
 
 
 update_room = (room) ->
 
   ## Check whether the received room is stale. If so, send a recovery message to bring game state back up to date.
-  #same_room = netgames.room?.created == room.created
-  #clock_difference = (netgames.room?.clock?.server ? 0) - room.clock.server
-  #time_difference = (netgames.room?.last_modified ? 0) - room.last_modified
+  #same_room = games.room?.created == room.created
+  #clock_difference = (games.room?.clock?.server ? 0) - room.clock.server
+  #time_difference = (games.room?.last_modified ? 0) - room.last_modified
   ## Only recover the room if the clock is ahead of the received room, or if it's the same but was modified afterwards.
   #if same_room and (clock_difference > 0 or (clock_difference == 0 and time_difference > 0))
-  #  netgames.socket.send(JSON.stringify({
+  #  games.socket.send(JSON.stringify({
   #  action: 'recover',
-  #  room: netgames.room)}
+  #  room: games.room)}
   #else
-  #  netgames.room = room
-  netgames.state = room.state;
-  netgames.players = room.players;
-  netgames.room = room;
+  #  games.room = room
+  games.state = room.state;
+  games.players = room.players;
+  games.room = room;
 
-  netgames.render(netgames.state, netgames.players)
+  games.render(games.state, games.players)
 
 
 join_room = ->
 
-  room_id = netgames.room_id = $('#room-id').val()
+  room_id = games.room_id = $('#room-id').val()
 
   host = window.location.host
 
-  socket = netgames.socket = new WebSocket('wss://' + window.netgames_host + '/socket/');
+  socket = games.socket = new WebSocket('wss://' + window.games_host + '/socket/');
 
   socket.onopen = function(event) {
     $('#connecting').hide()
   };
 
-    unless netgames.time_difference_filter?
-      netgames.time_difference_filter = new ScalarKalmanFilter({
+    unless games.time_difference_filter?
+      games.time_difference_filter = new ScalarKalmanFilter({
         p99_acceptable_error: 100
-        update_callback: netgames.measure_time_difference
+        update_callback: games.measure_time_difference
         process_variance: 0.1
         initial_measurement_variance: 1e4
       })
-    netgames.join()
+    games.join()
 
   socket.onclose = function(event) {
     if reason == 'io server disconnect'
@@ -1134,7 +1134,7 @@ join_room = ->
 #    window.location = window.location.toString().replace(/[^/]*[/][^/?]*($|(?=\?))/, '')
 #
 #  socket.on 'booted', (player_id) ->
-#    if netgames.player.id == player_id
+#    if games.player.id == player_id
 #      $('#content').hide()
 #      $('#booted').show()
 #      socket.disconnect(true)
@@ -1146,7 +1146,7 @@ join_room = ->
   } 
 
 #  socket.on 'register-player-interactions', ({timestamp, players}) ->
-#    netgames.register_player_interactions(timestamp, players)
+#    games.register_player_interactions(timestamp, players)
 #    dataLayer.push event: 'register-player-interactions'
 
   socket.onerror = function(event) {
@@ -1156,7 +1156,7 @@ join_room = ->
 
 $ ->
 
-  for name, phase of netgames.phases
+  for name, phase of games.phases
     phase.attach?($('#' + name))
 
   $create_user = $('#create-user')
@@ -1167,19 +1167,19 @@ $ ->
   $create_user.submit (event) ->
     event.preventDefault()
     player_name = $('#create-user input').val()
-    return unless netgames.change_name_storage(player_name)
+    return unless games.change_name_storage(player_name)
     $create_user.hide()
     join_room()
 
-  netgames.player = {}
-  netgames.player.id = safe_localStorage_access(-> localStorage.player_id)
-  netgames.player.name = safe_localStorage_access -> localStorage.player_name
+  games.player = {}
+  games.player.id = safe_localStorage_access(-> localStorage.player_id)
+  games.player.name = safe_localStorage_access -> localStorage.player_name
 
   safe_localStorage_access ->
     if not localStorage.player_id?
-      localStorage.player_id = netgames.player.id
+      localStorage.player_id = games.player.id
 
-  if netgames.player.name?
+  if games.player.name?
     join_room()
   else
     #if URLSearchParams
@@ -1207,7 +1207,7 @@ $ ->
   open_change_name_form = ->
     $change_name.addClass('open')
     $input = $change_name.find('input')
-    $input.val(netgames.player.name)
+    $input.val(games.player.name)
     $input.focus()
 
   close_change_name_form = ->
@@ -1262,14 +1262,14 @@ $ ->
       $this.addClass('btn-danger')
     else if $this.is('.btn-danger')
       close_utility_menu()
-      netgames.restart()
+      games.restart()
 
   $utility_menu.find('.boot-players.btn-default').click (event) ->
     $utility_menu.addClass('booting')
     render_boot()
 
   $utility_menu.find('.boot-players.btn-primary').click (event) ->
-    netgames.boot(Array.from(to_boot))
+    games.boot(Array.from(to_boot))
     close_utility_menu()
 
   $utility_menu.find('.players, .spectators').on 'click', 'li.boot-enabled', (event) ->
@@ -1286,11 +1286,11 @@ $ ->
 
   $utility_menu.find('.spectate').click (event) ->
     close_utility_menu()
-    netgames.boot([netgames.player.id])
+    games.boot([games.player.id])
 
   $utility_menu.find('.leave-game').click (event) ->
     close_utility_menu()
-    netgames.leave()
+    games.leave()
 
   $change_name.find('> a').click (event) ->
     open_change_name_form()
@@ -1301,7 +1301,7 @@ $ ->
   $change_name.find('form').submit (event) ->
     event.preventDefault()
     $input = $(this).find('input')
-    if netgames.change_name($input.val())
+    if games.change_name($input.val())
       close_change_name_form()
 
   # Spectator base
@@ -1309,10 +1309,10 @@ $ ->
   $spectator_base = $('#spectator-base')
 
   $spectator_base.find('.join-in').click (event) ->
-    netgames.join_midway()
+    games.join_midway()
 
   $spectator_base.find('.leave-game').click (event) ->
-    netgames.leave()
+    games.leave()
 
   # Info panel
 

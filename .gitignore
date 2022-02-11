@@ -1,3 +1,7 @@
+# Local files
+src/local
+src/local/*
+
 # Local .terraform directories
 **/.terraform/*
 

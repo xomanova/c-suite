@@ -113,7 +113,7 @@
   };
 
   if (typeof window !== "undefined" && window !== null) {
-    window.netgames.data = data;
+    window.games.data = data;
   }
 
   if (typeof module !== "undefined" && module !== null) {

@@ -1,6 +1,6 @@
 window.root_path = $('head').data('root-path')
 
-window.netgames_host = window.location.host
+window.games_host = window.location.host
 
 window.addEventListener 'error', (event) ->
   $.ajax({
@@ -12,7 +12,7 @@ window.addEventListener 'error', (event) ->
       colno: event.colno
       filename: event.filename
       stack: event.error?.stack.toString()
-      room_id: window.netgames?.room_id
+      room_id: window.games?.room_id
     }
   })
 
@@ -90,15 +90,15 @@ $ ->
 
   $('#language-menu a').on 'click', (event) ->
     $this = $(this)
-    netgames_url = window.location.protocol + '//' + window.netgames_host + window.location.pathname
+    games_url = window.location.protocol + '//' + window.games_host + window.location.pathname
     if $this.hasClass('auto')
-      window.location = "https://translate.google.com/website?sl=en&u=#{netgames_url}"
+      window.location = "https://translate.google.com/website?sl=en&u=#{games_url}"
     else
       language_id = $this.data('language-id')
       if language_id == 'en'
-        window.location = netgames_url
+        window.location = games_url
       else
-        window.location = "https://translate.google.com/website?sl=en&tl=#{language_id}&u=#{netgames_url}"
+        window.location = "https://translate.google.com/website?sl=en&tl=#{language_id}&u=#{games_url}"
     event.preventDefault()
 
   # Service Worker

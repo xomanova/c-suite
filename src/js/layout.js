@@ -2,7 +2,7 @@
 (function() {
   window.root_path = $('head').data('root-path');
 
-  window.netgames_host = window.location.host;
+  window.games_host = window.location.host;
 
   window.addEventListener('error', function(event) {
     var ref, ref1;
@@ -15,7 +15,7 @@
         colno: event.colno,
         filename: event.filename,
         stack: (ref = event.error) != null ? ref.stack.toString() : void 0,
-        room_id: (ref1 = window.netgames) != null ? ref1.room_id : void 0
+        room_id: (ref1 = window.games) != null ? ref1.room_id : void 0
       })
     });
   });
@@ -98,17 +98,17 @@
       }
     });
     $('#language-menu a').on('click', function(event) {
-      var $this, language_id, netgames_url;
+      var $this, language_id, games_url;
       $this = $(this);
-      netgames_url = window.location.protocol + '//' + window.netgames_host + window.location.pathname;
+      games_url = window.location.protocol + '//' + window.games_host + window.location.pathname;
       if ($this.hasClass('auto')) {
-        window.location = "https://translate.google.com/website?sl=en&u=" + netgames_url;
+        window.location = "https://translate.google.com/website?sl=en&u=" + games_url;
       } else {
         language_id = $this.data('language-id');
         if (language_id === 'en') {
-          window.location = netgames_url;
+          window.location = games_url;
         } else {
-          window.location = "https://translate.google.com/website?sl=en&tl=" + language_id + "&u=" + netgames_url;
+          window.location = "https://translate.google.com/website?sl=en&tl=" + language_id + "&u=" + games_url;
         }
       }
       return event.preventDefault();
