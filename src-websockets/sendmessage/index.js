@@ -172,6 +172,7 @@ async function initialize_game(message,prog_game_state,received_phase,current_ph
 
 async function roll_deck(current,message,prog_game_state,received_phase,current_phase) {
   console.log(`roll_deck() - prog_game_state: ` + JSON.stringify(prog_game_state))
+  console.log(`roll_deck() - current: ` + JSON.stringify(current))
 
   var players_r = players_ready(current.players);
   var deck = prep_deck();
