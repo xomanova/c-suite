@@ -85,7 +85,14 @@ async function change_room_state(message, ddb, connectionId, room_expiration) {
     return { statusCode: 500, body: 'Failed to update ddb: ' + JSON.stringify(err) };
   }
   
-  return room.Items[0];
+  var updated_room = await ddb.query(query_params, function(err, data) {
+    if (err) {
+        console.error("Unable to query. Error:", JSON.stringify(err, null, 2));
+    } else {
+        console.log("Query succeeded.");
+    }
+  }).promise();
+  return updated_room.Items[0];
 }
 
 async function update_room_state(item,room_expiration,message,ddb) {
