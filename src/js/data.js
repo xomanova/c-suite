@@ -22,35 +22,36 @@
     reelect_president_max_players: 5,
     themes: [
       {
-        id: 'sith',
-        name: 'Secret Sith',
+        id: 'c-suite',
+        name: 'C-Suite',
         text: {
-          hitler: 'Palpatine',
-          liberal: 'Loyalist',
-          liberals: 'Loyalists',
-          liberal_card: 'LOYALIST',
-          crush_the_liberal_regime: 'Crush the Loyalist regime',
-          of_liberal_allegiance: 'Loyalist',
-          fascist: 'Separatist',
-          fascists: 'Separatists',
-          fascist_card: 'SEPARATIST',
-          prevent_the_fascist_regime: 'Prevent the Separatist regime',
-          of_fascist_allegiance: 'Separatist',
+          hitler: 'Saboteur',
+          liberal: 'Employee',
+          liberals: 'Employees',
+          liberal_card: 'EMPLOYEE',
+          crush_the_liberal_regime: 'Crush the employee morale',
+          of_liberal_allegiance: 'Employee',
+          fascist: 'Saboteur',
+          fascists: 'Saboteurs',
+          fascist_card: 'SABOTEUR',
+          prevent_the_fascist_regime: 'Prevent the saboteur plot',
+          of_fascist_allegiance: 'Saboteur',
           ja: 'Yes',
           nein: 'No',
-          policy: 'mandate',
-          a_policy: 'a mandate',
-          policies: 'mandates',
-          president: 'Vice Chair',
-          president_s: 'Vice Chair\'s',
-          presidential: 'Vice Chair',
-          chancellor: 'Supreme Chancellor',
-          a_politician: 'a senator',
-          relieved_of_your_political_duties: 'relieved of your senatorial duties',
-          relieved_of_their_political_duties: 'relieved of their senatorial duties',
-          state: 'Republic'
+          policy: 'strategic initiative',
+          a_policy: 'a strategic initiative',
+          policies: 'initiatives',
+          president: 'CEO',
+          president_s: 'CEO\'s',
+          presidential: 'CEO',
+          chancellor: 'Chief Transformation Officer',
+          a_politician: 'a board member',
+          relieved_of_your_political_duties: 'relieved of your corporate duties',
+          relieved_of_their_political_duties: 'relieved of their corporate duties',
+          state: 'Company'
         }
-      }, {
+      } ,
+      {
         id: 'hitler',
         name: 'Secret Hitler',
         text: {
@@ -78,35 +79,6 @@
           relieved_of_your_political_duties: 'relieved of your political duties',
           relieved_of_their_political_duties: 'relieved of their political duties',
           state: 'state'
-        }
-      }, {
-        id: 'voldemort',
-        name: 'Secret Voldemort',
-        text: {
-          hitler: 'Voldemort',
-          liberal: 'Order of the Phoenix',
-          liberals: 'Order of the Phoenix members',
-          liberal_card: 'ORDER',
-          crush_the_liberal_regime: 'Crush The Order of the Phoenix',
-          of_liberal_allegiance: 'in The Order of the Phoenix',
-          fascist: 'Death Eater',
-          fascists: 'Death Eaters',
-          fascist_card: 'DEATH',
-          prevent_the_fascist_regime: 'Put an end to the Death Eaters',
-          of_fascist_allegiance: 'a Death Eater',
-          ja: 'Yes',
-          nein: 'No',
-          policy: 'decree',
-          a_policy: 'a decree',
-          policies: 'decrees',
-          president: 'Minister for Magic',
-          president_s: 'Minister for Magic\'s',
-          presidential: 'Ministerial',
-          chancellor: 'Chief Warlock',
-          a_politician: 'an employee',
-          relieved_of_your_political_duties: 'relieved of your ministerial employment',
-          relieved_of_their_political_duties: 'relieved of their ministerial employment',
-          state: 'wizarding world'
         }
       }
     ]

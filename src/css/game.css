@@ -110,7 +110,7 @@ ol.policies {
   line-height: 42px;
   margin: 10px 0;
 }
-#content[data-theme=sith] .policy.w250 h1 {
+#content[data-theme=c-suite] .policy.w250 h1 {
   font-size: 30px;
 }
 .policy.w250 .glyphicon-large {
@@ -135,7 +135,7 @@ ol.policies {
   line-height: 29.4px;
   margin: 7px 0;
 }
-#content[data-theme=sith] .policy.w175 h1 {
+#content[data-theme=c-suite] .policy.w175 h1 {
   font-size: 21px;
 }
 .policy.w175 .glyphicon-large {
@@ -160,7 +160,7 @@ ol.policies {
   line-height: 21px;
   margin: 5px 0;
 }
-#content[data-theme=sith] .policy.w125 h1 {
+#content[data-theme=c-suite] .policy.w125 h1 {
   font-size: 15px;
 }
 .policy.w125 .glyphicon-large {

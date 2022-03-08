@@ -172,7 +172,7 @@ async function initialize_game(message,prog_game_state,received_phase,current_ph
     phase: 'setup',
     previous_phase: 'huddle',
     ready: 'false',
-    theme: 'sith'
+    theme: 'c-suite'
   };
   return init_game_state;
 }

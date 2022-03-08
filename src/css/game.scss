@@ -54,7 +54,7 @@ $roles: 'president', 'chancellor', 'executee', 'executed', 'hitler', 'fascist', 
     line-height: $inside-width/5;
     margin: $border-size/2 0;
 
-    #content[data-theme='sith'] & {
+    #content[data-theme='c-suite'] & {
       font-size: $inside-width/7;
     }
   }
