@@ -65,6 +65,8 @@ resource "aws_apigatewayv2_stage" "live" {
 
 }
 
+// Deploy resources not working as intended with timerstamp trigger
+// https://github.com/xomanova/potential-guacamole/issues/5
 resource "aws_apigatewayv2_deployment" "deploy_gw" {
   api_id      = aws_apigatewayv2_api.websocket_api_gw.id
   description = md5(file("websockets-gw.tf"))
