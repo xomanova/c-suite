@@ -180,7 +180,7 @@ body {
   position: fixed;
   width: 489px;
   max-width: 100vw;
-  bottom: -100%;
+  bottom: -150%;
   max-height: 90%;
   overflow-y: auto;
   transition: bottom 300ms;
