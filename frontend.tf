@@ -39,7 +39,6 @@ resource "aws_s3_object" "html_objects" {
   bucket       = aws_s3_bucket.www_bucket.id
   key          = each.value
   content_type = "text/html"
-  acl          = "public-read"
   source       = "src/${each.value}"
   etag         = filemd5("src/${each.value}")
 }
@@ -49,7 +48,6 @@ resource "aws_s3_object" "css_objects" {
   bucket       = aws_s3_bucket.www_bucket.id
   key          = each.value
   content_type = "text/css"
-  acl          = "public-read"
   source       = "src/${each.value}"
   etag         = filemd5("src/${each.value}")
 }
@@ -59,7 +57,6 @@ resource "aws_s3_object" "map_objects" {
   bucket       = aws_s3_bucket.www_bucket.id
   key          = each.value
   content_type = "application/json"
-  acl          = "public-read"
   source       = "src/${each.value}"
   etag         = filemd5("src/${each.value}")
 }
@@ -69,7 +66,6 @@ resource "aws_s3_object" "js_objects" {
   bucket       = aws_s3_bucket.www_bucket.id
   key          = each.value
   content_type = "text/javascript"
-  acl          = "public-read"
   source       = "src/${each.value}"
   etag         = filemd5("src/${each.value}")
 }
@@ -78,7 +74,6 @@ resource "aws_s3_object" "static_objects" {
   for_each = local.no_html_files
   bucket   = aws_s3_bucket.www_bucket.id
   key      = each.value
-  acl      = "public-read"
   source   = "src/${each.value}"
   etag     = filemd5("src/${each.value}")
 }
