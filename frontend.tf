@@ -14,7 +14,7 @@ resource "aws_s3_bucket_acl" "public_site_resources" {
 }
 
 resource "aws_s3_bucket_public_access_block" "public_access" {
-  bucket = aws_s3_bucket.public_site_resources.id
+  bucket = aws_s3_bucket.www_bucket.id
 
   block_public_acls       = false
   block_public_policy     = false
@@ -23,7 +23,7 @@ resource "aws_s3_bucket_public_access_block" "public_access" {
 }
 
 resource "aws_s3_bucket_ownership_controls" "ownership_control" {
-  bucket = aws_s3_bucket.public_site_resources.id
+  bucket = aws_s3_bucket.www_bucket.id
   rule {
     object_ownership = "BucketOwnerPreferred"
   }
