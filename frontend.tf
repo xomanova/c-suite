@@ -1,7 +1,11 @@
 # S3 bucket for static content
 resource "aws_s3_bucket" "www_bucket" {
   bucket = "${var.project}-site"
-  acl    = "private"
+}
+
+resource "aws_s3_bucket_acl" "public_site_resources" {
+  bucket = aws_s3_bucket.www_bucket
+  acl    = "public-read"
 }
 
 // Organize source directory into MIME type sets for upload
@@ -30,7 +34,7 @@ locals {
   ])
 }
 
-resource "aws_s3_bucket_object" "html_objects" {
+resource "aws_s3_object" "html_objects" {
   for_each     = local.html_files
   bucket       = aws_s3_bucket.www_bucket.id
   key          = each.value
@@ -40,7 +44,7 @@ resource "aws_s3_bucket_object" "html_objects" {
   etag         = filemd5("src/${each.value}")
 }
 
-resource "aws_s3_bucket_object" "css_objects" {
+resource "aws_s3_object" "css_objects" {
   for_each     = local.css_files
   bucket       = aws_s3_bucket.www_bucket.id
   key          = each.value
@@ -50,7 +54,7 @@ resource "aws_s3_bucket_object" "css_objects" {
   etag         = filemd5("src/${each.value}")
 }
 
-resource "aws_s3_bucket_object" "map_objects" {
+resource "aws_s3_object" "map_objects" {
   for_each     = local.map_files
   bucket       = aws_s3_bucket.www_bucket.id
   key          = each.value
@@ -60,7 +64,7 @@ resource "aws_s3_bucket_object" "map_objects" {
   etag         = filemd5("src/${each.value}")
 }
 
-resource "aws_s3_bucket_object" "js_objects" {
+resource "aws_s3_object" "js_objects" {
   for_each     = local.js_files
   bucket       = aws_s3_bucket.www_bucket.id
   key          = each.value
@@ -70,7 +74,7 @@ resource "aws_s3_bucket_object" "js_objects" {
   etag         = filemd5("src/${each.value}")
 }
 
-resource "aws_s3_bucket_object" "static_objects" {
+resource "aws_s3_object" "static_objects" {
   for_each = local.no_html_files
   bucket   = aws_s3_bucket.www_bucket.id
   key      = each.value
