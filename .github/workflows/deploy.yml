@@ -57,7 +57,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: live
     needs: terraform
-    if: jobs.terraform.outputs.exit_code == 0
+    if: job.terraform.outputs.exit_code == 0
 
     # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
     defaults:
