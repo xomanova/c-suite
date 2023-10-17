@@ -4,7 +4,7 @@ resource "aws_s3_bucket" "www_bucket" {
 }
 
 resource "aws_s3_bucket_acl" "public_site_resources" {
-  bucket = aws_s3_bucket.www_bucket
+  bucket = aws_s3_bucket.www_bucket.id
   acl    = "public-read"
 }
 
