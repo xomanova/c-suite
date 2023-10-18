@@ -71,27 +71,27 @@ async function change_room_state(message, ddb, connectionId, room_expiration) {
     TableName: process.env.ROOMS_TABLE_NAME
   };
   try {
-    var room = await ddb.query(query_params, function(err, data) {
+    await ddb.query(query_params, async function(err, data) {
       if (err) {
           console.error("Unable to query. Error:", JSON.stringify(err, null, 2));
       } else {
           console.log("Query succeeded.");
-          data.Items.forEach(function(item) {
-            update_room_state(item,room_expiration,message,ddb);
-          });
+          for (const item of data.Items) {
+            await update_room_state(item,room_expiration,message,ddb);
+          }
       }
     }).promise();
   } catch (err) {
     return { statusCode: 500, body: 'Failed to update ddb: ' + JSON.stringify(err) };
   }
   
-  var updated_room = await ddb.query(query_params, function(err, data) {
-    if (err) {
-        console.error("Unable to query. Error:", JSON.stringify(err, null, 2));
-    } else {
-        console.log("Query succeeded.");
-    }
-  }).promise();
+  var updated_room;
+  try {
+    updated_room = await ddb.query(query_params).promise();
+  } catch (err) {
+    console.error("Unable to query. Error:", JSON.stringify(err, null, 2));
+    return { statusCode: 500, body: 'Failed to update ddb: ' + JSON.stringify(err) };
+  }
   return updated_room.Items[0];
 }
 
