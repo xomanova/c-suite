@@ -77,6 +77,7 @@ async function change_room_state(message, ddb, connectionId, room_expiration) {
       } else {
           console.log("Query succeeded.");
           for (const item of data.Items) {
+            console.log("Item: ", JSON.stringify(item));
             await update_room_state(item,room_expiration,message,ddb);
           }
       }
