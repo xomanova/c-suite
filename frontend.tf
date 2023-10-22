@@ -115,13 +115,21 @@ resource "aws_s3_object" "static_objects" {
 }
 
 
-
-resource "aws_cloudfront_distribution" "s3_distribution" {
-  provisioner "local-exec" {
-    // Invalidate the cache on deploy
-    command = "aws cloudfront create-invalidation --distribution-id ${self.id} --paths '/*'"
+resource "null_resource" "cache_invalidation" {
+  triggers = {
+    s3_object_etags = jsonencode([
+      for obj in [aws_s3_object.html_objects, aws_s3_object.css_objects, aws_s3_object.map_objects, aws_s3_object.js_objects, aws_s3_object.static_objects] :
+      obj.etag
+    ])
   }
 
+  provisioner "local-exec" {
+    command = "aws cloudfront create-invalidation --distribution-id ${self.id} --paths '/*'"
+  }
+}
+
+
+resource "aws_cloudfront_distribution" "s3_distribution" {
   origin {
     domain_name = aws_s3_bucket.www_bucket.bucket_regional_domain_name
     origin_id   = local.s3_origin_id
