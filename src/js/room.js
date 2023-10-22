@@ -368,6 +368,7 @@
     console.log("logging from games.render room.js:366, state.phase: " + state.phase );
     console.log("logging from games.render room.js:367, players typeof: " + typeof players );
     console.log("logging from games.render room.js:368, players: " + JSON.stringify(players) );
+    console.log("logging from games.render room.js:369, games: " + games );
 
     $section = $('#' + state.phase);
     games.refresh_if($section.length === 0);
