@@ -117,6 +117,11 @@ resource "aws_s3_object" "static_objects" {
 
 
 resource "aws_cloudfront_distribution" "s3_distribution" {
+  provisioner "local-exec" {
+    // Invalidate the cache on deploy
+    command = "aws cloudfront create-invalidation --distribution-id ${self.id} --paths '/*'"
+  }
+
   origin {
     domain_name = aws_s3_bucket.www_bucket.bucket_regional_domain_name
     origin_id   = local.s3_origin_id
