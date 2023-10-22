@@ -114,21 +114,6 @@ resource "aws_s3_object" "static_objects" {
   depends_on = [aws_s3_bucket_ownership_controls.ownership_control]
 }
 
-
-resource "null_resource" "cache_invalidation" {
-  triggers = {
-    s3_object_etags = jsonencode([
-      for obj in merge(aws_s3_object.html_objects, aws_s3_object.css_objects, aws_s3_object.map_objects, aws_s3_object.js_objects, aws_s3_object.static_objects) :
-      obj.etag
-    ])
-  }
-
-  provisioner "local-exec" {
-    command = "aws cloudfront create-invalidation --distribution-id ${self.id} --paths '/*'"
-  }
-}
-
-
 resource "aws_cloudfront_distribution" "s3_distribution" {
   origin {
     domain_name = aws_s3_bucket.www_bucket.bucket_regional_domain_name
