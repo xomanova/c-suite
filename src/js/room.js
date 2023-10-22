@@ -383,6 +383,12 @@
     $content.toggleClass('host', players[0] === player);
     $content.toggleClass('spectator', spectator != null);
     $content.toggleClass('has-spectators', games.room.spectators.length > 0);
+    if (games.room.spectators.length > 0) {
+      document.querySelectorAll('.only-has-spectators').forEach(function(element) {
+        element.style.display = 'none';
+      });
+    }
+
     $utility_menu = $('#utility-menu');
     $utility_menu.toggleClass('huddle', state.phase === 'huddle');
     $utility_menu.toggleClass('can-leave', (ref = player != null ? player.can_leave : void 0) != null ? ref : false);
