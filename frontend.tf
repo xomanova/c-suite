@@ -64,7 +64,7 @@ resource "aws_s3_object" "html_objects" {
   source       = "src/${each.value}"
   etag         = filemd5("src/${each.value}")
 
-  depends_on = [ aws_s3_bucket_ownership_controls.ownership_control ]
+  depends_on = [aws_s3_bucket_ownership_controls.ownership_control]
 }
 
 resource "aws_s3_object" "css_objects" {
@@ -76,7 +76,7 @@ resource "aws_s3_object" "css_objects" {
   source       = "src/${each.value}"
   etag         = filemd5("src/${each.value}")
 
-  depends_on = [ aws_s3_bucket_ownership_controls.ownership_control ]
+  depends_on = [aws_s3_bucket_ownership_controls.ownership_control]
 }
 
 resource "aws_s3_object" "map_objects" {
@@ -88,7 +88,7 @@ resource "aws_s3_object" "map_objects" {
   source       = "src/${each.value}"
   etag         = filemd5("src/${each.value}")
 
-  depends_on = [ aws_s3_bucket_ownership_controls.ownership_control ]
+  depends_on = [aws_s3_bucket_ownership_controls.ownership_control]
 }
 
 resource "aws_s3_object" "js_objects" {
@@ -100,7 +100,7 @@ resource "aws_s3_object" "js_objects" {
   source       = "src/${each.value}"
   etag         = filemd5("src/${each.value}")
 
-  depends_on = [ aws_s3_bucket_ownership_controls.ownership_control ]
+  depends_on = [aws_s3_bucket_ownership_controls.ownership_control]
 }
 
 resource "aws_s3_object" "static_objects" {
@@ -111,7 +111,7 @@ resource "aws_s3_object" "static_objects" {
   source   = "src/${each.value}"
   etag     = filemd5("src/${each.value}")
 
-  depends_on = [ aws_s3_bucket_ownership_controls.ownership_control ]
+  depends_on = [aws_s3_bucket_ownership_controls.ownership_control]
 }
 
 
