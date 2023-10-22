@@ -236,16 +236,27 @@ function roll_baddie(players) {
 }
 
 function roll_allegiances(players) {
-  var tf = ['true','false']
-  var map = new Object;
+  var tf = ['true', 'false'];
+  var map = {};
+
+  // Initialize an array to store the values of the object.
+  var mapValues = Object.values(map);
+
   for (const player of players) {
-    if (map.filter(x => x.contains(false)).length < 2) {
-      map[player.id] = tf[Math.floor(Math.random()*tf.length)];
+    // Use the filter method on the mapValues array to check if there are less than 2 'false' values.
+    if (mapValues.filter(x => x === 'false').length < 2) {
+      map[player.id] = tf[Math.floor(Math.random() * tf.length)];
+    } else {
+      map[player.id] = 'true';
     }
-    else map[player.id] = 'true'
+    
+    // Update mapValues after modifying the map.
+    mapValues = Object.values(map);
   }
+
   return map;
 }
+
 
 
 
