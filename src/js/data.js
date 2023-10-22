@@ -8,7 +8,7 @@
       7: [null, 'investigation', 'special_election', 'execution', 'execution'],
       9: ['investigation', 'investigation', 'special_election', 'execution', 'execution']
     },
-    min_players: 3,
+    min_players: 5,
     max_players: 10,
     fascist_ratio: 0.45,
     fascist_target_policies: 6,
