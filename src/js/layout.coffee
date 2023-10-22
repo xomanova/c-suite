@@ -2,20 +2,6 @@ window.root_path = $('head').data('root-path')
 
 window.games_host = window.location.host
 
-window.addEventListener 'error', (event) ->
-  $.ajax({
-    url: window.root_path + 'error-report'
-    method: 'POST'
-    contentType: 'application/json'
-    data: JSON.stringify {
-      lineno: event.lineno
-      colno: event.colno
-      filename: event.filename
-      stack: event.error?.stack.toString()
-      room_id: window.games?.room_id
-    }
-  })
-
 $ ->
   # Make href-notranslate links work
 

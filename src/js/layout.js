@@ -4,22 +4,6 @@
 
   window.games_host = window.location.host;
 
-  window.addEventListener('error', function(event) {
-    var ref, ref1;
-    return $.ajax({
-      url: window.root_path + 'error-report',
-      method: 'POST',
-      contentType: 'application/json',
-      data: JSON.stringify({
-        lineno: event.lineno,
-        colno: event.colno,
-        filename: event.filename,
-        stack: (ref = event.error) != null ? ref.stack.toString() : void 0,
-        room_id: (ref1 = window.games) != null ? ref1.room_id : void 0
-      })
-    });
-  });
-
   $(function() {
     var $language_button, $language_menu, $navbar_toggle, drag_id, menu_dragging, set_viewport_width;
     $(document).on('click', 'a', function(event) {
