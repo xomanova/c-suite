@@ -63,6 +63,8 @@ resource "aws_s3_object" "html_objects" {
   content_type = "text/html"
   source       = "src/${each.value}"
   etag         = filemd5("src/${each.value}")
+
+  depends_on = [ aws_s3_bucket_ownership_controls.ownership_control ]
 }
 
 resource "aws_s3_object" "css_objects" {
@@ -73,6 +75,8 @@ resource "aws_s3_object" "css_objects" {
   content_type = "text/css"
   source       = "src/${each.value}"
   etag         = filemd5("src/${each.value}")
+
+  depends_on = [ aws_s3_bucket_ownership_controls.ownership_control ]
 }
 
 resource "aws_s3_object" "map_objects" {
@@ -83,6 +87,8 @@ resource "aws_s3_object" "map_objects" {
   content_type = "application/json"
   source       = "src/${each.value}"
   etag         = filemd5("src/${each.value}")
+
+  depends_on = [ aws_s3_bucket_ownership_controls.ownership_control ]
 }
 
 resource "aws_s3_object" "js_objects" {
@@ -93,6 +99,8 @@ resource "aws_s3_object" "js_objects" {
   content_type = "text/javascript"
   source       = "src/${each.value}"
   etag         = filemd5("src/${each.value}")
+
+  depends_on = [ aws_s3_bucket_ownership_controls.ownership_control ]
 }
 
 resource "aws_s3_object" "static_objects" {
@@ -102,6 +110,8 @@ resource "aws_s3_object" "static_objects" {
   acl      = "public-read"
   source   = "src/${each.value}"
   etag     = filemd5("src/${each.value}")
+
+  depends_on = [ aws_s3_bucket_ownership_controls.ownership_control ]
 }
 
 
