@@ -8,7 +8,7 @@
       7: [null, 'investigation', 'special_election', 'execution', 'execution'],
       9: ['investigation', 'investigation', 'special_election', 'execution', 'execution']
     },
-    min_players: 2,
+    min_players: 3,
     max_players: 10,
     fascist_ratio: 0.45,
     fascist_target_policies: 6,
@@ -25,7 +25,7 @@
         id: 'c-suite',
         name: 'C-Suite',
         text: {
-          hitler: 'Saboteur',
+          hitler: 'The Mole',
           liberal: 'Employee',
           liberals: 'Employees',
           liberal_card: 'EMPLOYEE',
@@ -43,14 +43,14 @@
           policies: 'initiatives',
           president: 'CEO',
           president_s: 'CEO\'s',
-          presidential: 'CEO',
+          presidential: 'Chief Executive',
           chancellor: 'Chief Transformation Officer',
           a_politician: 'a board member',
           relieved_of_your_political_duties: 'relieved of your corporate duties',
           relieved_of_their_political_duties: 'relieved of their corporate duties',
-          state: 'Company'
+          state: 'company'
         }
-      } ,
+      },
       {
         id: 'hitler',
         name: 'Secret Hitler',
