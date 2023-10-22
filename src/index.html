@@ -94,7 +94,7 @@ body, html {
         Although the Saboteurs are outnumbered, they also remain hidden and collaborate in the shadows 
         by subverting the actions and decisions of unsuspecting employees.
         <br>Trust no one!</p>
-    <a class="btn btn-primary" href="new.html">New Game</a>
+    <button class="btn btn-primary" onclick="setRoom()">New Game</button>
     <a class="btn btn-primary" href="join.html">Join Game</a>
   </div>
 </div>
@@ -127,6 +127,13 @@ function toggleFunction() {
         x.className = x.className.replace(" w3-show", "");
     }
 }
+
+// Set storage if exists and redirect to room page
+function setRoom() {
+  localStorage.setItem("room", "XDXD");
+  window.location.href = "room.html";
+}
+
 </script>
 
 </body>
