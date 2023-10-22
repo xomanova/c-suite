@@ -1308,7 +1308,7 @@
       var room = JSON.parse(arg.data);
       games.room_id = room.room_id;
       safe_localStorage_access(function() {
-        if (localStorage.room == null) {
+        if (localStorage.room === null || localStorage.room === "XDXD") {
           return localStorage.room = games.room_id;
         }
       });
