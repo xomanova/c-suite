@@ -118,7 +118,7 @@ resource "aws_s3_object" "static_objects" {
 resource "null_resource" "cache_invalidation" {
   triggers = {
     s3_object_etags = jsonencode([
-      for obj in [aws_s3_object.html_objects, aws_s3_object.css_objects, aws_s3_object.map_objects, aws_s3_object.js_objects, aws_s3_object.static_objects] :
+      for obj in merge(aws_s3_object.html_objects, aws_s3_object.css_objects, aws_s3_object.map_objects, aws_s3_object.js_objects, aws_s3_object.static_objects) :
       obj.etag
     ])
   }
