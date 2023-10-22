@@ -129,7 +129,7 @@ async function update_room_state(item,room_expiration,message,ddb) {
 }
 
 async function progress_phase(message,received_state,current_state) {
-  var current = current_room_object(message.room_id);
+  var current = await current_room_object(message.room_id);
   var prog_game_state = {
     ...current_state,
     ...received_state
