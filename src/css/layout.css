@@ -46,7 +46,7 @@
 }
 @font-face {
   font-family: "Glyphicons Regular";
-  src: url("../fonts/glyphicons-regular.woff2") format("woff2"), url("../fonts/glyphicons-regular.woff") format("woff");
+  src: url("../fonts/glyphicons-regular.woff") format("woff");
 }
 .glyphicon {
   font-family: "Glyphicons Halflings";
