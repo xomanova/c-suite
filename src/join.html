@@ -43,11 +43,16 @@ body, html {
 /* Fixed footer position */
 .footer {
   position: fixed;
+  height: 50px;
   width: 100%;
   left: 0;
   bottom: 0;
 }
 
+/* Add padding to body to prevent content from being covered by footer */
+body {
+  padding-bottom: 50px; /* Replace 50px with the height of your footer */
+}
 /* Turn off parallax scrolling for tablets and phones */
 @media only screen and (max-device-width: 1600px) {
   .bgimg-1 {
