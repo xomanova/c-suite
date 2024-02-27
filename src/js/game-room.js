@@ -12,7 +12,7 @@
       min_players: data.min_players,
       max_players: data.max_players,
       enable_shuffle: true,
-      message: 'Arrange yourselves in seated order'
+      message: ''
     });
   
     wait_all = games.lib.wait_all();
