@@ -105,7 +105,7 @@ resource "aws_lambda_function" "onconnect_lambda" {
   role             = aws_iam_role.websockets_function_role.arn
   description      = "Handle websocket onconnect traffic"
   handler          = "index.handler"
-  runtime          = "nodejs14.x"
+  runtime          = "nodejs20.x"
   environment {
     variables = {
       CONNECTIONS_TABLE_NAME = aws_dynamodb_table.websockets_ddb.name
@@ -136,7 +136,7 @@ resource "aws_lambda_function" "ondisconnect_lambda" {
   role             = aws_iam_role.websockets_function_role.arn
   description      = "Handle websocket ondisconnect traffic"
   handler          = "index.handler"
-  runtime          = "nodejs14.x"
+  runtime          = "nodejs20.x"
   environment {
     variables = {
       CONNECTIONS_TABLE_NAME = aws_dynamodb_table.websockets_ddb.name
@@ -167,7 +167,7 @@ resource "aws_lambda_function" "sendmessage_lambda" {
   role             = aws_iam_role.websockets_function_role.arn
   description      = "Handle websocket sendmessage traffic"
   handler          = "index.handler"
-  runtime          = "nodejs14.x"
+  runtime          = "nodejs20.x"
   timeout          = 5
   environment {
     variables = {

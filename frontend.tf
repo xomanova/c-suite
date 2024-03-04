@@ -271,7 +271,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
 #   role             = aws_iam_role.websockets_function_role.arn
 #   description      = "Update websocket path traffic"
 #   handler          = "index.handler"
-#   runtime          = "nodejs14.x"
+#   runtime          = "nodejs20.x"
 #   publish          = true
 # }
 
